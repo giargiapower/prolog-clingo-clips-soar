@@ -5,4 +5,4 @@ num_righe(4).
 %non posso inserire le posizioni dei numeri nel dominio in quanto devono mutare col movimento
 %delle caselle 
 % prima ipotesi è di indicare uno stato del 15 con una lista ma mi sembra troppo complicato da 
-%utilizzare
+%gestire
