@@ -1,14 +1,14 @@
 %applicabile(AZ,S)
-applicabile(nord, pos(Riga, Colonna)):-
+applicabile(nord, pos(Riga, _)):-
     Riga>0.
     
-    applicabile(sud, pos(Riga, Colonna)):- num_righe(NR),
+    applicabile(sud, pos(Riga, _)):- num_righe(NR),
     Riga<NR.
     
-    applicabile(est, pos(Riga, Colonna)):- num_col(NC),
+    applicabile(est, pos(_, Colonna)):- num_col(NC),
     Colonna<NC.
     
-    applicabile(ovest, pos(Riga, Colonna)):- 
+    applicabile(ovest, pos(_, Colonna)):- 
     Colonna>0.
     
     %prendi la posizione dello 0 e il numero di colonne, a questo punto calcoliamo la pozizione 
@@ -21,18 +21,19 @@ applicabile(nord, pos(Riga, Colonna)):-
     
     
     %abbiamo aggiornato la lista dunque salviamo la nuova posizione dello 0 nel dominio
-    continue_nord([], Next_Lista, _):-    
-        retract(pos(X,Y)), 
-        assertz(pos(X-1, Y)).
+    continue_nord([], _, _):-    
+        retract(pos(X,Y)),
+        Sub is X-1, 
+        assertz(pos(Sub, Y)).
 
 %abbiamo trovato la vecchia posizione di 0 dunque sostituiamolo con il valore che stava sopra e 
 %proseguiamo lo scorrimento.
     continue_nord([0|Tail], Next_Lista, Value) :-
-        continue_nord(Tail, [Value|Next_Lista]).
+        continue_nord(Tail, [Value|Next_Lista], _).
 
  % se non abbiamo trovato ancora lo 0 inserisci il valore nella nuova lista e scorri   
-    continue_nord([Head|Tail], Next_Lista, _) :-
-        continue_nord(Tail, [Head|Next_Lista]).
+    continue_nord([Head|Tail], Next_Lista, Value) :-
+        continue_nord(Tail, [Head|Next_Lista], Value).
     
     % se il contatore è arrivato a 0 vuol dire che siamo arrivati alla posizione da swappare con lo 0
     % sostituiamo il valore con 0 e portiamocelo dietro in modo tale da sostituirlo con lo 0 nella
