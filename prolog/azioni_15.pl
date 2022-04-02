@@ -38,9 +38,10 @@ applicabile(nord, pos(Riga, Colonna)):-
     % sostituiamo il valore con 0 e portiamocelo dietro in modo tale da sostituirlo con lo 0 nella
     %vecchia posizione
     scorri_nord([Head|Tail], Next_Lista, 0) :-
-        continue_nord(Tail, [0|Next_Lista], Head).
+        continue_nord(Tail, [0|Next_Lista], Head),
+        !.
     
-    %
+    %se il contatore non è ancora arrivato a 0 allora decrementalo e continuiamo a scorrere
     scorri_nord([Head|Tail], Next_Lista, C) :- 
         H is C-1, 
         scorri_nord(Tail, [Head|Next_Lista], H).
