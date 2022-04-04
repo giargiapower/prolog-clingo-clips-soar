@@ -1,3 +1,6 @@
+:-dynamic setElement/4.
+
+
 %applicabile(AZ,S)
 applicabile(nord, pos(Riga, _)):-
     Riga>0.
@@ -46,3 +49,17 @@ applicabile(nord, pos(Riga, _)):-
     scorri_nord([Head|Tail], Next_Lista, C) :- 
         H is C-1, 
         scorri_nord(Tail, [Head|Next_Lista], H).
+
+
+%list_swap([],[]).
+%list_swap([A],[A]).
+%list_swap([Pos1,Pos2|X1],[Pos2,Pos1|X2]):-
+    %list_swap(X1,X2).
+
+
+swap(List,Pos1,Pos2,NewList):-
+    nth0(Pos1,List,X1),
+    nth0(Pos2,List,X2),
+    setElement(List,Pos2,X1,Temp),
+    setElement(Temp,Pos1,X2,NewList).
+
