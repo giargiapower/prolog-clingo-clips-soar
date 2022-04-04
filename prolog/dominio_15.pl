@@ -6,9 +6,9 @@ num_righe(4).
 % aggiungere i nuovi valori nelle celle e rimuovere quelli vecchi che non valgono più.
 % es |-|1| --> sposto 1 ovvero pos(0, 1, 1)  a sinistra e quindi aggiorno quel pos e metto quello nuovo
 % -> pos(0,0,1)  , pos(0 ,1, 0).
-iniziale([8,0,9,7,14,4,5,3,6,15,13,10,1,2,11,12]).
-e([3, 3, 2, 3, 2, 2, 2, 4, 4, 2, 1, 1, 3, 3, 2, 5]).
-pos(0,1).
+iniziale([3,5,1,2,15,9,7,6,12,11,0,4,10,8,14,13]).
+e([2,2,2,2,2,2,0,4,2,2,1,3,3,1,4,2]).
+pos(2,2).
 %stato finale ?somma distanze da loro posizione corretta = 0
 %ci sarà da inserire una euristica 
 %[3, 3, 2, 3, 2, 2, 2, 4, 4, 2, 1, 1, 3, 3, 2, 5].
