@@ -1,3 +1,5 @@
+:- discontiguous trasforma/3.
+:- discontiguous scorri_sud/3.
 %applicabile(AZ,S)
     applicabile(nord, pos(Riga, _)):-
     Riga>0.
@@ -13,17 +15,17 @@
     
     %prendi la posizione dello 0 e il numero di colonne, a questo punto calcoliamo la pozizione 
     %del valore sopra lo 0 e scorriamo la lista 
+
+    %NORD
     
     trasforma(nord, Lista, Next_Lista) :- pos(X, Y), 
-        %print(Lista),
         num_col(NC), 
         C is (NC*(X-1) + mod(Y, NC)), 
         scorri_nord(Lista, Next_Lista, C).
     
     
     %abbiamo aggiornato la lista dunque salviamo la nuova posizione dello 0 nel dominio
-    continue_nord([], _, _):-
-        %print(Next_Lista),    
+    continue_nord([], _, _):-    
         retract(pos(X,Y)),
         Sub is X-1, 
         assertz(pos(Sub, Y)).
@@ -50,15 +52,106 @@
         scorri_nord(Tail, Next_Lista, H).
 
 
-%list_swap([],[]).
-%list_swap([A],[A]).
-%list_swap([Pos1,Pos2|X1],[Pos2,Pos1|X2]):-
-    %list_swap(X1,X2).
 
 
-%swap(List,Pos1,Pos2,NewList):-
-%    nth0(Pos1,List,X1),
-%    nth0(Pos2,List,X2),
-%    setElement(List,Pos2,X1,Temp),
-%    setElement(Temp,Pos1,X2,NewList).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   %SUD 
+   trasforma(sud, Lista, Next_Lista) :- pos(X, Y), 
+   num_col(NC), 
+   C is (NC*(X+1) + mod(Y, NC)), 
+   write(C),
+   cerca_valore(Lista, C, Value),
+   scorri_sud(Lista, Value, Next_Lista).
+
+
+
+scorri_sud([], _, _):-    
+   retract(pos(X,Y)),
+   Add is X+1, 
+   assertz(pos(Add, Y)).
+
+
+scorri_sud([0|Tail], Value, [Value|Next_Lista]) :- 
+    scorri_sud(Tail, Value , Next_Lista).
+
+
+scorri_sud([Value|Tail], Value, [0|Next_Lista]) :-
+   scorri_sud(Tail, Value , Next_Lista).
+
+
+scorri_sud([Head|Tail], Value , [Head|Next_Lista]) :- 
+   scorri_sud(Tail, Value, Next_Lista).
+
+
+cerca_valore([Head| _], 0, Head).
+
+
+cerca_valore([_| Tail], C, Value) :- 
+    H is C-1,
+    cerca_valore(Tail, H, Value).
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   %EST
+   trasforma(est, Lista, Next_Lista) :- pos(X, Y), 
+        num_col(NC), 
+        C is (NC*(X) + mod(Y, NC)), 
+        scorri_est(Lista, Next_Lista, C).
+    
+    
+   
+    continue_est([], _, _):-    
+        retract(pos(X,Y)),
+        Sub is Y-1, 
+        assertz(pos(X, Sub)).
+
+
+    continue_est([0|Tail], [Value|Next_Lista], Value) :-
+        continue_est(Tail, Next_Lista, _).
+
+  
+    continue_est([Head|Tail], [Head|Next_Lista], Value) :-
+        continue_est(Tail, Next_Lista, Value).
+    
+   
+    scorri_est([Head|Tail], [0|Next_Lista], 1) :-
+        continue_est(Tail, Next_Lista, Head),
+        !.
+    
+   
+    scorri_est([Head|Tail], [Head|Next_Lista], C) :- 
+        H is C-1, 
+        scorri_est(Tail, Next_Lista, H).
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   %OVEST
+   trasforma(ovest, Lista, Next_Lista) :- pos(X, Y), 
+        num_col(NC), 
+        C is (NC*(X) + mod(Y, NC) + 1), 
+        cerca_valore(Lista, C, Value),
+        scorri_ovest(Lista, Next_Lista, Value).
+    
+    
+    scorri_ovest([], _, _):-    
+        retract(pos(X,Y)),
+        Add is Y+1, 
+        assertz(pos(X, Add)).
+
+    scorri_ovest([0|Tail], [Value|Next_Lista], Value) :-
+        scorri_ovest(Tail, Next_Lista, Value),
+        !.
+
+    scorri_ovest([Value|Tail], [0|Next_Lista], Value) :-
+        scorri_ovest(Tail, Next_Lista, Value),
+        !.
+
+    scorri_ovest([Head|Tail], [Head|Next_Lista], Value) :-  
+        scorri_ovest(Tail, Next_Lista, Value).
+
 
