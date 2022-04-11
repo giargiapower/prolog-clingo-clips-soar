@@ -28,44 +28,43 @@
 %SCORRIAMO TUTTA LA LISTA, SWAPPIAMO LO 0 COL VALORE E QUANDO ARRIVIAMO ALLA FINE AGGIORNIAMO LA NUOVA
 %POSIZIONE DELLO 0
 
-    scorri([], _, _, est):- 
-        pos(X,Y),
-        Add is Y+1,
-        retract(pos(X,Y)), 
-        assertz(pos(X, Add)).
+    scorri([], _, _).
 
-    scorri([], _, _, ovest):-   
-        pos(X,Y), 
-        Sub is Y-1,
-        retract(pos(X,Y)), 
-        assertz(pos(X, Sub)).
-
-    
-    scorri([], _, _, sud):-    
-        pos(X,Y),
-        Add is X+1, 
-        retract(pos(X,Y)),
-        assertz(pos(Add, Y)).
-    
-    scorri([], _, _, nord):-   
-        pos(X,Y),
-        Sub is X-1,
-        retractall(pos(X,Y)), 
-        assertz(pos(Sub, Y)), !.
-
-
-    scorri([0|Tail], Value ,  [Value|Next_Lista], W) :-
-        scorri(Tail, Value ,  Next_Lista, W),
+    scorri([0|Tail], Value ,  [Value|Next_Lista]) :-
+        scorri(Tail, Value ,  Next_Lista),
         !.
 
   
-    scorri([Value|Tail], Value ,  [0|Next_Lista], W) :-
-        scorri(Tail, Value , Next_Lista, W),
+    scorri([Value|Tail], Value ,  [0|Next_Lista]) :-
+        scorri(Tail, Value , Next_Lista),
         !.
     
-    scorri([Head|Tail], Value , [Head|Next_Lista] , W) :- 
-        scorri(Tail, Value , Next_Lista, W).
+    scorri([Head|Tail], Value , [Head|Next_Lista]) :- 
+        scorri(Tail, Value , Next_Lista).
 
+    update_nord(X, Y):- Sub is X-1,
+        retractall(pos(X,Y)), 
+        assertz(pos(Sub, Y)).
+
+
+    update_sud(X, Y):- Add is X+1, 
+        retract(pos(X,Y)),
+        assertz(pos(Add, Y)).
+
+
+
+    update_est(X, Y):- Add is Y+1,
+        retract(pos(X,Y)), 
+        assertz(pos(X, Add)).
+
+
+
+    update_ovest(X, Y):- Sub is Y-1,
+        retract(pos(X,Y)), 
+        assertz(pos(X, Sub)).
+
+
+    
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    %NORD
@@ -74,7 +73,9 @@
    num_col(NC), 
    C is (NC*(X-1) + mod(Y, NC)), 
    cerca_valore(Lista, C, Value),
-   scorri(Lista, Value, Next_Lista, nord).
+   scorri(Lista, Value, Next_Lista),
+   update_nord(X, Y).
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -86,8 +87,8 @@
    write(C),
    write(" "),
    cerca_valore(Lista, C, Value),
-   scorri(Lista, Value, Next_Lista, sud).
-
+   scorri(Lista, Value, Next_Lista),
+   update_sud(X, Y).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -99,8 +100,8 @@
         write(C),
         write(" "),
         cerca_valore(Lista, C, Value),
-        scorri(Lista, Value, Next_Lista, ovest).
-    
+        scorri(Lista, Value, Next_Lista),
+        update_ovest(X, Y).
     
 
 
@@ -111,8 +112,8 @@
         C is (NC*(X) + mod(Y, NC) + 1), 
         C>=0,
         cerca_valore(Lista, C, Value),
-        scorri(Lista, Value, Next_Lista, est).
-    
+        scorri(Lista, Value, Next_Lista),
+        update_est(X, Y).
     
 
 
