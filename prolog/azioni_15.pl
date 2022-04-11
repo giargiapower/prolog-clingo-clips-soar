@@ -1,5 +1,3 @@
-:- discontiguous trasforma/3.
-:- discontiguous scorri_sud/3.
 %applicabile(AZ,S)
     applicabile(nord):-
     pos(Riga, _),
@@ -84,8 +82,6 @@
    num_col(NC), 
    C is (NC*(X+1) + mod(Y, NC)), 
    C>=0,
-   write(C),
-   write(" "),
    cerca_valore(Lista, C, Value),
    scorri(Lista, Value, Next_Lista),
    update_sud(X, Y).
@@ -97,8 +93,6 @@
         num_col(NC), 
         C is (NC*(X) + mod(Y, NC)-1), 
         C>=0,
-        write(C),
-        write(" "),
         cerca_valore(Lista, C, Value),
         scorri(Lista, Value, Next_Lista),
         update_ovest(X, Y).
