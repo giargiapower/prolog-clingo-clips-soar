@@ -7,6 +7,7 @@ num_righe(4).
 % es |-|1| --> sposto 1 ovvero pos(0, 1, 1)  a sinistra e quindi aggiorno quel pos e metto quello nuovo
 % -> pos(0,0,1)  , pos(0 ,1, 0).
 iniziale([3,5,1,2,15,9,7,6,12,11,0,4,10,8,14,13]).
+finale([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0]).
 e([2,2,2,2,2,2,0,4,2,2,1,3,3,1,4,2]).
 pos(2,2).
 %stato finale ?somma distanze da loro posizione corretta = 0
