@@ -1,17 +1,20 @@
 %applicabile(AZ,S)
-    applicabile(nord):-
-    pos(Riga, _),
+    applicabile(nord, Riga, _):-
+    %pos(Riga, _),
     Riga>0.
     
-    applicabile(sud):- pos(Riga, _), 
+    applicabile(sud, Riga, _):- 
+    %pos(Riga, _), 
     num_righe(NR),
     Riga<NR-1.
     
-    applicabile(est):- pos(_, Colonna),
+    applicabile(est, _ , Colonna):-
+    %pos(_, Colonna),
     num_col(NC),
     Colonna<NC-1.
     
-    applicabile(ovest):- pos(_, Colonna),
+    applicabile(ovest, _, Colonna):- 
+    %pos(_, Colonna),
     Colonna>0.
     
   
@@ -67,47 +70,61 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    %NORD
     
-   trasforma(nord, Lista, Next_Lista) :- pos(X, Y), 
+   trasforma(nord, X, Y, Lista, X2, Y2, Next_Lista) :- 
+   %pos(X, Y), 
    num_col(NC), 
    C is (NC*(X-1) + mod(Y, NC)), 
    cerca_valore(Lista, C, Value),
-   scorri(Lista, Value, Next_Lista),
-   update_nord(X, Y).
+   X2 is X-1, 
+   Y2 is Y,
+   scorri(Lista, Value, Next_Lista).
+   %update_nord(X, Y).
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    %SUD 
-   trasforma(sud, Lista, Next_Lista) :- pos(X, Y), 
+   trasforma(sud, X, Y, Lista, X2, Y2, Next_Lista) :- 
+    
+    %pos(X, Y), 
    num_col(NC), 
    C is (NC*(X+1) + mod(Y, NC)), 
    C>=0,
    cerca_valore(Lista, C, Value),
-   scorri(Lista, Value, Next_Lista),
-   update_sud(X, Y).
+   X2 is X+1, 
+   Y2 is Y,
+   scorri(Lista, Value, Next_Lista).
+   %update_sud(X, Y).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    %OVEST
-   trasforma(ovest, Lista, Next_Lista) :- pos(X, Y), 
+   trasforma(ovest,X, Y, Lista, X2, Y2, Next_Lista) :- 
+    %pos(X, Y), 
         num_col(NC), 
         C is (NC*(X) + mod(Y, NC)-1), 
         C>=0,
         cerca_valore(Lista, C, Value),
-        scorri(Lista, Value, Next_Lista),
-        update_ovest(X, Y).
+        X2 is X, 
+        Y2 is Y-1,
+        scorri(Lista, Value, Next_Lista).
+       % update_ovest(X, Y).
     
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    %EST
-   trasforma(est, Lista, Next_Lista) :- pos(X, Y), 
+   trasforma(est, X, Y, Lista, X2, Y2, Next_Lista) :- 
+    %pos(X, Y), 
         num_col(NC), 
         C is (NC*(X) + mod(Y, NC) + 1), 
         C>=0,
         cerca_valore(Lista, C, Value),
-        scorri(Lista, Value, Next_Lista),
-        update_est(X, Y).
+        X2 is X, 
+        Y2 is Y+1,
+        scorri(Lista, Value, Next_Lista).
+        
+       % update_est(X, Y).
     
 
 
