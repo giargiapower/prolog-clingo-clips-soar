@@ -38,9 +38,11 @@ distanza_m(Lista, 15 , Temp, H) :-
 % in posizione 4 meno 2 che è la posizione attuale .
 % il risultato parziale lo sommiamo a temp che verrà poi passato a H quando avrà sommato 
 % tutte le distanze 
+% sistemare la posizione 0 che deve stare in fondo 
 distanza_m(Lista, C , Temp, H) :- 
     find_value(Lista, C, Value),
-    Temp is Temp+abs((Value-1)-C),
+    calcola_h(Value, C, Res),
+    Temp is Temp+Res,
     distanza_m(Lista, C+1 , Temp, H).
 
 
@@ -52,6 +54,11 @@ find_value([Head|Tail], C , Value):-
     K is C-1,
     find_value(Tail, K , Value).
 
+calcola_h(0, C, Res) :-
+    Res is abs((15)-C).
+
+calcola_h(Value, C, Res) :-
+    Res is abs((Value-1)-C).
 
 % heuristic(+State, -Heuristic)
 % distanza i1 da goal
