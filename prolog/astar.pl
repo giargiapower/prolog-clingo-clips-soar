@@ -23,15 +23,16 @@ astar_aux([],_,_):-
 
 
 
-heuristic(Lista, H) :- distanza_m(Lista, 0 , Temp, H).
+heuristic(Lista, H) :- distanza_m(Lista, 0 , 0, H).
 
 
 
 %il 16 andrà modificato con num_col(X)*num_col(X) circa  
 % praticamente deve sommare la distanza di tutti i valori della lista quindi
 %arriva fino all'ultimo elemento della matrice che si trova in pos 15
-distanza_m(Lista, 15 , Temp, H) :-
-    H is Temp.
+distanza_m(_, 16 , Temp, H) :-
+    H is Temp, 
+    !.
 
 % cerca il valore,a questo punto calcola la distanza dalla sua corretta posizione 
 % ovvero se 5 si trova in posizione 2 la distanza è (5-1)-2 perchè il 5 dovrebbe stare 
@@ -42,23 +43,34 @@ distanza_m(Lista, 15 , Temp, H) :-
 distanza_m(Lista, C , Temp, H) :- 
     find_value(Lista, C, Value),
     calcola_h(Value, C, Res),
-    Temp is Temp+Res,
-    distanza_m(Lista, C+1 , Temp, H).
+    %Temp is Temp+Res,
+    K is C+1,
+    distanza_m(Lista, K , Temp+Res, H).
 
 
 % scorri la lista fino a trovare il valore e ritornalo
-find_value([Head|Tail], 0 , Head) :- !.
+find_value([Head|_], 0 , Head) :- !.
  
 
-find_value([Head|Tail], C , Value):-
+find_value([_|Tail], C , Value):-
     K is C-1,
     find_value(Tail, K , Value).
 
 calcola_h(0, C, Res) :-
-    Res is abs((15)-C).
+    X1 is 3,
+    Y1 is 3,
+    X2 is floor(C/4),
+    Y2 is mod(C, 4),
+    Res is abs(X1-X2)+abs(Y1-Y2),
+    !.
 
 calcola_h(Value, C, Res) :-
-    Res is abs((Value-1)-C).
+    K is Value-1,
+    X1 is floor(K/4),
+    Y1 is mod(K, 4),
+    X2 is floor(C/4),
+    Y2 is mod(C, 4),
+    Res is abs(X1-X2)+abs(Y1-Y2).
 
 % heuristic(+State, -Heuristic)
 % distanza i1 da goal
