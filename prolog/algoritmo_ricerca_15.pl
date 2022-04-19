@@ -27,11 +27,13 @@ a_star_start(SIniziale,ListaAzioni):-
 %  sistemiamo la lista di azioni se abbiamo saltato ad un nodo di profondità inferiore a dove siamo arrivati
 % valutiamo il nodo espandendolo e lavorando sui suoi figli
 a_star(Aperti, Chiusi, Profondita, ListaAzioni) :- 
-    %find_costo_minore(+Aperti, -Stato),
-    %s(Stato, Direzione, _, _),
-    %rimuovi_stato_aperto(+Aperti, -NewAperti),
+    find_costo_minore(Aperti, Value, 1, _, Stato),
+    s(Stato, Direzione, _, _),
+    rimuovi_stato_aperto(Aperti, Stato, NewAperti),
     %sistema_azioni(+ListaAzioni, +Profondita, -NewListaAzioni),
     valutazione_nodo(Stato, +Aperti, +[Stato|Chiusi], +Profondita, -[Direzione|NewListaAzioni]).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % se lo stato scelto è il finale printa la lista di azioni e termina 
 valutazione_nodo(Stato, _, _, _, ListaAzioni) :-
@@ -49,6 +51,9 @@ valutazione_nodo(Stato, Aperti, Chiusi, Profondita, ListaAzioni) :-
     %scorri_nodi(+Aperti, +Chiusi, +ListNewNodes, +P2, +ListDirections, -NewAperti, -NewChiusi),
     a_star(NewAperti, NewChiusi, P2, ListaAzioni). 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % se abbiamo scorso tutti i figli fermiamoci
 scorri_nodi(Aperti, Chiusi, [], Profondita, Direzioni, NewAperti, NewChiusi):-
     NewChiusi is Chiusi,
@@ -65,6 +70,8 @@ scorri_nodi(Aperti, Chiusi, [Head|Tail], Profondita, [HeadD|TailD], NewAperti, N
     scorri_nodi(TempAperti, TempChiusi, Tail, Profondita, TailD, NewAperti, NewChiusi).
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % se il nodo lo abbiamo già trovato allora ci siamo già passati dunque 
 % se lo stato è tra i chiusi mettilo tra gli aperti
 controlla_presenza(Aperti, Chiusi, Profondita, F, Head,TempAperti, TempChiusi):-
@@ -77,6 +84,44 @@ controlla_presenza(Aperti, Chiusi, Profondita, F, Head, Direzione,[Head|Aperti] 
     assertz(s(Head, Direzione, Profondita, F)).
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+find_costo_minore([], _, _, Temp, Stato):-
+    Stato = Temp.
+
+
+find_costo_minore([Head|Tail], Value, Flag, Temp, Stato):-
+    Flag ==1,
+    s(Head,_,_,Costo),
+    find_costo_minore(Tail, Costo, 0, Head, Stato),
+    !.
+
+find_costo_minore([Head|Tail], Value, Flag, Temp, Stato):-
+    Flag ==0,
+    s(Head,_,_,Costo),
+    Costo<Value,
+    find_costo_minore(Tail, Costo, 0, Head, Stato),
+    !.
+
+find_costo_minore([Head|Tail], Value, Flag, Temp, Stato):-
+    Flag ==0,
+    s(Head,_,_,Costo),
+    Costo>=Value,
+    find_costo_minore(Tail, Value, 0, Temp, Stato),
+    !.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+rimuovi_stato_aperto([Head|Tail], Stato, NewAperti) :-
+    Stato==Head,
+    rimuovi_stato_aperto(Tail, Stato, NewAperti),
+    !.
+
+rimuovi_stato_aperto([Head|Tail], Stato, [Head|NewAperti]) :-
+    rimuovi_stato_aperto(Tail, Stato, NewAperti).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 heuristic(Lista, H) :- distanza_m(Lista, 0 , 0, H).
