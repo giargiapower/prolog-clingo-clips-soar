@@ -55,7 +55,7 @@ scorri_nodi(Aperti, Chiusi, [], Profondita, Direzioni, NewAperti, NewChiusi):-
     NewAperti is Aperti,
     !.
 
-% calcola h(x)= g(x)+h(x) , ponendo g(x)= alla profondita
+% calcola f(x)= g(x)+h(x) , ponendo g(x)= profondita
 % controlla il nuovo nodo
 % passa al nodo successivo
 scorri_nodi(Aperti, Chiusi, [Head|Tail], Profondita, [HeadD|TailD], NewAperti, NewChiusi):-
