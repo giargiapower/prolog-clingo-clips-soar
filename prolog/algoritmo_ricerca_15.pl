@@ -13,13 +13,19 @@ profondita(S,[Az|ListaAzioni], X, Y , Visitati):-
     \+member(SNuovo,Visitati),
     profondita(SNuovo,ListaAzioni,X2 , Y2, [S|Visitati]).
 
-%struttura : s(Stato, Direzione, Profondità, Costo)
+%struttura : s(Stato, Direzione, Profondità, Costo) ci serve per capire se siamo già passati per quello stato
+% aggiungiamo lo stato iniziale alla nostra conoscenza
+% iniziamo astar 
 a_star_start(SIniziale,ListaAzioni):- 
     assertz(s(SIniziale, start,  0, 0)),
     a_star([SIniziale] , [] , 0 , []).
 
 
-
+%cerchiamo il costo minore tra gli aperti
+% cerchiamo nella conoscenza lo stato trovato in modo tale da tirarci fuori le sue informazioni
+%  rimuoviamo lo stato che abbiamo scelto tra gli aperti
+%  sistemiamo la lista di azioni se abbiamo saltato ad un nodo di profondità inferiore a dove siamo arrivati
+% valutiamo il nodo espandendolo e lavorando sui suoi figli
 a_star(Aperti, Chiusi, Profondita, ListaAzioni) :- 
     %find_costo_minore(+Aperti, -Stato),
     %s(Stato, Direzione, _, _),
@@ -27,23 +33,31 @@ a_star(Aperti, Chiusi, Profondita, ListaAzioni) :-
     %sistema_azioni(+ListaAzioni, +Profondita, -NewListaAzioni),
     valutazione_nodo(Stato, +Aperti, +[Stato|Chiusi], +Profondita, -[Direzione|NewListaAzioni]).
 
+% se lo stato scelto è il finale printa la lista di azioni e termina 
 valutazione_nodo(Stato, _, _, _, ListaAzioni) :-
     finale(Stato),
     write(ListaAzioni),
     !.
 
+% se non è lo stato finale espandi il nodo 
+% aumenta la profondita
+% valutiamo i nuovi nodi 
+% richiama astar
 valutazione_nodo(Stato, Aperti, Chiusi, Profondita, ListaAzioni) :-
     %expand_node(+Stato, -ListNewNodes, -ListDirections),
     %P2 is Profondita+1,
     %scorri_nodi(+Aperti, +Chiusi, +ListNewNodes, +P2, +ListDirections, -NewAperti, -NewChiusi),
     a_star(NewAperti, NewChiusi, P2, ListaAzioni). 
 
-
+% se abbiamo scorso tutti i figli fermiamoci
 scorri_nodi(Aperti, Chiusi, [], Profondita, Direzioni, NewAperti, NewChiusi):-
     NewChiusi is Chiusi,
     NewAperti is Aperti,
     !.
 
+% calcola h(x)= g(x)+h(x) , ponendo g(x)= alla profondita
+% controlla il nuovo nodo
+% passa al nodo successivo
 scorri_nodi(Aperti, Chiusi, [Head|Tail], Profondita, [HeadD|TailD], NewAperti, NewChiusi):-
     heuristic(Head, Value),
     %F is Value+Profondita,
@@ -51,12 +65,14 @@ scorri_nodi(Aperti, Chiusi, [Head|Tail], Profondita, [HeadD|TailD], NewAperti, N
     scorri_nodi(TempAperti, TempChiusi, Tail, Profondita, TailD, NewAperti, NewChiusi).
 
 
+% se il nodo lo abbiamo già trovato allora ci siamo già passati dunque 
+% se lo stato è tra i chiusi mettilo tra gli aperti
 controlla_presenza(Aperti, Chiusi, Profondita, F, Head,TempAperti, TempChiusi):-
-    %s(Head, _ , _ , Costo),
-    %valuta_stato(Head, Costo, F, Profondita),
+    %s(Head, _ , _ , _),
     %aggiornaChiusi(Head, Aperti , Chiusi,TempAperti, TempChiusi)
     !.
 
+% se non è mai stato trovato allora salvalo nella conoscenza e nella lista di aperti
 controlla_presenza(Aperti, Chiusi, Profondita, F, Head, Direzione,[Head|Aperti] , _):-
     assertz(s(Head, Direzione, Profondita, F)).
 
