@@ -13,18 +13,52 @@ profondita(S,[Az|ListaAzioni], X, Y , Visitati):-
     \+member(SNuovo,Visitati),
     profondita(SNuovo,ListaAzioni,X2 , Y2, [S|Visitati]).
 
+%struttura : s(Stato, Direzione, Profondità, Costo)
+a_star_start(SIniziale,ListaAzioni):- 
+    assertz(s(SIniziale, start,  0, 0)),
+    a_star([SIniziale] , [] , 0 , []).
 
-%a_star_start(SIniziale,ListaAzioni, Aperti, Costi):- 
-%    a_star(ListaAzioni, [SIniziale|Aperti] , [0], Temp, 1).
 
 
+a_star(Aperti, Chiusi, Profondita, ListaAzioni) :- 
+    %find_costo_minore(+Aperti, -Stato),
+    %s(Stato, Direzione, _, _),
+    %rimuovi_stato_aperto(+Aperti, -NewAperti),
+    %sistema_azioni(+ListaAzioni, +Profondita, -NewListaAzioni),
+    valutazione_nodo(Stato, +Aperti, +[Stato|Chiusi], +Profondita, -[Direzione|NewListaAzioni]).
 
-%a_star(ListaAzioni , Aperti, Costi, I).
-% prendi tra gli aperti lo stato di costo minore 
-% se finale termina
-% altrimenti rimuovilo dagli aperti 
-%calcola nord sud est ovest e rispettivi costo = I + costi e salvali in temp
-% salva stati nella lista Aperti e costi nella lista Costi
+valutazione_nodo(Stato, _, _, _, ListaAzioni) :-
+    finale(Stato),
+    write(ListaAzioni),
+    !.
+
+valutazione_nodo(Stato, Aperti, Chiusi, Profondita, ListaAzioni) :-
+    %expand_node(+Stato, -ListNewNodes, -ListDirections),
+    %P2 is Profondita+1,
+    %scorri_nodi(+Aperti, +Chiusi, +ListNewNodes, +P2, +ListDirections, -NewAperti, -NewChiusi),
+    a_star(NewAperti, NewChiusi, P2, ListaAzioni). 
+
+
+scorri_nodi(Aperti, Chiusi, [], Profondita, Direzioni, NewAperti, NewChiusi):-
+    NewChiusi is Chiusi,
+    NewAperti is Aperti,
+    !.
+
+scorri_nodi(Aperti, Chiusi, [Head|Tail], Profondita, [HeadD|TailD], NewAperti, NewChiusi):-
+    heuristic(Head, Value),
+    %F is Value+Profondita,
+    %controlla_presenza(Aperti, Chiusi, Profondita, F, Head, HeadD, TempAperti, TempChiusi),
+    scorri_nodi(TempAperti, TempChiusi, Tail, Profondita, TailD, NewAperti, NewChiusi).
+
+
+controlla_presenza(Aperti, Chiusi, Profondita, F, Head,TempAperti, TempChiusi):-
+    %s(Head, _ , _ , Costo),
+    %valuta_stato(Head, Costo, F, Profondita),
+    %aggiornaChiusi(Head, Aperti , Chiusi,TempAperti, TempChiusi)
+    !.
+
+controlla_presenza(Aperti, Chiusi, Profondita, F, Head, Direzione,[Head|Aperti] , _):-
+    assertz(s(Head, Direzione, Profondita, F)).
 
 
 
