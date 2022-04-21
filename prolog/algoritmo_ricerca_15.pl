@@ -13,11 +13,11 @@ profondita(S,[Az|ListaAzioni], X, Y , Visitati):-
     \+member(SNuovo,Visitati),
     profondita(SNuovo,ListaAzioni,X2 , Y2, [S|Visitati]).
 
-%struttura : s(Stato, Direzione, Profondità, Costo) ci serve per capire se siamo già passati per quello stato
+%struttura : s(Stato, Direzione, Profondità, Costo, X0, Y0) ci serve per capire se siamo già passati per quello stato
 % aggiungiamo lo stato iniziale alla nostra conoscenza
 % iniziamo astar 
 a_star_start(SIniziale,Percorso):- 
-    assertz(s(SIniziale, start,  0, 0)),
+    assertz(s(SIniziale, start,  0, 0, 2, 2)),
     a_star([SIniziale] , [] , 0 , [], Percorso).
 
 
@@ -37,14 +37,46 @@ a_star(Aperti, Chiusi, Profondita, ListaAzioni, Percorso) :-
 % valutiamo il nodo espandendolo e lavorando sui suoi figli
 a_star(Aperti, Chiusi, Profondita, ListaAzioni, Percorso) :- 
     find_costo_minore(Aperti, Value, 1, _, Stato),
-    s(Stato, Direzione, _, _),
+    s(Stato, Direzione, _, _, _, _),
     rimuovi_stato_aperto(Aperti, Stato, NewAperti),
     sistema_azioni(ListaAzioni, Direzione, Profondita, NewListaAzioni),
-    %P2 is Profondita+1,
-    %expand_node(+Stato, -ListNewNodes),
+    P2 is Profondita+1,
+    expand_node(Stato, Aperti, Chiusi, P2, NewAperti, NewChiusi),
     %scorri_nodi(+Aperti, +Chiusi, +ListNewNodes, +P2, -NewAperti, -NewChiusi),
     a_star(NewAperti, NewChiusi, Profondita+1, NewListaAzioni , Percorso).
- 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+expand_node(Stato, Aperti, Chiusi, Profondita, NewAperti, NewChiusi):-
+    espandi(Stato, [nord, sud, est, ovest], NewNodes, Actions),
+
+    !.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+espandi(Stato, [], NewNodes, AzioniEseguite) :-
+    !.
+
+% se è fattibile applica trasformazione
+espandi(Stato, [Head|Tail], [SNuovo|NewNodes], [Head|AzioniEseguite]) :-
+    s(Stato, _, Profondita, _, X0, Y0),
+    %applicabile(Az, X, Y),
+    %trasforma(Az,X, Y, S, X2, Y2, SNuovo),
+    % crea s
+    % espandi(Stato, Tail, NewNodes, AzioniEseguite) 
+    !.
+
+% altrimenti  passa alla prossima azione 
+espandi(Stato, [Head|Tail], NewNodes, AzioniEseguite) :-
+    espandi(Stato, Tail, NewNodes, AzioniEseguite),
+    %
+    % espandi(Stato, Tail, NewNodes, AzioniEseguite) 
+    !.
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
