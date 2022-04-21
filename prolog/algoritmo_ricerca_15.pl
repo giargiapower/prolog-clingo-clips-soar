@@ -16,40 +16,47 @@ profondita(S,[Az|ListaAzioni], X, Y , Visitati):-
 %struttura : s(Stato, Direzione, Profondità, Costo) ci serve per capire se siamo già passati per quello stato
 % aggiungiamo lo stato iniziale alla nostra conoscenza
 % iniziamo astar 
-a_star_start(SIniziale,ListaAzioni):- 
+a_star_start(SIniziale,Percorso):- 
     assertz(s(SIniziale, start,  0, 0)),
-    a_star([SIniziale] , [] , 0 , []).
+    a_star([SIniziale] , [] , 0 , [], Percorso).
 
+
+
+
+% se lo stato scelto è il finale ritorniamo Percorso che avrà la lista corretta di tutti i movimenti
+a_star(Aperti, Chiusi, Profondita, ListaAzioni, Percorso) :- 
+    find_costo_minore(Aperti, Value, 1, _, Stato),
+    finale(Stato),
+    Percorso = ListaAzioni,
+    !.
 
 %cerchiamo il costo minore tra gli aperti
 % cerchiamo nella conoscenza lo stato trovato in modo tale da tirarci fuori le sue informazioni
 %  rimuoviamo lo stato che abbiamo scelto tra gli aperti
 %  sistemiamo la lista di azioni se abbiamo saltato ad un nodo di profondità inferiore a dove siamo arrivati
 % valutiamo il nodo espandendolo e lavorando sui suoi figli
-a_star(Aperti, Chiusi, Profondita, ListaAzioni) :- 
+a_star(Aperti, Chiusi, Profondita, ListaAzioni, Percorso) :- 
     find_costo_minore(Aperti, Value, 1, _, Stato),
     s(Stato, Direzione, _, _),
     rimuovi_stato_aperto(Aperti, Stato, NewAperti),
-    %sistema_azioni(+ListaAzioni, +Profondita, -NewListaAzioni),
-    valutazione_nodo(Stato, +Aperti, +[Stato|Chiusi], +Profondita, -[Direzione|NewListaAzioni]).
+    sistema_azioni(ListaAzioni, Direzione, Profondita, NewListaAzioni),
+    %P2 is Profondita+1,
+    %expand_node(+Stato, -ListNewNodes),
+    %scorri_nodi(+Aperti, +Chiusi, +ListNewNodes, +P2, -NewAperti, -NewChiusi),
+    a_star(NewAperti, NewChiusi, Profondita+1, NewListaAzioni , Percorso).
+ 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% se lo stato scelto è il finale printa la lista di azioni e termina 
-valutazione_nodo(Stato, _, _, _, ListaAzioni) :-
-    finale(Stato),
-    write(ListaAzioni),
+% inserisco in coda la nuova direzione e delle vecchie mantengo solo quelle 
+% che appartengono a stati di profondità inferiore a quella che sto inserendo
+sistema_azioni([Head|Tail], Direzione, 0, [Direzione|NewListaAzioni]):-
     !.
 
-% se non è lo stato finale espandi il nodo 
-% aumenta la profondita
-% valutiamo i nuovi nodi 
-% richiama astar
-valutazione_nodo(Stato, Aperti, Chiusi, Profondita, ListaAzioni) :-
-    %expand_node(+Stato, -ListNewNodes, -ListDirections),
-    %P2 is Profondita+1,
-    %scorri_nodi(+Aperti, +Chiusi, +ListNewNodes, +P2, +ListDirections, -NewAperti, -NewChiusi),
-    a_star(NewAperti, NewChiusi, P2, ListaAzioni). 
+sistema_azioni([Head|Tail], Direzione, P, [Head|NewListaAzioni]):-
+    P2 is P-1,
+    sistema_azioni(Tail, Direzione, P2, NewListaAzioni).
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -63,24 +70,24 @@ scorri_nodi(Aperti, Chiusi, [], Profondita, Direzioni, NewAperti, NewChiusi):-
 % calcola f(x)= g(x)+h(x) , ponendo g(x)= profondita
 % controlla il nuovo nodo
 % passa al nodo successivo
-scorri_nodi(Aperti, Chiusi, [Head|Tail], Profondita, [HeadD|TailD], NewAperti, NewChiusi):-
+scorri_nodi(Aperti, Chiusi, [Head|Tail], Profondita, NewAperti, NewChiusi):-
     heuristic(Head, Value),
     %F is Value+Profondita,
-    %controlla_presenza(Aperti, Chiusi, Profondita, F, Head, HeadD, TempAperti, TempChiusi),
-    scorri_nodi(TempAperti, TempChiusi, Tail, Profondita, TailD, NewAperti, NewChiusi).
+    %controlla_presenza(Aperti, Chiusi, Profondita, F, Head, TempAperti, TempChiusi),
+    scorri_nodi(TempAperti, TempChiusi, Tail, Profondita, NewAperti, NewChiusi).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % se il nodo lo abbiamo già trovato allora ci siamo già passati dunque 
 % se lo stato è tra i chiusi mettilo tra gli aperti
-controlla_presenza(Aperti, Chiusi, Profondita, F, Head,TempAperti, TempChiusi):-
+controlla_presenza(Aperti, Chiusi, Profondita, F, Stato , _, TempAperti, TempChiusi):-
     %s(Head, _ , _ , _),
     %aggiornaChiusi(Head, Aperti , Chiusi,TempAperti, TempChiusi)
     !.
 
 % se non è mai stato trovato allora salvalo nella conoscenza e nella lista di aperti
-controlla_presenza(Aperti, Chiusi, Profondita, F, Head, Direzione,[Head|Aperti] , _):-
+controlla_presenza(Aperti, Chiusi, Profondita, F, Stato, Direzione,[Head|Aperti] , _):-
     assertz(s(Head, Direzione, Profondita, F)).
 
 
