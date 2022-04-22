@@ -17,12 +17,12 @@ profondita(S,[Az|ListaAzioni], X, Y , Visitati):-
 % aggiungiamo lo stato iniziale alla nostra conoscenza
 % iniziamo astar 
 a_star_start(SIniziale,Percorso):- 
-    a_star([SIniziale] , [] , 0 , [], Percorso).
+    a_star([SIniziale] , [] , [], Percorso).
 
 
 
 % se lo stato scelto è il finale ritorniamo Percorso che avrà la lista corretta di tutti i movimenti
-a_star(Aperti, Chiusi, Profondita, ListaAzioni, Percorso) :- 
+a_star(Aperti, _, ListaAzioni, Percorso) :- 
     costo_minore(Aperti, Stato),
     finale(Stato),
     Percorso = ListaAzioni,
@@ -33,14 +33,14 @@ a_star(Aperti, Chiusi, Profondita, ListaAzioni, Percorso) :-
 %  rimuoviamo lo stato che abbiamo scelto tra gli aperti
 %  sistemiamo la lista di azioni se abbiamo saltato ad un nodo di profondità inferiore a dove siamo arrivati
 % valutiamo il nodo espandendolo e lavorando sui suoi figli
-a_star(Aperti, Chiusi, Profondita, ListaAzioni, Percorso) :- 
+a_star(Aperti, Chiusi, ListaAzioni, Percorso) :- 
     costo_minore(Aperti, Stato),
-    s(Stato, Direzione, _, _, _, _),
+    s(Stato, Direzione, Profondita , _, _, _),
     rimuovi_stato(Aperti, Stato, NewAperti),
     sistema_azioni(ListaAzioni, Direzione, Profondita, NewListaAzioni),
     P2 is Profondita+1,
     expand_node(Stato, Aperti, Chiusi, P2, NewAperti, NewChiusi),
-    a_star(NewAperti, [Stato|NewChiusi], P2, NewListaAzioni , Percorso).
+    a_star(NewAperti, [Stato|NewChiusi], NewListaAzioni , Percorso).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -53,7 +53,7 @@ expand_node(Stato, Aperti, Chiusi, Profondita, NewAperti, NewChiusi):-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-espandi(Stato, [], Profondita, NewNodes) :-
+espandi(_, [], _, _) :-
     !.
 
 % se è fattibile applica trasformazione
@@ -61,24 +61,25 @@ espandi(Stato, [Head|Tail], Profondita, [SNuovo|NewNodes]) :-
     s(Stato, _, Profondita, _, X, Y),
     applicabile(Head, X, Y),
     trasforma(Head,X, Y, Stato, X2, Y2, SNuovo),
-    crea_s(SNuovo, Head, Profondita, X, Y),
+    crea_s(SNuovo, Head, Profondita, X2, Y2),
     espandi(Stato, Tail, Profondita, NewNodes),
     !.
 
 % altrimenti  passa alla prossima azione 
-espandi(Stato, [Head|Tail], Profondita, NewNodes) :-
+espandi(Stato, [_|Tail], Profondita, NewNodes) :-
     espandi(Stato, Tail, Profondita, NewNodes).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% crea lo stato se non presente nel dominio
+% non creare lo stato se presente nel dominio
 crea_s(SNuovo, _, _, _, _) :-
     s(SNuovo, _, _, _, _, _),
     !.
 
-crea_s(SNuovo, Head, Profondita, X, Y) :-
+% crea lo stato se non presente nel dominio
+crea_s(SNuovo, Direzione, Profondita, X, Y) :-
     heuristic(SNuovo, Value),
     F is Value+Profondita,
-    assertz(s(SNuovo, Head, Profondita, F, X, Y)).
+    assertz(s(SNuovo, Direzione, Profondita, F, X, Y)).
 
 
 
@@ -86,7 +87,7 @@ crea_s(SNuovo, Head, Profondita, X, Y) :-
 
 % inserisco in coda la nuova direzione e delle vecchie mantengo solo quelle 
 % che appartengono a stati di profondità inferiore a quella che sto inserendo
-sistema_azioni([Head|Tail], Direzione, 0, [Direzione|NewListaAzioni]):-
+sistema_azioni(_, Direzione, 0, [Direzione|_]):-
     !.
 
 sistema_azioni([Head|Tail], Direzione, P, [Head|NewListaAzioni]):-
@@ -98,9 +99,7 @@ sistema_azioni([Head|Tail], Direzione, P, [Head|NewListaAzioni]):-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % se abbiamo scorso tutti i figli fermiamoci
-scorri_nodi([], Aperti, Chiusi, NewAperti, NewChiusi):-
-    NewChiusi is Chiusi,
-    NewAperti is Aperti,
+scorri_nodi([], Aperti, Chiusi, Aperti, Chiusi):-
     !.
 
 % controlla il nuovo nodo
@@ -126,7 +125,7 @@ aggiorna_liste(Stato, Aperti, Chiusi , [Stato|Aperti], NewChiusi):-
 
 
 %in tutti gli altri casi non fare nulla 
-aggiorna_liste(Stato, Aperti, Chiusi , Aperti, Chiusi).
+aggiorna_liste(_, Aperti, Chiusi , Aperti, Chiusi).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -142,7 +141,7 @@ find_costo_minore([], _, Temp, Stato):-
     !.
 
 
-find_costo_minore([Head|Tail], Value, Temp, Stato):-
+find_costo_minore([Head|Tail], Value, _, Stato):-
     s(Head,_,_,Costo, _,_),
     Costo<Value,
     find_costo_minore(Tail, Costo, Head, Stato),
@@ -156,7 +155,7 @@ find_costo_minore([Head|Tail], Value, Temp, Stato):-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-rimuovi_stato([], Stato, NewList).
+rimuovi_stato([], _, []).
 
 
 rimuovi_stato([Head|Tail], Stato, NewList) :-
