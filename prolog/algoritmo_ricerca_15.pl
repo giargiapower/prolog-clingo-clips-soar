@@ -53,12 +53,12 @@ expand_node(Stato, Aperti, Chiusi, Profondita, NewAperti, NewChiusi):-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-espandi(_, [], _, _) :-
+espandi(_, [], _, []) :-
     !.
 
 % se è fattibile applica trasformazione
 espandi(Stato, [Head|Tail], Profondita, [SNuovo|NewNodes]) :-
-    s(Stato, _, Profondita, _, X, Y),
+    s(Stato, _, _, _, X, Y),
     applicabile(Head, X, Y),
     trasforma(Head,X, Y, Stato, X2, Y2, SNuovo),
     crea_s(SNuovo, Head, Profondita, X2, Y2),
