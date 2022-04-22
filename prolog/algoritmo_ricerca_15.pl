@@ -17,15 +17,13 @@ profondita(S,[Az|ListaAzioni], X, Y , Visitati):-
 % aggiungiamo lo stato iniziale alla nostra conoscenza
 % iniziamo astar 
 a_star_start(SIniziale,Percorso):- 
-    assertz(s(SIniziale, start,  0, 0, 2, 2)),
     a_star([SIniziale] , [] , 0 , [], Percorso).
-
 
 
 
 % se lo stato scelto è il finale ritorniamo Percorso che avrà la lista corretta di tutti i movimenti
 a_star(Aperti, Chiusi, Profondita, ListaAzioni, Percorso) :- 
-    find_costo_minore(Aperti, Value, 1, _, Stato),
+    costo_minore(Aperti, Stato),
     finale(Stato),
     Percorso = ListaAzioni,
     !.
@@ -36,45 +34,51 @@ a_star(Aperti, Chiusi, Profondita, ListaAzioni, Percorso) :-
 %  sistemiamo la lista di azioni se abbiamo saltato ad un nodo di profondità inferiore a dove siamo arrivati
 % valutiamo il nodo espandendolo e lavorando sui suoi figli
 a_star(Aperti, Chiusi, Profondita, ListaAzioni, Percorso) :- 
-    find_costo_minore(Aperti, Value, 1, _, Stato),
+    costo_minore(Aperti, Stato),
     s(Stato, Direzione, _, _, _, _),
-    rimuovi_stato_aperto(Aperti, Stato, NewAperti),
+    rimuovi_stato(Aperti, Stato, NewAperti),
     sistema_azioni(ListaAzioni, Direzione, Profondita, NewListaAzioni),
     P2 is Profondita+1,
     expand_node(Stato, Aperti, Chiusi, P2, NewAperti, NewChiusi),
-    %scorri_nodi(+Aperti, +Chiusi, +ListNewNodes, +P2, -NewAperti, -NewChiusi),
-    a_star(NewAperti, NewChiusi, Profondita+1, NewListaAzioni , Percorso).
+    a_star(NewAperti, NewChiusi, P2, NewListaAzioni , Percorso).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 expand_node(Stato, Aperti, Chiusi, Profondita, NewAperti, NewChiusi):-
-    espandi(Stato, [nord, sud, est, ovest], NewNodes, Actions),
-
-    !.
+    espandi(Stato, [nord, sud, est, ovest], Profondita, NewNodes),
+    scorri_nodi(NewNodes, Aperti, Chiusi, NewAperti, NewChiusi).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-espandi(Stato, [], NewNodes, AzioniEseguite) :-
+espandi(Stato, [], Profondita, NewNodes) :-
     !.
 
 % se è fattibile applica trasformazione
-espandi(Stato, [Head|Tail], [SNuovo|NewNodes], [Head|AzioniEseguite]) :-
-    s(Stato, _, Profondita, _, X0, Y0),
-    %applicabile(Az, X, Y),
-    %trasforma(Az,X, Y, S, X2, Y2, SNuovo),
-    % crea s
-    % espandi(Stato, Tail, NewNodes, AzioniEseguite) 
+espandi(Stato, [Head|Tail], Profondita, [SNuovo|NewNodes]) :-
+    s(Stato, _, Profondita, _, X, Y),
+    applicabile(Head, X, Y),
+    trasforma(Head,X, Y, Stato, X2, Y2, SNuovo),
+    crea_s(SNuovo, Head, Profondita, X, Y),
+    espandi(Stato, Tail, Profondita, NewNodes),
     !.
 
 % altrimenti  passa alla prossima azione 
-espandi(Stato, [Head|Tail], NewNodes, AzioniEseguite) :-
-    espandi(Stato, Tail, NewNodes, AzioniEseguite),
-    %
-    % espandi(Stato, Tail, NewNodes, AzioniEseguite) 
+espandi(Stato, [Head|Tail], Profondita, NewNodes) :-
+    espandi(Stato, Tail, Profondita, NewNodes).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% crea lo stato se non presente nel dominio
+crea_s(SNuovo, _, _, _, _) :-
+    s(SNuovo, _, _, _, _, _),
     !.
+
+crea_s(SNuovo, Head, Profondita, X, Y) :-
+    heuristic(SNuovo, Value),
+    F is Value+Profondita,
+    assertz(s(SNuovo, Head, Profondita, F, X, Y)).
 
 
 
@@ -94,71 +98,73 @@ sistema_azioni([Head|Tail], Direzione, P, [Head|NewListaAzioni]):-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % se abbiamo scorso tutti i figli fermiamoci
-scorri_nodi(Aperti, Chiusi, [], Profondita, Direzioni, NewAperti, NewChiusi):-
+scorri_nodi([], Aperti, Chiusi, NewAperti, NewChiusi):-
     NewChiusi is Chiusi,
     NewAperti is Aperti,
     !.
 
-% calcola f(x)= g(x)+h(x) , ponendo g(x)= profondita
 % controlla il nuovo nodo
 % passa al nodo successivo
-scorri_nodi(Aperti, Chiusi, [Head|Tail], Profondita, NewAperti, NewChiusi):-
-    heuristic(Head, Value),
-    %F is Value+Profondita,
-    %controlla_presenza(Aperti, Chiusi, Profondita, F, Head, TempAperti, TempChiusi),
-    scorri_nodi(TempAperti, TempChiusi, Tail, Profondita, NewAperti, NewChiusi).
+scorri_nodi([Head|Tail], Aperti, Chiusi, NewAperti, NewChiusi):-
+    aggiorna_liste(Head , Aperti, Chiusi, TempAperti, TempChiusi),
+    scorri_nodi(Tail, TempAperti, TempChiusi, NewAperti, NewChiusi).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% se il nodo lo abbiamo già trovato allora ci siamo già passati dunque 
-% se lo stato è tra i chiusi mettilo tra gli aperti
-controlla_presenza(Aperti, Chiusi, Profondita, F, Stato , _, TempAperti, TempChiusi):-
-    %s(Head, _ , _ , _),
-    %aggiornaChiusi(Head, Aperti , Chiusi,TempAperti, TempChiusi)
+% se lo stato non è ne tra gli aperti ne tra i chiusi aggiungilo agli aperti
+aggiorna_liste(Stato, Aperti, Chiusi , [Stato|Aperti], Chiusi):-
+    \+member(Stato,Aperti),
+    \+member(Stato,Chiusi),
     !.
 
-% se non è mai stato trovato allora salvalo nella conoscenza e nella lista di aperti
-controlla_presenza(Aperti, Chiusi, Profondita, F, Stato, Direzione,[Head|Aperti] , _):-
-    assertz(s(Head, Direzione, Profondita, F)).
+%se è tra i chiusi mettilo negli aperti
+aggiorna_liste(Stato, Aperti, Chiusi , [Stato|Aperti], NewChiusi):-
+    member(Stato,Chiusi),
+    rimuovi_stato(Chiusi, Stato, NewChiusi),
+    !.
+
+
+%in tutti gli altri casi non fare nulla 
+aggiorna_liste(Stato, Aperti, Chiusi , Aperti, Chiusi).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-find_costo_minore([], _, _, Temp, Stato):-
-    Stato = Temp.
+%s(Stato, Direzione, Profondità, Costo, X0, Y0)
 
-
-find_costo_minore([Head|Tail], Value, Flag, Temp, Stato):-
-    Flag ==1,
-    s(Head,_,_,Costo),
-    find_costo_minore(Tail, Costo, 0, Head, Stato),
+costo_minore([Head|Tail], Stato) :-
+    s(Head,_,_,Costo, _,_),
+    find_costo_minore(Tail, Costo, Head, Stato),
     !.
 
-find_costo_minore([Head|Tail], Value, Flag, Temp, Stato):-
-    Flag ==0,
-    s(Head,_,_,Costo),
+find_costo_minore([], _, Temp, Stato):-
+    Stato = Temp, 
+    !.
+
+
+find_costo_minore([Head|Tail], Value, Temp, Stato):-
+    s(Head,_,_,Costo, _,_),
     Costo<Value,
-    find_costo_minore(Tail, Costo, 0, Head, Stato),
+    find_costo_minore(Tail, Costo, Head, Stato),
     !.
 
-find_costo_minore([Head|Tail], Value, Flag, Temp, Stato):-
-    Flag ==0,
-    s(Head,_,_,Costo),
+find_costo_minore([Head|Tail], Value, Temp, Stato):-
+    s(Head,_,_,Costo, _,_),
     Costo>=Value,
-    find_costo_minore(Tail, Value, 0, Temp, Stato),
+    find_costo_minore(Tail, Value, Temp, Stato),
     !.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
-rimuovi_stato_aperto([Head|Tail], Stato, NewAperti) :-
+rimuovi_stato([Head|Tail], Stato, NewList) :-
     Stato==Head,
-    rimuovi_stato_aperto(Tail, Stato, NewAperti),
+    rimuovi_stato(Tail, Stato, NewList),
     !.
 
-rimuovi_stato_aperto([Head|Tail], Stato, [Head|NewAperti]) :-
-    rimuovi_stato_aperto(Tail, Stato, NewAperti).
+rimuovi_stato([Head|Tail], Stato, [Head|NewList]) :-
+    rimuovi_stato(Tail, Stato, NewList).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
