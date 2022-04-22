@@ -40,7 +40,7 @@ a_star(Aperti, Chiusi, Profondita, ListaAzioni, Percorso) :-
     sistema_azioni(ListaAzioni, Direzione, Profondita, NewListaAzioni),
     P2 is Profondita+1,
     expand_node(Stato, Aperti, Chiusi, P2, NewAperti, NewChiusi),
-    a_star(NewAperti, NewChiusi, P2, NewListaAzioni , Percorso).
+    a_star(NewAperti, [Stato|NewChiusi], P2, NewListaAzioni , Percorso).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -156,6 +156,7 @@ find_costo_minore([Head|Tail], Value, Temp, Stato):-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+rimuovi_stato([], Stato, NewList).
 
 
 rimuovi_stato([Head|Tail], Stato, NewList) :-
