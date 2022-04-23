@@ -18,12 +18,12 @@ profondita(S,[Az|ListaAzioni], X, Y , Visitati):-
 % iniziamo astar 
 a_star_start(Percorso):- 
     iniziale(SIniziale),
-    a_star([SIniziale] , [] ,  Percorso).
+    a_star([SIniziale] ,  Percorso).
 
 
 
 % se lo stato scelto è il finale ritorniamo Percorso che avrà la lista corretta di tutti i movimenti
-a_star([Head|_], _, Percorso) :- 
+a_star([Head|_], Percorso) :- 
     %costo_minore(Aperti, Stato),
     finale(Head),
     s(Head, Direzioni , _ , _ , _ , _),
@@ -35,21 +35,21 @@ a_star([Head|_], _, Percorso) :-
 %  rimuoviamo lo stato che abbiamo scelto tra gli aperti
 %  sistemiamo la lista di azioni se abbiamo saltato ad un nodo di profondità inferiore a dove siamo arrivati
 % valutiamo il nodo espandendolo e lavorando sui suoi figli
-a_star([Head|Tail], Chiusi, Percorso) :- 
+a_star([Head|Tail], Percorso) :- 
     %costo_minore(Aperti, Stato),
     s(Head, _, _ , _, _, _),
     %delete(Aperti, Stato, NewAperti),
-    espandi(Stato, [nord, sud, est, ovest], NewNodes),
-    scorri_nodi(NewNodes, Tail, Chiusi, UAperti, UChiusi),
-    a_star(UAperti, [Stato|UChiusi], Percorso).
+    espandi(Head, [nord, sud, est, ovest], NewNodes),
+    scorri_nodi(NewNodes, Tail, UAperti),
+    a_star(UAperti, Percorso).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-expand_node(Stato, Aperti, Chiusi, NewAperti, NewChiusi):-
-    espandi(Stato, [nord, sud, est, ovest], NewNodes),
-    scorri_nodi(NewNodes, Aperti, Chiusi, NewAperti, NewChiusi).
+%expand_node(Stato, Aperti, Chiusi, NewAperti, NewChiusi):-
+%    espandi(Stato, [nord, sud, est, ovest], NewNodes),
+%    scorri_nodi(NewNodes, Aperti, Chiusi, NewAperti, NewChiusi).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -88,28 +88,20 @@ crea_s(SNuovo, Direzioni, Profondita, X, Y) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % se abbiamo scorso tutti i figli fermiamoci
-scorri_nodi([], Aperti, Chiusi, Aperti, Chiusi):-
+scorri_nodi([], Aperti, Aperti):-
     !.
 
 % controlla il nuovo nodo
 % passa al nodo successivo
-scorri_nodi([Head|Tail], Aperti, Chiusi, NewAperti, NewChiusi):-
+scorri_nodi([Head|Tail], Aperti, NewAperti):-
     %aggiorna_liste(Head , Aperti, Chiusi, TempAperti, TempChiusi),
     \+member(Head,Aperti),
-    \+member(Head,Chiusi),
     sorted_insert(Head , Aperti, [], TempAperti),
-    scorri_nodi(Tail, TempAperti, Chiusi, NewAperti, NewChiusi),
+    scorri_nodi(Tail, TempAperti, NewAperti),
     !.
 
-scorri_nodi([Head|Tail], Aperti, Chiusi, NewAperti, NewChiusi):-
-    member(Head,Chiusi),
-    delete(Chiusi, Head, TempChiusi),
-    sorted_insert(Head , Aperti, [], TempAperti),
-    scorri_nodi(Tail, TempAperti, TempChiusi, NewAperti, NewChiusi),
-    !.
-
-scorri_nodi([_|Tail], Aperti, Chiusi, NewAperti, NewChiusi):-
-    scorri_nodi(Tail, Aperti, Chiusi, NewAperti, NewChiusi).
+scorri_nodi([_|Tail], Aperti, NewAperti):-
+    scorri_nodi(Tail, Aperti, NewAperti).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
