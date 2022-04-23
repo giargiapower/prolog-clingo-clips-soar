@@ -1,5 +1,5 @@
 %applicabile(AZ,S)
-    applicabile(nord, Riga, _):-
+applicabile(nord, Riga, _):-
     %pos(Riga, _),
     Riga>0.
     
