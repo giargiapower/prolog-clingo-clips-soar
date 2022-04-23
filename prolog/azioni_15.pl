@@ -85,7 +85,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    %SUD 
    trasforma(sud, X, Y, Lista, X2, Y2, Next_Lista) :- 
-    
     %pos(X, Y), 
    num_col(NC), 
    C is (NC*(X+1) + mod(Y, NC)), 

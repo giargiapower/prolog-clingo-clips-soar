@@ -16,16 +16,18 @@ profondita(S,[Az|ListaAzioni], X, Y , Visitati):-
 %struttura : s(Stato, Direzione, Profondità, Costo, X0, Y0) ci serve per capire se siamo già passati per quello stato
 % aggiungiamo lo stato iniziale alla nostra conoscenza
 % iniziamo astar 
-a_star_start(SIniziale,Percorso):- 
-    a_star([SIniziale] , [] , [], Percorso).
+a_star_start(Percorso):- 
+    iniziale(SIniziale),
+    a_star([SIniziale] , [] ,  Percorso).
 
 
 
 % se lo stato scelto è il finale ritorniamo Percorso che avrà la lista corretta di tutti i movimenti
-a_star(Aperti, _, ListaAzioni, Percorso) :- 
-    costo_minore(Aperti, Stato),
-    finale(Stato),
-    Percorso = ListaAzioni,
+a_star([Head|_], _, Percorso) :- 
+    %costo_minore(Aperti, Stato),
+    finale(Head),
+    s(Head, Direzioni , _ , _ , _ , _),
+    Percorso = Direzioni,
     !.
 
 %cerchiamo il costo minore tra gli aperti
@@ -33,41 +35,41 @@ a_star(Aperti, _, ListaAzioni, Percorso) :-
 %  rimuoviamo lo stato che abbiamo scelto tra gli aperti
 %  sistemiamo la lista di azioni se abbiamo saltato ad un nodo di profondità inferiore a dove siamo arrivati
 % valutiamo il nodo espandendolo e lavorando sui suoi figli
-a_star(Aperti, Chiusi, ListaAzioni, Percorso) :- 
-    costo_minore(Aperti, Stato),
-    s(Stato, Direzione, Profondita , _, _, _),
-    rimuovi_stato(Aperti, Stato, NewAperti),
-    sistema_azioni(ListaAzioni, Direzione, Profondita, NewListaAzioni),
-    P2 is Profondita+1,
-    expand_node(Stato, Aperti, Chiusi, P2, NewAperti, NewChiusi),
-    a_star(NewAperti, [Stato|NewChiusi], NewListaAzioni , Percorso).
+a_star([Head|Tail], Chiusi, Percorso) :- 
+    %costo_minore(Aperti, Stato),
+    s(Head, _, _ , _, _, _),
+    %delete(Aperti, Stato, NewAperti),
+    espandi(Stato, [nord, sud, est, ovest], NewNodes),
+    scorri_nodi(NewNodes, Tail, Chiusi, UAperti, UChiusi),
+    a_star(UAperti, [Stato|UChiusi], Percorso).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-expand_node(Stato, Aperti, Chiusi, Profondita, NewAperti, NewChiusi):-
-    espandi(Stato, [nord, sud, est, ovest], Profondita, NewNodes),
+expand_node(Stato, Aperti, Chiusi, NewAperti, NewChiusi):-
+    espandi(Stato, [nord, sud, est, ovest], NewNodes),
     scorri_nodi(NewNodes, Aperti, Chiusi, NewAperti, NewChiusi).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-espandi(_, [], _, []) :-
+espandi(_, [], []) :-
     !.
 
 % se è fattibile applica trasformazione
-espandi(Stato, [Head|Tail], Profondita, [SNuovo|NewNodes]) :-
-    s(Stato, _, _, _, X, Y),
+espandi(Stato, [Head|Tail], [SNuovo|NewNodes]) :-
+    s(Stato, Lista_Direzioni, Profondita, _, X, Y),
     applicabile(Head, X, Y),
     trasforma(Head,X, Y, Stato, X2, Y2, SNuovo),
-    crea_s(SNuovo, Head, Profondita, X2, Y2),
-    espandi(Stato, Tail, Profondita, NewNodes),
+    P is Profondita+1,
+    crea_s(SNuovo, [Head|Lista_Direzioni], P, X2, Y2),
+    espandi(Stato, Tail, NewNodes),
     !.
 
 % altrimenti  passa alla prossima azione 
-espandi(Stato, [_|Tail], Profondita, NewNodes) :-
-    espandi(Stato, Tail, Profondita, NewNodes).
+espandi(Stato, [_|Tail], NewNodes) :-
+    espandi(Stato, Tail, NewNodes).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % non creare lo stato se presente nel dominio
@@ -76,23 +78,10 @@ crea_s(SNuovo, _, _, _, _) :-
     !.
 
 % crea lo stato se non presente nel dominio
-crea_s(SNuovo, Direzione, Profondita, X, Y) :-
+crea_s(SNuovo, Direzioni, Profondita, X, Y) :-
     heuristic(SNuovo, Value),
     F is Value+Profondita,
-    assertz(s(SNuovo, Direzione, Profondita, F, X, Y)).
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% inserisco in coda la nuova direzione e delle vecchie mantengo solo quelle 
-% che appartengono a stati di profondità inferiore a quella che sto inserendo
-sistema_azioni(_, Direzione, 0, [Direzione|_]):-
-    !.
-
-sistema_azioni([Head|Tail], Direzione, P, [Head|NewListaAzioni]):-
-    P2 is P-1,
-    sistema_azioni(Tail, Direzione, P2, NewListaAzioni).
+    assertz(s(SNuovo, Direzioni, Profondita, F, X, Y)).
 
 
 
@@ -105,11 +94,45 @@ scorri_nodi([], Aperti, Chiusi, Aperti, Chiusi):-
 % controlla il nuovo nodo
 % passa al nodo successivo
 scorri_nodi([Head|Tail], Aperti, Chiusi, NewAperti, NewChiusi):-
-    aggiorna_liste(Head , Aperti, Chiusi, TempAperti, TempChiusi),
-    scorri_nodi(Tail, TempAperti, TempChiusi, NewAperti, NewChiusi).
+    %aggiorna_liste(Head , Aperti, Chiusi, TempAperti, TempChiusi),
+    \+member(Head,Aperti),
+    \+member(Head,Chiusi),
+    sorted_insert(Head , Aperti, [], TempAperti),
+    scorri_nodi(Tail, TempAperti, Chiusi, NewAperti, NewChiusi),
+    !.
 
+scorri_nodi([Head|Tail], Aperti, Chiusi, NewAperti, NewChiusi):-
+    member(Head,Chiusi),
+    delete(Chiusi, Head, TempChiusi),
+    sorted_insert(Head , Aperti, [], TempAperti),
+    scorri_nodi(Tail, TempAperti, TempChiusi, NewAperti, NewChiusi),
+    !.
+
+scorri_nodi([_|Tail], Aperti, Chiusi, NewAperti, NewChiusi):-
+    scorri_nodi(Tail, Aperti, Chiusi, NewAperti, NewChiusi).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+sorted_insert(Stato , [] , Minori, TempAperti) :-
+    append([Minori, [Stato]], TempAperti),
+    !.
+    
+
+sorted_insert(Stato , [Head|Tail] , Minori, TempAperti) :- 
+        s(Stato , _ , _ , Costo, _ , _),
+        s(Head , _ , _ , Costo2, _ , _),
+        Costo=<Costo2,
+        append([Minori, [Stato], [Head], Tail], TempAperti),
+        !.
+
+sorted_insert(Stato , [Head|Tail] , Minori, TempAperti) :-
+        append([Minori, [Head]], Temp) ,
+        sorted_insert(Stato , Tail , Temp, TempAperti) .
+        
+
+
+
 
 % se lo stato non è ne tra gli aperti ne tra i chiusi aggiungilo agli aperti
 aggiorna_liste(Stato, Aperti, Chiusi , [Stato|Aperti], Chiusi):-
@@ -203,17 +226,20 @@ find_value([_|Tail], C , Value):-
     find_value(Tail, K , Value).
 
 calcola_h(0, C, Res) :-
-    X1 is 3,
-    Y1 is 3,
-    X2 is floor(C/4),
-    Y2 is mod(C, 4),
+    num_col(Col),
+    L is  Col-1,
+    X1 is L,
+    Y1 is L,
+    X2 is floor(C/Col),
+    Y2 is mod(C, Col),
     Res is abs(X1-X2)+abs(Y1-Y2),
     !.
 
 calcola_h(Value, C, Res) :-
+    num_col(Col),
     K is Value-1,
-    X1 is floor(K/4),
-    Y1 is mod(K, 4),
-    X2 is floor(C/4),
-    Y2 is mod(C, 4),
+    X1 is floor(K/Col),
+    Y1 is mod(K, Col),
+    X2 is floor(C/Col),
+    Y2 is mod(C, Col),
     Res is abs(X1-X2)+abs(Y1-Y2).
