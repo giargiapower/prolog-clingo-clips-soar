@@ -77,7 +77,10 @@ applicabile(nord, Riga, _):-
    cerca_valore(Lista, C, Value),
    X2 is X-1, 
    Y2 is Y,
-   scorri(Lista, Value, Next_Lista).
+   select(Value, Lista, 0, Temp), 
+   select(0 , Temp, Value , Next_Lista),
+   \+(Next_Lista = Lista).
+   %scorri(Lista, Value, Next_Lista).
    %update_nord(X, Y).
 
 
@@ -92,7 +95,10 @@ applicabile(nord, Riga, _):-
    cerca_valore(Lista, C, Value),
    X2 is X+1, 
    Y2 is Y,
-   scorri(Lista, Value, Next_Lista).
+  %scorri(Lista, Value, Next_Lista).
+  select(Value, Lista, 0, Temp), 
+  select(0 , Temp, Value , Next_Lista),
+  \+(Next_Lista = Lista).
    %update_sud(X, Y).
 
 
@@ -106,7 +112,10 @@ applicabile(nord, Riga, _):-
         cerca_valore(Lista, C, Value),
         X2 is X, 
         Y2 is Y-1,
-        scorri(Lista, Value, Next_Lista).
+        %scorri(Lista, Value, Next_Lista).
+        select(Value, Lista, 0, Temp), 
+        select(0 , Temp, Value , Next_Lista),
+         \+(Next_Lista = Lista).
        % update_ovest(X, Y).
     
 
@@ -121,9 +130,10 @@ applicabile(nord, Riga, _):-
         cerca_valore(Lista, C, Value),
         X2 is X, 
         Y2 is Y+1,
-        scorri(Lista, Value, Next_Lista).
-        
+        %scorri(Lista, Value, Next_Lista).
+        select(Value, Lista, 0, Temp), 
+        select(0 , Temp, Value , Next_Lista),
+        \+(Next_Lista = Lista).
        % update_est(X, Y).
     
-
 
