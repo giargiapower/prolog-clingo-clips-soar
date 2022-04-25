@@ -30,15 +30,19 @@ offreStruttura(firenze,comunale).
 %per ogni squadra assegno lo stadio di appartenenza della sua città
 1 {assegna(Team,Stadio):squadra(Team)} 1:-haCitta(Team,Citta),offreStruttura(Citta,Stadio).
 
+%assegno per ogni squadra una giornata
+1 {assegna(Team,Stadio):andata(N),offreStruttura(Citta,Stadio)} 1 :-squadra(Team).
 
 %creazione delle partite formate da due squadre, suddivise nelle diverse giornate (non funziona come dovrebbe)
-2 { partita(Team1, Team2, N): assegna(Team1, Stadio), assegna(Team2, Stadio), Team1 <> Team2 } 2 :- andata(N).
+2 { partita(Team1, Team2, N): assegna(Team1, Stadio1), assegna(Team2, Stadio2), Team1 != Team2, Stadio1 != Stadio2 } 2 :- andata(N).
 
+% non possono esistere due partite uguali in giornate diverse
+:- partita(S1, S2, N1), partita(S1, S2, N2), N1 != N2.
 
 % Esperimenti che ho provato a fare per i vincoli sulle partite al momento sono commentati
 
 % due squadre della stessa città non possono giocare entrambe in casa durante la medesima giornata
-%:- partita(Team1, Team2, N), haCitta(Team1, C), haCitta(Team2, C), Team1 != Team2.
+:- partita(Team1, Team2, N), haCitta(Team1, C), haCitta(Team2, C), Team1 != Team2.
  
 %:- partita(Team1, Team2, N, and), partita(S3, S4, N, rit),
    %haCitta(S1, C), haCitta(S3, C),
