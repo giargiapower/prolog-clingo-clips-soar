@@ -33,7 +33,7 @@ offreStruttura(firenze,comunale).
 %assegno per ogni squadra una giornata
 1 {assegna(Team,Stadio):andata(N),offreStruttura(Citta,Stadio)} 1 :-squadra(Team).
 
-%creazione delle partite formate da due squadre, suddivise nelle diverse giornate (non funziona come dovrebbe)
+%creazione delle partite formate da due squadre, suddivise nelle diverse giornate
 2 { partita(Team1, Team2, N): assegna(Team1, Stadio1), assegna(Team2, Stadio2), Team1 != Team2, Stadio1 != Stadio2 } 2 :- andata(N).
 
 % non possono esistere due partite uguali in giornate diverse
