@@ -174,14 +174,15 @@ find_value([_|Tail], C , Value):-
     K is C-1,
     find_value(Tail, K , Value).
 
-calcola_h(0, C, Res) :-
-    num_col(Col),
-    L is  Col-1,
-    X1 is L,
-    Y1 is L,
-    X2 is floor(C/Col),
-    Y2 is mod(C, Col),
-    Res is abs(X1-X2)+abs(Y1-Y2),
+calcola_h(0, _, Res) :-
+    %num_col(Col),
+    %L is  Col-1,
+    %X1 is L,
+    %Y1 is L,
+    %X2 is floor(C/Col),
+    %Y2 is mod(C, Col),
+    %Res is abs(X1-X2)+abs(Y1-Y2),
+    Res is 0,
     !.
 
 calcola_h(Value, C, Res) :-
