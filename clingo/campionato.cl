@@ -3,6 +3,7 @@ squadra(inter;juventus;roma;lazio;milan;genoa;sassuolo;torino;fiorentina;sampdor
 andata(1..19).
 ritorno(1..10).
 giornate(1..38).
+derby(1..3).
 
 haCitta(inter,milano).
 haCitta(juventus,torino).
@@ -33,25 +34,33 @@ offreStruttura(firenze,comunale).
 %assegno per ogni squadra una giornata
 1 {assegna(Team,Stadio):andata(N),offreStruttura(Citta,Stadio)} 1 :-squadra(Team).
 
-%creazione delle partite formate da due squadre, suddivise nelle diverse giornate
-2 { partita(Team1, Team2, N): assegna(Team1, Stadio1), assegna(Team2, Stadio2), Team1 != Team2, Stadio1 != Stadio2 } 2 :- andata(N).
+%creazione delle partite formate da due squadre, suddivise nelle diverse giornate (non funziona come dovrebbe)
+1 { partita(Team1, Team2, N): assegna(Team1, Stadio1), assegna(Team2, Stadio2), Team1 != Team2, Stadio1 != Stadio2 } 1 :- andata(N).
+
+%elimina gli assegnamenti in partite in cui vi è una squadra in comune nella stessa giornata
+:- partita(Team1, Team2, N), partita(Team1, Team4, N), Team2 != Team4.
+:- partita(Team1, Team2, N), partita(Team3, Team1, N), Team2 != Team3.
+:- partita(Team1, Team2, N), partita(Team2, Team4, N), Team1 != Team4.
+:- partita(Team1, Team2, N), partita(Team3, Team2, N), Team1 != Team3.
+:- partita(Team1, Team2, N), partita(Team2, Team1, N).
 
 % non possono esistere due partite uguali in giornate diverse
-:- partita(S1, S2, N1), partita(S1, S2, N2), N1 != N2.
-
-% Esperimenti che ho provato a fare per i vincoli sulle partite al momento sono commentati
+:- partita(Team1, Team2, N1), partita(Team1, Team2, N2), N1 != N2.
 
 % due squadre della stessa città non possono giocare entrambe in casa durante la medesima giornata
 :- partita(Team1, Team2, N), haCitta(Team1, C), haCitta(Team2, C), Team1 != Team2.
  
-%:- partita(Team1, Team2, N, and), partita(S3, S4, N, rit),
-   %haCitta(S1, C), haCitta(S3, C),
-   %S1 != S3.
+1 {derby(Team1,Team2,N): assegna(Team1, Stadio1), assegna(Team2, Stadio2), Team1 <> Team2, Stadio1==Stadio2} 1  :- derby(N).
 
-
-
+%elimina gli assegnamenti in partite in cui vi è una squadra in comune nello stesso derby
+:- derby(Team1, Team2, N), derby(Team1, Team4, N), Team2 != Team4.
+:- derby(Team1, Team2, N), derby(Team3, Team1, N), Team2 != Team3.
+:- derby(Team1, Team2, N), derby(Team2, Team4, N), Team1 != Team4.
+:- derby(Team1, Team2, N), derby(Team3, Team2, N), Team1 != Team3.
+:- derby(Team1, Team2, N), derby(Team2, Team1, N).
 
 
 %#show assegna/2.
 #show partita/3.
+#show derby/3.
 
