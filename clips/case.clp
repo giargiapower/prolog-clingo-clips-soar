@@ -66,13 +66,13 @@
                       (value (ask-question ?the-question ?valid-answers)))))
 
 
-;;*******************
-;;* WINEX QUESTIONS *
-;;*******************
+;;***********************
+;;* FIRST-USER-QUESTIONS  *
+;;***********************
 
-(defmodule WINE-QUESTIONS (import QUESTIONS ?ALL))
+(defmodule FIRST-USER-QUESTIONS (import QUESTIONS ?ALL))
 
-(deffacts WINE-QUESTIONS::question-attributes
+(deffacts FIRST-USER-QUESTIONS::question-attributes
   (question (attribute figli)
             (the-question "hai dei figli: si o no? ")
             (valid-answers si no))
