@@ -52,11 +52,14 @@
    (slot the-question (default ?NONE))
    (multislot valid-answers (default ?NONE))
    (slot already-asked (default FALSE))
-   (multislot precursors (default ?DERIVE)))
+   (slot precursors-name )
+   (slot precursors-answer))
+   
    
 (defrule QUESTIONS::ask-a-question
    ?f <- (question (already-asked FALSE)
-                   (precursors)
+                   (precursors-name nil)
+                   (precursors-answer nil)
                    (the-question ?the-question)
                    (attribute ?the-attribute)
                    (valid-answers $?valid-answers))
@@ -64,6 +67,22 @@
    (modify ?f (already-asked TRUE))
    (assert (attribute (name ?the-attribute)
                       (value (ask-question ?the-question ?valid-answers)))))
+
+  ;; se è presente un attribute il cui la cui risposta è il precursore di una question fai la question
+  
+(defrule QUESTIONS::precursor-is-ok
+   ?f <- (question  (already-asked FALSE)
+                   (precursors-name ?prec)
+                   (precursors-answer ?preca)
+                   (the-question ?the-question)
+                   (attribute ?the-attribute)
+                   (valid-answers $?valid-answers))
+         (attribute (name ?prec) (value ?preca))
+   =>
+   (modify ?f (already-asked TRUE))
+   (assert (attribute (name ?the-attribute)
+                      (value (ask-question ?the-question ?valid-answers)))))
+
 
 
 ;;***********************
@@ -77,7 +96,8 @@
             (the-question "hai dei figli: si o no? ")
             (valid-answers si no))
   (question (attribute eta_figli)
-            (precursors figli is si)
+            (precursors-name figli)
+            (precursors-answer si)
             (the-question "sono figli grandi o piccoli? ")
             (valid-answers grandi piccoli))
   (question (attribute mezzi)
@@ -86,7 +106,7 @@
   (question (attribute dim_citta)
             (the-question "preferisci citta grandi o piccole? ")
             (valid-answers grandi , piccole)))
- 
+
 
 ;;******************
 ;; The HOUSES module
@@ -98,14 +118,14 @@
 (deffacts any-attributes
   (attribute (name migliore-citta) (value any))
   (attribute (name migliore-zona) (value any))
-  (attribute (name migliore-quartiere) (value any)))
+  (attribute (name migliore-quartiere) (value any))
   (attribute (name migliore-prezzo) (value any))
 )
 
 (deftemplate HOUSES::house
   (slot citta (default any))
   (slot zona (default any))
-  (slot quartiere (default any)))
+  (slot quartiere (default any))
   (multislot numServizi (type INTEGER))
   (multislot numVani (type INTEGER))
   (multislot numPiano (type INTEGER))
@@ -120,6 +140,8 @@
 )
 
 
+
+ 
 ;;******************
 ;; The RULES module
 ;;******************
@@ -136,6 +158,3 @@
                             (import MAIN ?ALL))
 
 (defrule CHOOSE-QUALITIES::startit => (focus RULES))
-
-
-
