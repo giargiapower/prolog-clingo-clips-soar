@@ -87,6 +87,39 @@
             (the-question "preferisci citta grandi o piccole? ")
             (valid-answers grandi , piccole)))
  
+
+;;******************
+;; The HOUSES module
+;;******************
+
+
+(defmodule HOUSE (import MAIN ?ALL))
+
+(deffacts any-attributes
+  (attribute (name migliore-citta) (value any))
+  (attribute (name migliore-zona) (value any))
+  (attribute (name migliore-quartiere) (value any)))
+  (attribute (name migliore-prezzo) (value any))
+)
+
+(deftemplate HOUSES::house
+  (slot citta (default any))
+  (slot zona (default any))
+  (slot quartiere (default any)))
+  (multislot numServizi (type INTEGER))
+  (multislot numVani (type INTEGER))
+  (multislot numPiano (type INTEGER))
+  (multislot prezzo (type INTEGER))
+  (multislot terrazzino (type SYMBOL) (allowed-symbols si no))
+  (multislot boxAuto (default any))
+)
+
+(deffacts HOUSES::house-list 
+  (house (citta torino) (zona centro) (quartiere crocetta) (numServizi 1) (numVani 3) (numPiano 2) (prezzo 80.000) (terrazzino si) (boxAuto 15 mq))
+  (house (citta torino) (zona centro) (quartiere vanchiglia) (numServizi 2) (numVani 5) (numPiano 5) (prezzo 180.000) (terrazzino si) (boxAuto no))
+)
+
+
 ;;******************
 ;; The RULES module
 ;;******************
