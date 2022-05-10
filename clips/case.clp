@@ -126,17 +126,17 @@
   (slot citta (default any))
   (slot zona (default any))
   (slot quartiere (default any))
-  (multislot numServizi (type INTEGER))
-  (multislot numVani (type INTEGER))
-  (multislot numPiano (type INTEGER))
-  (multislot prezzo (type INTEGER))
-  (multislot terrazzino (type SYMBOL) (allowed-symbols si no))
-  (multislot boxAuto (default any))
+  (slot numServizi (type INTEGER))
+  (slot numVani (type INTEGER))
+  (slot numPiano (type INTEGER))
+  (slot prezzo (type INTEGER))
+  (slot terrazzino (type SYMBOL) (allowed-symbols si no))
+  (slot boxAuto)
 )
 
 (deffacts HOUSES::house-list 
-  (house (citta torino) (zona centro) (quartiere crocetta) (numServizi 1) (numVani 3) (numPiano 2) (prezzo 80000) (terrazzino si) (boxAuto 15 mq))
-  (house (citta torino) (zona centro) (quartiere vanchiglia) (numServizi 2) (numVani 5) (numPiano 5) (prezzo 180000) (terrazzino si) (boxAuto 12 mq))
+  (house (citta torino) (zona centro) (quartiere crocetta) (numServizi 1) (numVani 3) (numPiano 2) (prezzo 80) (terrazzino si) (boxAuto 15))
+  (house (citta torino) (zona centro) (quartiere vanchiglia) (numServizi 2) (numVani 5) (numPiano 5) (prezzo 180) (terrazzino si))
 )
 
 
