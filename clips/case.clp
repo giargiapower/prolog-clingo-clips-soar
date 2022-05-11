@@ -124,7 +124,15 @@
   (attribute (name migliore-citta) (value any))
   (attribute (name migliore-zona) (value any))
   (attribute (name migliore-quartiere) (value any))
+  (attribute (name minBagni) (value any))
+  (attribute (name minVani) (value any))
+  (attribute (name minPiano) (value any))
   (attribute (name migliore-prezzo) (value any))
+  (attribute (name terrazzino) (value any))
+  (attribute (name boxAuto) (value any)) 
+  (attribute (name metropolitana) (value any))
+  (attribute (name scuole) (value any))
+  (attribute (name supermercati) (value any))
 )
 
 (deftemplate HOUSES::house
