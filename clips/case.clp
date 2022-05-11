@@ -154,6 +154,23 @@
   (house (citta torino) (zona centro) (quartiere vanchiglia) (numBagni 2) (numVani 5) (numPiano 5) (prezzo 180) (terrazzino si))
 )
 
+(defrule HOUSES::generate-house
+  (house (citta ?c)
+        (zona  ?z )
+        (quartiere ?q )
+        (prezzo ?p )
+        (numBagni ?nB )
+        (numVani ?nV )
+        (numPiano ?nP )
+        (terrazzino ?t ))
+  (attribute (name migliore-zona) (value ?z) (certainty ?certainty-1))
+  (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
+  (attribute (name migliore-prezzo) (value ?p) (certainty ?certainty-3))
+  =>
+  (assert (attribute (name house) (value ?c) 
+                     (certainty (min ?certainty-1 ?certainty-2 ?certainty-3)))))
+
+
 
 
  
@@ -185,3 +202,20 @@
                             (import MAIN ?ALL))
 
 (defrule CHOOSE-QUALITIES::startit => (focus RULES))
+
+
+;; regole per la profilazione utente
+
+;;(rule (question figli is si)
+      ;;(answer migliore-quartiere is crocetta with certainty 70))
+
+;;(rule (question figli is si and
+                ;;eta_figli is grandi)
+      ;;(answer migliore-quartiere is vanchiglia with certainty 80))
+
+;;(rule (question figli is no)
+      ;;(answer migliore-quartiere is crocetta with certainty 40 and
+              ;;migliore-zona is centro with certainty 60 and
+              ;;migliore-citta is torino with certainty 30 and
+              ;;migliore-prezzo is 80 with certainty 70))
+;;)
