@@ -1,3 +1,6 @@
+;; QUANTI MODULI USARE 
+;; DOMANDE_GENERICHE, RULES , PRINTA PRIME PROPOSTE , DEOMANDE_2 , RULES, PRINT_2, RICHIEDI_DOMANDA(DA MAIN?), CONTROLLO_UNKOWN, RULES
+
 (defmodule MAIN (export ?ALL))
 
 ;;****************
@@ -86,7 +89,7 @@
 
 
 ;;***********************
-;;* FIRST-USER-QUESTIONS  *
+;;* FIRST-USER-QUESTIONS *
 ;;***********************
 
 (defmodule FIRST-USER-QUESTIONS (import QUESTIONS ?ALL))
@@ -115,6 +118,8 @@
 
 (defmodule HOUSES (import MAIN ?ALL))
 
+;; questi sono gli attributi con cui fa la scelta  da sistemare ovvero deve 
+;; essere come house 
 (deffacts any-attributes
   (attribute (name migliore-citta) (value any))
   (attribute (name migliore-zona) (value any))
@@ -126,17 +131,19 @@
   (slot citta (default any))
   (slot zona (default any))
   (slot quartiere (default any))
-  (slot numServizi (type INTEGER))
+  (slot numBagni (type INTEGER))
   (slot numVani (type INTEGER))
   (slot numPiano (type INTEGER))
   (slot prezzo (type INTEGER))
   (slot terrazzino (type SYMBOL) (allowed-symbols si no))
   (slot boxAuto)
+  (multislot serviziCitta (default nill))
 )
 
+
 (deffacts HOUSES::house-list 
-  (house (citta torino) (zona centro) (quartiere crocetta) (numServizi 1) (numVani 3) (numPiano 2) (prezzo 80) (terrazzino si) (boxAuto 15))
-  (house (citta torino) (zona centro) (quartiere vanchiglia) (numServizi 2) (numVani 5) (numPiano 5) (prezzo 180) (terrazzino si))
+  (house (citta torino) (zona centro) (quartiere crocetta) (numBagni 1) (numVani 3) (numPiano 2) (prezzo 80) (terrazzino si) (boxAuto 15))
+  (house (citta torino) (zona centro) (quartiere vanchiglia) (numBagni 2) (numVani 5) (numPiano 5) (prezzo 180) (terrazzino si))
 )
 
 
@@ -147,6 +154,7 @@
 ;;******************
 
 (defmodule RULES (import MAIN ?ALL) (export ?ALL))
+ ;;rule(slot certain , slot question , slot answer) 
 
 
 ;;*******************************
