@@ -176,12 +176,32 @@
   )
 
 
+
+
 ;;*******************************
-;;* CHOOSE WINE QUALITIES RULES *
+;;* CHOOSE HAUSES RULES *
 ;;*******************************
 
-(defmodule CHOOSE-QUALITIES (import RULES ?ALL)
+(defmodule CHOOSE-HAUSES (import RULES ?ALL)
                             (import QUESTIONS ?ALL)
                             (import MAIN ?ALL))
 
-(defrule CHOOSE-QUALITIES::startit => (focus RULES))
+(defrule CHOOSE-HAUSES::startit => (focus RULES))
+
+(deffacts the-hauses-rules
+
+  (rule (question figli)
+        (answer si)
+        (attribute scuole)
+        (value_attribute si)
+        (cf_value 0.8)
+        )
+
+    (rule (question scuole)
+        (answer si)
+        (attribute migliore-quartiere)
+        (value_attribute vanchiglia)
+        (cf_value 0.8)
+        )
+
+)
