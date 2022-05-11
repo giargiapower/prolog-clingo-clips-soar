@@ -154,6 +154,8 @@
   (house (citta torino) (zona centro) (quartiere vanchiglia) (numBagni 2) (numVani 5) (numPiano 5) (prezzo 180) (terrazzino si))
 )
 
+
+
 (defrule HOUSES::generate-house
   (house (citta ?c)
         (zona  ?z )
@@ -169,8 +171,6 @@
   =>
   (assert (attribute (name house) (value ?c) 
                      (certainty (min ?certainty-1 ?certainty-2 ?certainty-3)))))
-
-
 
 
  
@@ -193,16 +193,34 @@
   )
 
 
+
+
 ;;*******************************
-;;* CHOOSE WINE QUALITIES RULES *
+;;* CHOOSE HAUSES RULES *
 ;;*******************************
 
-(defmodule CHOOSE-QUALITIES (import RULES ?ALL)
+(defmodule CHOOSE-HAUSES (import RULES ?ALL)
                             (import QUESTIONS ?ALL)
                             (import MAIN ?ALL))
 
-(defrule CHOOSE-QUALITIES::startit => (focus RULES))
+(defrule CHOOSE-HAUSES::startit => (focus RULES))
 
+(deffacts the-hauses-rules
+
+  (rule (question figli)
+        (answer si)
+        (attribute scuole)
+        (value_attribute si)
+        (cf_value 0.8)
+        )
+
+    (rule (question scuole)
+        (answer si)
+        (attribute migliore-quartiere)
+        (value_attribute vanchiglia)
+        (cf_value 0.8)
+        )
+)
 
 ;; regole per la profilazione utente
 
@@ -218,4 +236,3 @@
               ;;migliore-zona is centro with certainty 60 and
               ;;migliore-citta is torino with certainty 30 and
               ;;migliore-prezzo is 80 with certainty 70))
-;;)
