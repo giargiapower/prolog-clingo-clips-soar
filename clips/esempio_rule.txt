@@ -1,0 +1,17 @@
+(defrule RULES::perform-rule-consequent-with-certainty
+  ?f <- (rule (certainty ?c1) 
+              (if) 
+              (then ?attribute is ?value with certainty ?c2 $?rest))
+  =>
+  (modify ?f (then ?rest))
+  (assert (attribute (name ?attribute) 
+                     (value ?value)
+                     (certainty (/ (* ?c1 ?c2) 100)))))
+
+
+QUESTA E'LA REGOLA CHE MODIFICA IL CF DI ATTRIBUTE DUNQUE DOVREMO FARE UNA ROBA SIMILE 
+
+
+regole :
+- se attribute figli ha valore si allora scuole è si con probabilita 0.8 
+- se attribute scuole ha valore si allora zona è vanchiglia con p 0.8

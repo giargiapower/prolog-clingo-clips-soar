@@ -162,7 +162,18 @@
 ;;******************
 
 (defmodule RULES (import MAIN ?ALL) (export ?ALL))
- ;;rule(slot certain , slot question , slot answer) 
+ 
+
+;; NOTA BENE IL CF_VALUE NON E' IL CF DELLA RULE MA IL CF DELL'ATTRIBUTO 
+
+ (deftemplate RULES::rule
+  (slot certainty (default 100.0))
+  (slot question)
+  (slot answer)
+  (multislot attribute)
+  (multislot value_attribute)
+  (multislot cf_value)
+  )
 
 
 ;;*******************************
