@@ -189,8 +189,8 @@
 
  (deftemplate RULES::rule
   (slot certainty (default 100.0))
-  (slot question)
-  (slot answer)
+  (multislot question)
+  (multislot answer)
   (multislot attribute)
   (multislot value_attribute)
   (multislot cf_value)
