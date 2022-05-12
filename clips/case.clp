@@ -145,7 +145,9 @@
   (slot prezzo (type INTEGER))
   (slot terrazzino (type SYMBOL) (allowed-symbols si no))
   (slot boxAuto)
-  (multislot serviziCitta (default nill))
+  (slot metropolitana (default nill))
+  (slot scuole (default nill))
+  (slot supermercati (default nill))
 )
 
 
@@ -155,7 +157,9 @@
 )
 
 
-
+;; va sistemata la generazione delle case perche vanno inseriti tutti gli attributi di house  e 
+;; di attribute, inoltre per gli attributi laschi come miglioreprezzo e metri quadri in (value ?p)..
+;; bisogna mettere che sia minore di MAX e magggiore di MIN altrimenti matcha solo i valori esatti
 (defrule HOUSES::generate-house
   (house (citta ?c)
         (zona  ?z )
