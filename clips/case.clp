@@ -220,19 +220,32 @@
         (value_attribute vanchiglia)
         (cf_value 0.8)
         )
-)
+
 
 ;; regole per la profilazione utente
 
-;;(rule (question figli is si)
-      ;;(answer migliore-quartiere is crocetta with certainty 70))
+(rule (question figli)
+      (answer si)
+      (attribute migliore-quartiere)
+      (value_attribute crocetta)
+      (cf_value 0.7)
+      )
 
-;;(rule (question figli is si and
-                ;;eta_figli is grandi)
-      ;;(answer migliore-quartiere is vanchiglia with certainty 80))
+(rule (question figli eta_figli) 
+      (answer si grandi)
+      (attribute migliore-quartiere) 
+      (value_attribute vanchiglia) 
+      (cf_value 0.8)
+      )
 
-;;(rule (question figli is no)
-      ;;(answer migliore-quartiere is crocetta with certainty 40 and
-              ;;migliore-zona is centro with certainty 60 and
-              ;;migliore-citta is torino with certainty 30 and
-              ;;migliore-prezzo is 80 with certainty 70))
+(rule (question figli) 
+      (answer no)
+      (attribute migliore-quartiere migliore-zona migliore-citta migliore-prezzo)
+      (value_attribute crocetta centro torino 100000)
+      (cf_value 0.40 0.6 0.3 0.7)
+      )
+
+  
+)
+
+
