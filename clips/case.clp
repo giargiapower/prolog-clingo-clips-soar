@@ -159,8 +159,34 @@
   (house (indirizzo via michele lessona 10)(citta torino) (zona prima_cintura) (quartiere campidoglio) (numBagni 1) (numVani 2) (numPiano 4) (prezzo 100) (terrazzino no) (boxAuto no) (metropolitana no) (scuole si) (supermercati no))
   (house (indirizzo via svizzera 51)(citta torino) (zona prima_cintura) (quartiere campidoglio) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
   (house (indirizzo via pinelli 100)(citta torino) (zona prima_cintura) (quartiere san_donato) (numBagni 2) (numVani 3) (numPiano 3) (prezzo 80) (terrazzino no) (boxAuto no) (metropolitana no) (scuole si) (supermercati si))
-  (house (indirizzo via carla 2)(citta torino) (zona prima_cintura) (quartiere san_donato) (numBagni 1) (numVani 1) (numPiano 2) (prezzo 120) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+  (house (indirizzo via pinelli 100)(citta torino) (zona prima_cintura) (quartiere san_donato) (numBagni 2) (numVani 3) (numPiano 3) (prezzo 80) (terrazzino no) (boxAuto no) (metropolitana no) (scuole si) (supermercati si))
+  (house (indirizzo via pinelli 100)(citta torino) (zona prima_cintura) (quartiere san_donato) (numBagni 2) (numVani 3) (numPiano 3) (prezzo 80) (terrazzino no) (boxAuto no) (metropolitana no) (scuole si) (supermercati si))
+  (house (indirizzo via pinelli 100)(citta torino) (zona prima_cintura) (quartiere san_donato) (numBagni 2) (numVani 3) (numPiano 3) (prezzo 80) (terrazzino no) (boxAuto no) (metropolitana no) (scuole si) (supermercati si))
+  (house (indirizzo via pinelli 100)(citta torino) (zona prima_cintura) (quartiere san_donato) (numBagni 2) (numVani 3) (numPiano 3) (prezzo 80) (terrazzino no) (boxAuto no) (metropolitana no) (scuole si) (supermercati si))
 
+(house (indirizzo via svizzera 51)(citta milano) (zona centro) (quartiere cenisia) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta milano) (zona centro) (quartiere cenisia) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta milano) (zona periferia) (quartiere sassi) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta milano) (zona periferia) (quartiere sassi) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta milano) (zona periferia) (quartiere pilone) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta milano) (zona periferia) (quartiere pilone) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta milano) (zona prima_cintura) (quartiere parella) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta milano) (zona centro) (quartiere san_salvario) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta milano) (zona centro) (quartiere san_salvario) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta milano) (zona centro) (quartiere san_salvario) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+
+
+(house (indirizzo via svizzera 51)(citta roma) (zona centro) (quartiere san_salvario) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta roma) (zona centro) (quartiere cenisia) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta roma) (zona periferia) (quartiere mirafiori) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta roma) (zona prima_cintura) (quartiere campidoglio) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta roma) (zona centro) (quartiere quadrilatero) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta roma) (zona centro) (quartiere quadrilatero) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta roma) (zona centro) (quartiere quadrilatero) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta roma) (zona centro) (quartiere quadrilatero) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta roma) (zona centro) (quartiere quadrilatero) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+(house (indirizzo via svizzera 51)(citta roma) (zona centro) (quartiere quadrilatero) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+    
 
 )
 
