@@ -136,6 +136,7 @@
 )
 
 (deftemplate HOUSES::house
+  (multislot indirizzo (defaul nill))
   (slot citta (default any))
   (slot zona (default any))
   (slot quartiere (default any))
@@ -152,8 +153,11 @@
 
 
 (deffacts HOUSES::house-list 
-  (house (citta torino) (zona centro) (quartiere crocetta) (numBagni 1) (numVani 3) (numPiano 2) (prezzo 80) (terrazzino si) (boxAuto 15))
+  (house  (indirizzo via antonio bertola 22) (citta torino) (zona centro) (quartiere crocetta) (numBagni 1) (numVani 3) (numPiano 2) (prezzo 380) (terrazzino si) (boxAuto si) (metropolitana si) (scuole si) (supermercati si))
+  (house (citta torino) (zona centro) (quartiere vanchiglia) (numBagni 2) (numVani 5) (numPiano 5) (prezzo 180) (terrazzino si) (metropolitana si) (scuole si) (supermercati no))
   (house (citta torino) (zona centro) (quartiere vanchiglia) (numBagni 2) (numVani 5) (numPiano 5) (prezzo 180) (terrazzino si))
+
+
 )
 
 
