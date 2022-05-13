@@ -136,7 +136,7 @@
 )
 
 (deftemplate HOUSES::house
-  (multislot indirizzo (defaul nill))
+  (multislot indirizzo (default nill))
   (slot citta (default any))
   (slot zona (default any))
   (slot quartiere (default any))
@@ -155,7 +155,11 @@
 (deffacts HOUSES::house-list 
   (house  (indirizzo via antonio bertola 22) (citta torino) (zona centro) (quartiere crocetta) (numBagni 1) (numVani 3) (numPiano 2) (prezzo 380) (terrazzino si) (boxAuto si) (metropolitana si) (scuole si) (supermercati si))
   (house (indirizzo via cesare balbo 2)(citta torino) (zona centro) (quartiere vanchiglia) (numBagni 2) (numVani 5) (numPiano 5) (prezzo 180) (terrazzino si) (boxAuto si) (metropolitana si) (scuole si) (supermercati no))
-  (house (indirizzo via cesare balbo 34)(citta torino) (zona centro) (quartiere vanchiglia) (numBagni 1) (numVani 2) (numPiano 1) (prezzo 10) (terrazzino no) (boxAuto no) (metropolitana si) (scuole si) (supermercati no))
+  (house (indirizzo via cesare balbo 34)(citta torino) (zona centro) (quartiere vanchiglia) (numBagni 1) (numVani 2) (numPiano 1) (prezzo 40) (terrazzino no) (boxAuto no) (metropolitana si) (scuole si) (supermercati no))
+  (house (indirizzo via michele lessona 10)(citta torino) (zona prima_cintura) (quartiere campidoglio) (numBagni 1) (numVani 2) (numPiano 4) (prezzo 100) (terrazzino no) (boxAuto no) (metropolitana no) (scuole si) (supermercati no))
+  (house (indirizzo via svizzera 51)(citta torino) (zona prima_cintura) (quartiere campidoglio) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+  (house (indirizzo via pinelli 100)(citta torino) (zona prima_cintura) (quartiere san_donato) (numBagni 2) (numVani 3) (numPiano 3) (prezzo 80) (terrazzino no) (boxAuto no) (metropolitana no) (scuole si) (supermercati si))
+  (house (indirizzo via carla 2)(citta torino) (zona prima_cintura) (quartiere san_donato) (numBagni 1) (numVani 1) (numPiano 2) (prezzo 120) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
 
 
 )
