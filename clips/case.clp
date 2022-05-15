@@ -105,10 +105,16 @@
             (valid-answers grandi piccoli))
   (question (attribute mezzi)
             (the-question "usi i mezzi per andare al lavoro? ")
-            (valid-answers si no unknown))
-  (question (attribute dim_citta)
-            (the-question "preferisci citta grandi o piccole? ")
-            (valid-answers grandi , piccole)))
+            (valid-answers si no))
+(question (attribute parenti)
+            (the-question "vuoi abitare vicino ai tuoi parenti?")
+            (valid-answers si no))
+(question (attribute zona_parenti)
+            (precursors-name parenti)
+            (precursors-answer si)
+            (the-question "in che città abitano i tuoi parenti?")
+            (valid-answers milano torino roma))
+            )
 
 
 ;;******************
@@ -122,9 +128,9 @@
 
  (deftemplate RULES::rule
   (slot certainty (default 100.0))
-  (multislot question)
-  (multislot answer)
-  (multislot attribute)
+  (slot question)
+  (slot answer)
+  (slot attribute)
   (multislot value_attribute)
   (multislot cf_value)
   )
@@ -144,6 +150,26 @@
 
 (deffacts the-hauses-rules
 
+;; regole per la profilazione utente
+(rule (question zona_parenti)
+        (answer milano)
+        (attribute citta)
+        (value_attribute milano, torino, roma)
+        (cf_value 90, 10, 10)
+        )
+(rule (question zona_parenti)
+        (answer torino)
+        (attribute citta)
+        (value_attribute milano, torino, roma)
+        (cf_value 10, 90, 10)
+        )
+(rule (question zona_parenti)
+        (answer roma)
+        (attribute citta)
+        (value_attribute milano, torino, roma)
+        (cf_value 10, 10, 90)
+        )
+
   (rule (question figli)
         (answer si)
         (attribute scuole)
@@ -151,48 +177,46 @@
         (cf_value 80)
         )
 
-    (rule (question scuole)
-        (answer si)
-        (attribute migliore-quartiere)
-        (value_attribute vanchiglia)
-        (cf_value 80)
-        )
-
-
-;; regole per la profilazione utente
-
 (rule (question figli)
       (answer si)
       (attribute migliore-quartiere)
-      (value_attribute crocetta)
-      (cf_value 70)
+      (value_attribute crocetta campidoglio san_donato centro_storico citta_studi ponte_nuovo)
+      (cf_value 70 80 60 70 70 70)
       )
 
-(rule (question figli eta_figli) 
-      (answer si grandi)
+(rule (question eta_figli) 
+      (answer grandi)
       (attribute migliore-quartiere) 
-      (value_attribute vanchiglia) 
-      (cf_value 80)
+      (value_attribute vanchiglia citta_studi centro_storico) 
+      (cf_value 80 70 80)
       )
 
 (rule (question figli) 
       (answer no)
-      (attribute migliore-quartiere migliore-zona migliore-citta migliore-prezzo)
-      (value_attribute crocetta centro torino 100000)
-      (cf_value 40 60 30 70)
+      (attribute migliore-quartiere)
+      (value_attribute crocetta centrale ponte_nuovo san_paolo)
+      (cf_value 40 60 70 80)
       )
+
+(rule (question figli) 
+      (answer no)
+      (attribute migliore-prezzo)
+      (value_attribute 100)
+      (cf_value 70)
+      )
+
 
 (rule (question mezzi)
       (answer si)
-      (attribute migliore-quartiere)
-      (value_attribute san_donato)
-      (cf_value 80)
+      (attribute migliore-citta)
+      (value_attribute milano torino roma)
+      (cf_value 70 50 60)
       )
 
 (rule (question mezzi)
       (answer no)
       (attribute migliore-quartiere)
-      (value_attribute san_paolo migliore_zona periferia)
+      (value_attribute san_paolo periferia)
       (cf_value 80 70)
       )
 
@@ -209,8 +233,6 @@
       (value_attribute torino)
       (cf_value 80)
       )
-
-  
 )
 
 ;;******************
@@ -270,24 +292,24 @@
   (house (indirizzo viale_piave_8)(citta milano) (zona centro) (quartiere porta_venezia) (numBagni 2) (numVani 4) (numPiano 3) (prezzo 60) (terrazzino no) (boxAuto no) (metropolitana si) (scuole no) (supermercati si))
   (house (indirizzo via_gramsci)(citta milano) (zona prima_cintura) (quartiere foramgno) (numBagni 3) (numVani 2) (numPiano 4) (prezzo 80) (terrazzino no) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
   (house (indirizzo via_svizzera_51)(citta milano) (zona periferia) (quartiere sassi) (numBagni 2) (numVani 5) (numPiano 2) (prezzo 90) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
-  (house (indirizzo via_svizzera_51)(citta milano) (zona periferia) (quartiere pilone) (numBagni 3) (numVani 2) (numPiano 6) (prezzo 100) (terrazzino si) (boxAuto si) (metropolitana no) (scuole no) (supermercati no))
+  (house (indirizzo via_svezia_51)(citta milano) (zona periferia) (quartiere pilone) (numBagni 3) (numVani 2) (numPiano 6) (prezzo 100) (terrazzino si) (boxAuto si) (metropolitana no) (scuole no) (supermercati no))
   (house (indirizzo viale_romagna)(citta milano) (zona centro) (quartiere citta_studi) (numBagni 2) (numVani 4) (numPiano 2) (prezzo 200) (terrazzino si) (boxAuto no) (metropolitana no) (scuole si) (supermercati si))
   (house (indirizzo viale_fratelli_cervi_8)(citta milano) (zona prima_cintura) (quartiere milano2) (numBagni 1) (numVani 4) (numPiano 4) (prezzo 69) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
   (house (indirizzo via_asiago_21)(citta milano) (zona periferia) (quartiere ponte_nuovo) (numBagni 2) (numVani 4) (numPiano 1) (prezzo 80) (terrazzino no) (boxAuto no) (metropolitana si) (scuole si) (supermercati no))
-  (house (indirizzo via_pompeo_30)(citta milano) (zona centro) (quartiere centarle) (numBagni 3) (numVani 6) (numPiano 1) (prezzo 280) (terrazzino si) (boxAuto si) (metropolitana si) (scuole si) (supermercati si))
+  (house (indirizzo via_pompeo_30)(citta milano) (zona centro) (quartiere centale) (numBagni 3) (numVani 6) (numPiano 1) (prezzo 280) (terrazzino si) (boxAuto si) (metropolitana si) (scuole si) (supermercati si))
   (house (indirizzo via_senigalia_9)(citta milano) (zona centro) (quartiere lazzareto) (numBagni 1) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
 
 
-  (house (indirizzo via_svizzera_51)(citta roma) (zona centro) (quartiere san_salvario) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
-  (house (indirizzo via_svizzera_51)(citta roma) (zona centro) (quartiere san_salvario) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
-  (house (indirizzo via_svizzera_51)(citta roma) (zona centro) (quartiere san_salvario) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
-  (house (indirizzo via_svizzera_51)(citta roma) (zona centro) (quartiere san_salvario) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
-  (house (indirizzo via_svizzera_51)(citta roma) (zona centro) (quartiere san_salvario) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
-  (house (indirizzo via_svizzera_51)(citta roma) (zona centro) (quartiere san_salvario) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
-  (house (indirizzo via_svizzera_51)(citta roma) (zona centro) (quartiere san_salvario) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
-  (house (indirizzo via_svizzera_51)(citta roma) (zona centro) (quartiere san_salvario) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
-  (house (indirizzo via_svizzera_51)(citta roma) (zona centro) (quartiere san_salvario) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
-  (house (indirizzo via_svizzera_51)(citta roma) (zona centro) (quartiere san_salvario) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+  (house (indirizzo via_vignola_51)(citta roma) (zona centro) (quartiere flaminio) (numBagni 1) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto no) (metropolitana si) (scuole si) (supermercati si))
+  (house (indirizzo via_marchetti_52)(citta roma) (zona periferia) (quartiere magliana) (numBagni 2) (numVani 3) (numPiano 2) (prezzo 100) (terrazzino no) (boxAuto si) (metropolitana no) (scuole no) (supermercati si))
+  (house (indirizzo via_boccea_3)(citta roma) (zona prima_cintura) (quartiere boccea) (numBagni 1) (numVani 3) (numPiano 3) (prezzo 150) (terrazzino si) (boxAuto no) (metropolitana si) (scuole no) (supermercati si))
+  (house (indirizzo via_reni_1)(citta roma) (zona centro) (quartiere flaminio) (numBagni 1) (numVani 3) (numPiano 4) (prezzo 150) (terrazzino si) (boxAuto si) (metropolitana si) (scuole si) (supermercati no))
+  (house (indirizzo via_boccea_11)(citta roma) (zona prima_cintura) (quartiere boccea) (numBagni 1) (numVani 2) (numPiano 2) (prezzo 250) (terrazzino no) (boxAuto no) (metropolitana no) (scuole si) (supermercati si))
+  (house (indirizzo via_reni_60)(citta roma) (zona centro) (quartiere flaminio) (numBagni 3) (numVani 2) (numPiano 3) (prezzo 350) (terrazzino si) (boxAuto no) (metropolitana si) (scuole no) (supermercati no))
+  (house (indirizzo via_manuzio_2)(citta roma) (zona periferia) (quartiere testaccio) (numBagni 3) (numVani 2) (numPiano 4) (prezzo 250) (terrazzino no) (boxAuto no) (metropolitana no) (scuole si) (supermercati si))
+  (house (indirizzo via_boccea_11)(citta roma) (zona prima_cintura) (quartiere boccea) (numBagni 2) (numVani 2) (numPiano 1) (prezzo 150) (terrazzino si) (boxAuto si) (metropolitana si) (scuole si) (supermercati no))
+  (house (indirizzo via_bregno_7)(citta roma) (zona centro) (quartiere flaminio) (numBagni 1) (numVani 1) (numPiano 2) (prezzo 50) (terrazzino no) (boxAuto si) (metropolitana no) (scuole no) (supermercati si))
+  (house (indirizzo via_franklin_5)(citta roma) (zona periferia) (quartiere testaccio) (numBagni 3) (numVani 2) (numPiano 3) (prezzo 120) (terrazzino si) (boxAuto no) (metropolitana si) (scuole si) (supermercati no))
     
 
 )
@@ -301,13 +323,12 @@
         (citta ?c)
         (zona  ?z )
         (quartiere ?q )
-        (prezzo ?p )
-        (numBagni ?nB )
-        (numVani ?nV )
+        (numBagni ?nb )
+        (numVani ?nv )
         (numPiano ?nP )
         (prezzo ?prez)
         (terrazzino ?t )
-        (boxAuto ? bx)
+        (boxAuto ?bx)
         (metropolitana ?mt )
         (scuole ?sc )
         (supermercati ?sup)
@@ -315,6 +336,7 @@
   (attribute (name migliore-zona) (value ?z) (certainty ?certainty-1))
   (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
   (attribute (name migliore-prezzo) (value ?p) (certainty ?certainty-3))
+  
   =>
   (assert (attribute (name house) (value ?c) 
                      (certainty (min ?certainty-1 ?certainty-2 ?certainty-3)))))
