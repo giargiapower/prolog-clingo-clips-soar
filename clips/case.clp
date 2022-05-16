@@ -117,6 +117,41 @@
             )
 
 
+
+
+;;***********************
+;;* HOUSE-QUESTIONS *
+;;***********************
+
+(defmodule HOUSE-QUESTIONS (import QUESTIONS ?ALL))
+
+(deffacts FIRST-USER-QUESTIONS::question-attributes
+  (question (attribute zona)
+            (the-question "In quale zona cerca casa? ")
+            (valid-answers centro periferia prima_cintura))
+  (question (attribute metropolitana)
+            (precursors-name zona)
+            (precursors-answer centro)
+            (the-question "Vuole la metropolitana vicina? ")
+            (valid-answers si no unknown))
+  (question (attribute terrazzino)
+            (the-question "Vuole una casa con il terrazzino? ")
+            (valid-answers si no))
+  (question (attribute boxAuto)
+            (the-question "Vuole avere un boxAuto?")
+            (valid-answers si no))
+  (question (attribute numPiano)
+            (the-question "A che piano cerca casa?")
+            (valid-answers type 1 2 3 4 5 6))
+  (question (attribute numVani)
+            (the-question "Quante stanze cerca?")
+            (valid-answers 2 3 4 5))
+  (question (attribute numBagni)
+            (the-question "Quanti bagni vuole? ")
+            (valid-answers 1 2 3))
+)
+
+
 ;;******************
 ;; The RULES module
 ;;******************
@@ -346,7 +381,7 @@
   (attribute (name scuole) (value ?p) (certainty ?certainty-3))
   (attribute (name supermercati) (value ?p) (certainty ?certainty-3))
   =>
-  (assert (attribute (name house) (value ?c) 
+  (assert (attribute (name indirizzo) (value ?i) 
                      (certainty (min ?certainty-1 ?certainty-2 ?certainty-3)))))
 
 
