@@ -24,13 +24,14 @@
 (deftemplate MAIN::attribute
    (slot name)
    (slot value)
+   (slot city (default nill))
    (slot certainty (default 100.0)))
 
 (defrule MAIN::start
   (declare (salience 10000))
   =>
   (set-fact-duplication TRUE)
-  (focus PROFILING CHOOSE-HOUSES HOUSES PRINT-RESULTS))
+  (focus PROFILING CHOOSE-HOUSES HOUSES PRINT-RESULTS QUESTIONS))
 
 ;; se ci sono 2 fatti uguali ma con CF diversi combinali
 
@@ -526,7 +527,7 @@
   (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
   (attribute (name scuole) (value ?sc) (certainty ?certainty-3))
   =>
-  (assert (attribute (name house) (value ?i) 
+  (assert (attribute (name house) (value ?i) (city ?c) 
                      (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3)))))
 
 
@@ -545,11 +546,11 @@
    (assert (phase print-house)))
 
 (defrule PRINT-RESULTS::print-house ""
-  ?rem <- (attribute (name house) (value ?name) (certainty ?per))		  
+  ?rem <- (attribute (name house) (value ?name) (city ?c) (certainty ?per))	  
   (not (attribute (name house) (certainty ?per1&:(> ?per1 ?per))))
   =>
   (retract ?rem)
-  (format t " %-24s %2d%%%n" ?name ?per))
+  (format t " %-24s %-24s %2d%%%n" ?name ?c ?per))
 
 (defrule PRINT-RESULTS::remove-poor-house-choices ""
   ?rem <- (attribute (name house) (certainty ?per&:(< ?per 20)))
