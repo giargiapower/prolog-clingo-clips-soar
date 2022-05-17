@@ -30,7 +30,7 @@
   (declare (salience 10000))
   =>
   (set-fact-duplication TRUE)
-  (focus PROFILING CHOOSE-HOUSES HOUSES))
+  (focus PROFILING CHOOSE-HOUSES HOUSES PRINT-RESULTS))
 
 ;; se ci sono 2 fatti uguali ma con CF diversi combinali
 
@@ -536,6 +536,31 @@
 
 (defmodule PRINT-RESULTS (import MAIN ?ALL))
 
+(defrule PRINT-RESULTS::header ""
+   (declare (salience 10))
+   =>
+   (printout t t)
+   (printout t "        SELECTED HOUSE" t t)
+   (printout t " HOUSE               CERTAINTY" t)
+   (printout t " -------------------------------" t)
+   (assert (phase print-house)))
+
+(defrule PRINT-RESULTS::print-house ""
+  ?rem <- (attribute (name house) (value ?name) (certainty ?per))		  
+  (not (attribute (name house) (certainty ?per1&:(> ?per1 ?per))))
+  =>
+  (retract ?rem)
+  (format t " %-24s %2d%%%n" ?name ?per))
+
+(defrule PRINT-RESULTS::remove-poor-house-choices ""
+  ?rem <- (attribute (name house) (certainty ?per&:(< ?per 20)))
+  =>
+  (retract ?rem))
+
+(defrule PRINT-RESULTS::end-spaces ""
+   (not (attribute (name house)))
+   =>
+   (printout t t))
  
 
 
