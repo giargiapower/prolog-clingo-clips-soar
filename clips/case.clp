@@ -30,7 +30,7 @@
   (declare (salience 10000))
   =>
   (set-fact-duplication TRUE)
-  (focus QUESTIONS))
+  (focus PROFILING))
 
 ;; se ci sono 2 fatti uguali ma con CF diversi combinali
 
@@ -43,6 +43,49 @@
   =>
   (retract ?rem1)
   (modify ?rem2 (certainty (/ (- (* 100 (+ ?per1 ?per2)) (* ?per1 ?per2)) 100))))
+
+;;******************
+;;* PROFILING RULES *
+;;******************
+
+(defmodule PROFILING (import MAIN ?ALL) (export ?ALL))
+
+(deftemplate PROFILING::question
+   (slot attribute (default ?NONE))
+   (slot the-question (default ?NONE))
+   (multislot valid-answers (default ?NONE) (range 1 400) )
+   (slot already-asked (default FALSE))
+   (slot precursors-name )
+   (slot precursors-answer))
+   
+   
+(defrule PROFILING::ask-a-question
+   ?f <- (question (already-asked FALSE)
+                   (precursors-name nil)
+                   (precursors-answer nil)
+                   (the-question ?the-question)
+                   (attribute ?the-attribute)
+                   (valid-answers $?valid-answers))
+   =>
+   (modify ?f (already-asked TRUE))
+   (assert (attribute (name ?the-attribute)
+                      (value (ask-question ?the-question ?valid-answers)))))
+
+  ;; se è presente un attribute il cui la cui risposta è il precursore di una question fai la question
+  
+(defrule PROFILING::precursor-is-ok
+   ?f <- (question  (already-asked FALSE)
+                   (precursors-name ?prec)
+                   (precursors-answer ?preca)
+                   (the-question ?the-question)
+                   (attribute ?the-attribute)
+                   (valid-answers $?valid-answers))
+         (attribute (name ?prec) (value ?preca))
+   =>
+   (modify ?f (already-asked TRUE))
+   (assert (attribute (name ?the-attribute)
+                      (value (ask-question ?the-question ?valid-answers)))))
+
   
 ;;******************
 ;;* QUESTION RULES *
@@ -153,7 +196,7 @@
 ;;* FIRST-USER-QUESTIONS *
 ;;***********************
 
-(defmodule FIRST-USER-QUESTIONS (import QUESTIONS ?ALL))
+(defmodule FIRST-USER-QUESTIONS (import PROFILING ?ALL))
 
 (deffacts FIRST-USER-QUESTIONS::question-attributes
   (question (attribute figli)
