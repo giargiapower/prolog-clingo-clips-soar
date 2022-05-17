@@ -30,7 +30,7 @@
   (declare (salience 10000))
   =>
   (set-fact-duplication TRUE)
-  (focus PROFILING))
+  (focus PROFILING CHOOSE-HOUSES HOUSES))
 
 ;; se ci sono 2 fatti uguali ma con CF diversi combinali
 
@@ -271,14 +271,14 @@
 
 
 ;;*******************************
-;;* CHOOSE HAUSES RULES *
+;;* CHOOSE HOUSES RULES *
 ;;*******************************
 
-(defmodule CHOOSE-HAUSES (import RULES ?ALL)
+(defmodule CHOOSE-HOUSES (import RULES ?ALL)
                             (import QUESTIONS ?ALL)
                             (import MAIN ?ALL))
 
-(defrule CHOOSE-HAUSES::startit => (focus RULES))
+(defrule CHOOSE-HOUSES::startit => (focus RULES))
 
 (deffacts the-houses-rules
 
