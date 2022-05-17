@@ -87,53 +87,18 @@
                       (value (ask-question ?the-question ?valid-answers)))))
 
 
-
-;;***********************
-;;* FIRST-USER-QUESTIONS *
-;;***********************
-
-(defmodule FIRST-USER-QUESTIONS (import QUESTIONS ?ALL))
-
-(deffacts FIRST-USER-QUESTIONS::question-attributes
-  (question (attribute figli)
-            (the-question "hai dei figli: si o no? ")
-            (valid-answers si no))
-  (question (attribute eta_figli)
-            (precursors-name figli)
-            (precursors-answer si)
-            (the-question "sono figli grandi o piccoli? ")
-            (valid-answers grandi piccoli))
-  (question (attribute mezzi)
-            (the-question "usi i mezzi per andare al lavoro? ")
-            (valid-answers si no))
-  (question (attribute parenti)
-            (the-question "vuoi abitare vicino ai tuoi parenti?")
-            (valid-answers si no))
-  (question (attribute zona_parenti)
-            (precursors-name parenti)
-            (precursors-answer si)
-            (the-question "in che città abitano i tuoi parenti?")
-            (valid-answers milano torino roma))
-  (question (attribute dim_citta)
-            (the-question "vuoi abitare in citta grandi o piccole?")
-            (valid-answers grandi piccole))
-            )
-
-
-
-
 ;;***********************
 ;;* HOUSE-QUESTIONS *
 ;;***********************
 
 (defmodule HOUSE-QUESTIONS (import QUESTIONS ?ALL))
 
-(deffacts FIRST-USER-QUESTIONS::question-attributes
+(deffacts HOUSE-QUESTIONS::question-attributes
   (question (attribute citta_scelta)
             (the-question "In quale citta cerca casa? ")
             (valid-answers torino milano roma))
   (question (attribute zona_scelta)
-            (the-question "In quale zona cerca casa? ")
+            (the-question "cerchi casa in centro, periferia o prima_cintura? ")
             (valid-answers centro periferia prima_cintura))
   (question (attribute metropolitana)
             (precursors-name zona)
@@ -181,6 +146,41 @@
             (the-question "Quanti bagni vuole? ")
             (valid-answers 1 2 3))
 )
+
+
+
+;;***********************
+;;* FIRST-USER-QUESTIONS *
+;;***********************
+
+(defmodule FIRST-USER-QUESTIONS (import QUESTIONS ?ALL))
+
+(deffacts FIRST-USER-QUESTIONS::question-attributes
+  (question (attribute figli)
+            (the-question "hai dei figli: si o no? ")
+            (valid-answers si no))
+  (question (attribute eta_figli)
+            (precursors-name figli)
+            (precursors-answer si)
+            (the-question "sono figli grandi o piccoli? ")
+            (valid-answers grandi piccoli))
+  (question (attribute mezzi)
+            (the-question "usi i mezzi per andare al lavoro? ")
+            (valid-answers si no))
+  (question (attribute parenti)
+            (the-question "vuoi abitare vicino ai tuoi parenti?")
+            (valid-answers si no))
+  (question (attribute zona_parenti)
+            (precursors-name parenti)
+            (precursors-answer si)
+            (the-question "in che città abitano i tuoi parenti?")
+            (valid-answers milano torino roma))
+  (question (attribute dim_citta)
+            (the-question "vuoi abitare in citta grandi o piccole?")
+            (valid-answers grandi piccole))
+            )
+
+
 
 
 ;;******************
