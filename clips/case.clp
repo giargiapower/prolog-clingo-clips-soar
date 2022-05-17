@@ -31,7 +31,8 @@
   (declare (salience 10000))
   =>
   (set-fact-duplication TRUE)
-  (focus PROFILING CHOOSE-HOUSES HOUSES PRINT-RESULTS QUESTIONS))
+  (focus PROFILING CHOOSE-HOUSES HOUSES PRINT-RESULTS QUESTIONS CHOOSE-HOUSES HOUSES PRINT-RESULTS))
+  
 
 ;; se ci sono 2 fatti uguali ma con CF diversi combinali
 
@@ -97,7 +98,7 @@
 (deftemplate QUESTIONS::question
    (slot attribute (default ?NONE))
    (slot the-question (default ?NONE))
-   (multislot valid-answers (default ?NONE) (range 1 400) )
+   (multislot valid-answers (default ?NONE))
    (slot already-asked (default FALSE))
    (slot precursors-name )
    (slot precursors-answer))
@@ -138,42 +139,6 @@
 (defmodule HOUSE-QUESTIONS (import QUESTIONS ?ALL))
 
 (deffacts HOUSE-QUESTIONS::question-attributes
-  (question (attribute citta_scelta)
-            (the-question "In quale citta cerca casa? ")
-            (valid-answers torino milano roma))
-  (question (attribute zona_scelta)
-            (the-question "cerchi casa in centro, periferia o prima_cintura? ")
-            (valid-answers centro periferia prima_cintura))
-  (question (attribute metropolitana)
-            (precursors-name zona)
-            (precursors-answer centro)
-            (the-question "Vuole la metropolitana vicina? ")
-            (valid-answers si no unknown))
-  (question (attribute scuole)
-            (precursors-name zona)
-            (precursors-answer centro)
-            (the-question "Vuole la scuola vicino a casa? ")
-            (valid-answers si no unknown))
-  (question (attribute metropolitana)
-            (precursors-name zona)
-            (precursors-answer periferia)
-            (the-question "Vuole la metropolitana vicina? ")
-            (valid-answers si no unknown))
-  (question (attribute scuole)
-            (precursors-name zona)
-            (precursors-answer periferia)
-            (the-question "Vuole la scuola vicino a casa? ")
-            (valid-answers si no unknown))
-  (question (attribute scuola)
-            (precursors-name zona)
-            (precursors-answer prima_cintura)
-            (the-question "Vuole la scuola vicino a casa? ")
-            (valid-answers si no unknown))
-  (question (attribute supermercati)
-            (precursors-name zona)
-            (precursors-answer prima_cintura)
-            (the-question "Vuole il supermercato vicino a casa? ")
-            (valid-answers si no unknown))
   (question (attribute terrazzino)
             (the-question "Vuole una casa con il terrazzino? ")
             (valid-answers si no))
@@ -189,6 +154,42 @@
   (question (attribute numBagni)
             (the-question "Quanti bagni vuole? ")
             (valid-answers 1 2 3))
+  (question (attribute metropolitana)
+            (precursors-name zona_scelta)
+            (precursors-answer centro)
+            (the-question "Vuole la metropolitana vicina? ")
+            (valid-answers si no unknown))
+  (question (attribute scuole)
+            (precursors-name zona_scelta)
+            (precursors-answer centro)
+            (the-question "Vuole la scuola vicino a casa? ")
+            (valid-answers si no unknown))
+  (question (attribute metropolitana)
+            (precursors-name zona_scelta)
+            (precursors-answer periferia)
+            (the-question "Vuole la metropolitana vicina? ")
+            (valid-answers si no unknown))
+  (question (attribute scuole)
+            (precursors-name zona_scelta)
+            (precursors-answer periferia)
+            (the-question "Vuole la scuola vicino a casa? ")
+            (valid-answers si no unknown))
+  (question (attribute scuola)
+            (precursors-name zona_scelta)
+            (precursors-answer prima_cintura)
+            (the-question "Vuole la scuola vicino a casa? ")
+            (valid-answers si no unknown))
+  (question (attribute supermercati)
+            (precursors-name zona_scelta)
+            (precursors-answer prima_cintura)
+            (the-question "Vuole il supermercato vicino a casa? ")
+            (valid-answers si no unknown))
+  (question (attribute zona_scelta)
+            (the-question "cerchi casa in centro, periferia o prima_cintura? ")
+            (valid-answers centro periferia prima_cintura))
+  (question (attribute citta_scelta)
+            (the-question "In quale citta cerca casa? ")
+            (valid-answers torino milano roma))
 )
 
 
@@ -276,7 +277,8 @@
 ;;*******************************
 
 (defmodule CHOOSE-HOUSES (import RULES ?ALL)
-                            (import QUESTIONS ?ALL)
+                            ;;(import PROFILING ?ALL)
+                            ;;(import QUESTIONS ?ALL)
                             (import MAIN ?ALL))
 
 (defrule CHOOSE-HOUSES::startit => (focus RULES))
@@ -421,6 +423,14 @@
         (cf_value 10, 10, 90)
         )
 
+(rule (question terrazzino)
+        (answer si)
+        (attribute zona)
+        (value_attribute crocetta vanchiglia campidoglio san_donato cenisia bariera 
+                         san_paolo centro_storico porta_venezia testaccio)
+        (cf_value 40, 30, 60, 70, 60, 70, 80, 70, 60, 30)
+        )
+
 (rule (question metropolitana)
         (answer si)
         (attribute zona)
@@ -515,7 +525,7 @@
 ;; va sistemata la generazione delle case perche vanno inseriti tutti gli attributi di house  e 
 ;; di attribute, inoltre per gli attributi laschi come miglioreprezzo e metri quadri in (value ?p)..
 ;; bisogna mettere che sia minore di MAX e magggiore di MIN altrimenti matcha solo i valori esatti
-(defrule HOUSES::generate-house
+(defrule HOUSES::generate-house-profiling
   (house (indirizzo ?i)
         (citta ?c)
         (zona  ?z )
@@ -529,6 +539,38 @@
   =>
   (assert (attribute (name house) (value ?i) (city ?c) 
                      (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3)))))
+
+
+
+;; visto che per la profilazione usiamo solo qualche attributo può avere senso avere un generate house per il secondo blocco di domande?
+;;ho provato a eseguirlo e in questo modo mi da risultati sia per la profilazione utente che per le domande specifiche delle case
+;;ho corretto un attributo nelle QUESTIONS perchè l'avevo scritto male e non prendeva le domande con precursor
+;;ho aggiunto nel focus del main dopo QUESTIONS di nuovo CHOOSE-HOUSES HOUSES PRINT-RESULTS per vedere se continuava l'interazione e sembra funzionare
+
+(defrule HOUSES::generate-house
+  (house (indirizzo ?i)
+        (citta ?c)
+        (zona  ?z )
+        (quartiere ?q )
+        (scuole ?sc )
+        (boxAuto ?bx)
+        (terrazzino ?tr)
+        (metropolitana ?mp)
+        (supermercati ?sm)
+        
+        )
+  (attribute (name migliore-citta) (value ?c) (certainty ?certainty-0))
+  (attribute (name migliore-zona) (value ?z) (certainty ?certainty-1))
+  (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
+  (attribute (name scuole) (value ?sc) (certainty ?certainty-3))
+  (attribute (name boxAuto) (value ?bx) (certainty ?certainty-4))
+  (attribute (name terrazzino) (value ?tr) (certainty ?certainty-5))
+  (attribute (name metropolitana) (value ?mp) (certainty ?certainty-6))
+  (attribute (name supermercati) (value ?sm) (certainty ?certainty-7))
+  =>
+  (assert (attribute (name house) (value ?i) (city ?c) 
+                     (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3 ?certainty-4 ?certainty-5 ?certainty-6 ?certainty-7)))))
+
 
 
 ;;*****************************
