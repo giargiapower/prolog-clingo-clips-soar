@@ -201,6 +201,29 @@
   (multislot cf_value)
   )
 
+(defrule RULES::remove-question-answer-when-satisfied
+  ?f <- (rule (certainty ?c1) 
+              (question ?attribute & ~nill)
+              (answer ?value & ~nill))
+  (attribute (name ?attribute) 
+             (value ?value) 
+             (certainty ?c2))
+  =>
+  (modify ?f (certainty (min ?c1 ?c2)) (question nill) (answer nill)))
+
+  (defrule RULES::conclude-new-attribute
+  ?f <- (rule (certainty ?c1) 
+              (question nill)
+              (answer nill) 
+              (attribute ?attribute)
+              (value_attribute ?value $?rest)
+              (cf_value ?c2 $?cf_rest))
+  =>
+  (modify ?f (value_attribute ?rest) (cf_value ?cf_rest))
+  (assert (attribute (name ?attribute) 
+                     (value ?value)
+                     (certainty (/ (* ?c1 ?c2) 100)))))
+
 
 
 
@@ -220,20 +243,20 @@
 (rule (question zona_parenti)
         (answer milano)
         (attribute citta)
-        (value_attribute milano, torino, roma)
-        (cf_value 90, 10, 10)
+        (value_attribute milano torino roma)
+        (cf_value 90 10 10)
         )
 (rule (question zona_parenti)
         (answer torino)
         (attribute citta)
-        (value_attribute milano, torino, roma)
-        (cf_value 10, 90, 10)
+        (value_attribute milano torino roma)
+        (cf_value 10 90 10)
         )
 (rule (question zona_parenti)
         (answer roma)
         (attribute citta)
-        (value_attribute milano, torino, roma)
-        (cf_value 10, 10, 90)
+        (value_attribute milano torino roma)
+        (cf_value 10 10 90)
         )
 
   (rule (question figli)
