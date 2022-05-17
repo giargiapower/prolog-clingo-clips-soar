@@ -469,9 +469,15 @@
   (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
   (attribute (name scuole) (value ?sc) (certainty ?certainty-3))
   =>
-  (assert (attribute (name indirizzo) (value ?i) 
+  (assert (attribute (name house) (value ?i) 
                      (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3)))))
 
+
+;;*****************************
+;;* PRINT SELECTED HOUSE RULES *
+;;*****************************
+
+(defmodule PRINT-RESULTS (import MAIN ?ALL))
 
  
 
