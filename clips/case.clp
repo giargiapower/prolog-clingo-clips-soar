@@ -539,10 +539,9 @@
 (defrule PRINT-RESULTS::header ""
    (declare (salience 10))
    =>
-   (printout t t)
-   (printout t "        SELECTED HOUSE" t t)
-   (printout t " HOUSE               CERTAINTY" t)
-   (printout t " -------------------------------" t)
+   (printout t "MAYBE THESE HOUSES MAY INTEREST YOU" crlf)
+   (printout t "  HOUSE               CERTAINTY" crlf)
+   (printout t " -------------------------------" crlf)
    (assert (phase print-house)))
 
 (defrule PRINT-RESULTS::print-house ""
@@ -560,7 +559,7 @@
 (defrule PRINT-RESULTS::end-spaces ""
    (not (attribute (name house)))
    =>
-   (printout t t))
+   (printout t ))
  
 
 
