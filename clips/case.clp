@@ -323,6 +323,20 @@
       (cf_value 70 80 60 70 70 70)
       )
 
+(rule (question figli)
+      (answer si)
+      (attribute migliore-zona)
+      (value_attribute centro prima_cintura periferia)
+      (cf_value 50 70 30)
+      )
+
+(rule (question figli)
+      (answer no)
+      (attribute migliore-zona)
+      (value_attribute centro prima_cintura periferia)
+      (cf_value 70 70 70)
+      )
+
 (rule (question eta_figli) 
       (answer grandi)
       (attribute migliore-quartiere) 
