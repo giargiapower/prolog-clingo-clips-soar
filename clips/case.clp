@@ -31,7 +31,7 @@
   (declare (salience 10000))
   =>
   (set-fact-duplication TRUE)
-  (focus PROFILING CHOOSE-HOUSES HOUSES PRINT-RESULTS QUESTIONS CHOOSE-HOUSES HOUSES PRINT-RESULTS))
+  (focus PROFILING CHOOSE-PROFILING-HOUSES HOUSES PRINT-RESULTS QUESTIONS CHOOSE-HOUSES HOUSES PRINT-RESULTS))
   
 
 ;; se ci sono 2 fatti uguali ma con CF diversi combinali
@@ -270,18 +270,15 @@
                      (certainty (/ (* ?c1 ?c2) 100)))))
 
 
-
-
 ;;*******************************
-;;* CHOOSE HOUSES RULES *
+;;* CHOOSE PROFILING HOUSES RULES *
 ;;*******************************
 
-(defmodule CHOOSE-HOUSES (import RULES ?ALL)
-                            ;;(import PROFILING ?ALL)
-                            ;;(import QUESTIONS ?ALL)
+(defmodule CHOOSE-PROFILING-HOUSES (import RULES ?ALL)
+                         (import PROFILING ?ALL)
                             (import MAIN ?ALL))
 
-(defrule CHOOSE-HOUSES::startit => (focus RULES))
+(defrule CHOOSE-PROFILING-HOUSES::startit => (focus RULES))
 
 (deffacts the-houses-rules
 
@@ -382,7 +379,23 @@
       (value_attribute torino)
       (cf_value 80)
       )
+)
 
+
+
+
+
+;;*******************************
+;;* CHOOSE HOUSES RULES *
+;;*******************************
+
+(defmodule CHOOSE-HOUSES (import RULES ?ALL)
+                        (import QUESTIONS ?ALL)
+                            (import MAIN ?ALL))
+
+(defrule CHOOSE-HOUSES::startit => (focus RULES))
+
+(deffacts the-houses-rules
 ;;regole specifiche sulla scelta della casa (serve un modulo diverso??)
 
 (rule (question citta_scelta)
@@ -547,29 +560,29 @@
 ;;ho corretto un attributo nelle QUESTIONS perchè l'avevo scritto male e non prendeva le domande con precursor
 ;;ho aggiunto nel focus del main dopo QUESTIONS di nuovo CHOOSE-HOUSES HOUSES PRINT-RESULTS per vedere se continuava l'interazione e sembra funzionare
 
-(defrule HOUSES::generate-house
-  (house (indirizzo ?i)
-        (citta ?c)
-        (zona  ?z )
-        (quartiere ?q )
-        (scuole ?sc )
-        (boxAuto ?bx)
-        (terrazzino ?tr)
-        (metropolitana ?mp)
-        (supermercati ?sm)
-        
-        )
-  (attribute (name migliore-citta) (value ?c) (certainty ?certainty-0))
-  (attribute (name migliore-zona) (value ?z) (certainty ?certainty-1))
-  (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
-  (attribute (name scuole) (value ?sc) (certainty ?certainty-3))
-  (attribute (name boxAuto) (value ?bx) (certainty ?certainty-4))
-  (attribute (name terrazzino) (value ?tr) (certainty ?certainty-5))
-  (attribute (name metropolitana) (value ?mp) (certainty ?certainty-6))
-  (attribute (name supermercati) (value ?sm) (certainty ?certainty-7))
-  =>
-  (assert (attribute (name house) (value ?i) (city ?c) 
-                     (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3 ?certainty-4 ?certainty-5 ?certainty-6 ?certainty-7)))))
+;;(defrule HOUSES::generate-house
+;;  (house (indirizzo ?i)
+ ;;       (citta ?c)
+;;      (zona  ?z )
+ ;;       (quartiere ?q )
+;;        (scuole ?sc )
+;;        (boxAuto ?bx)
+;;        (terrazzino ?tr)
+;;        (metropolitana ?mp)
+;;        (supermercati ?sm)
+;;        
+;;        )
+ ;; (attribute (name migliore-citta) (value ?c) (certainty ?certainty-0))
+ ;; (attribute (name migliore-zona) (value ?z) (certainty ?certainty-1))
+;;  (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
+;;  (attribute (name scuole) (value ?sc) (certainty ?certainty-3))
+;;  (attribute (name boxAuto) (value ?bx) (certainty ?certainty-4))
+;;  (attribute (name terrazzino) (value ?tr) (certainty ?certainty-5))
+;;  (attribute (name metropolitana) (value ?mp) (certainty ?certainty-6))
+;;  (attribute (name supermercati) (value ?sm) (certainty ?certainty-7))
+;;  =>
+;;  (assert (attribute (name house) (value ?i) (city ?c) 
+ ;;                    (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3 ?certainty-4 ?certainty-5 ?certainty-6 ?certainty-7)))))
 
 
 
