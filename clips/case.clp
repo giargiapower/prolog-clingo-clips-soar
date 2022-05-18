@@ -1,6 +1,3 @@
-;; QUANTI MODULI USARE 
-;; DOMANDE_GENERICHE, RULES , PRINTA PRIME PROPOSTE , DEOMANDE_2 , RULES_2, PRINT, RICHIEDI_DOMANDA(DA MAIN?), CONTROLLO_UNKOWN, RULES_UNKNOWN, PRINT
-
 (defmodule MAIN (export ?ALL))
 
 ;;****************
@@ -26,6 +23,10 @@
    (slot value)
    (slot city (default nill))
    (slot certainty (default 100.0)))
+
+(deftemplate MAIN::flag
+   (slot profile)
+   )
 
 (defrule MAIN::start
   (declare (salience 10000))
@@ -88,6 +89,10 @@
    (assert (attribute (name ?the-attribute)
                       (value (ask-question ?the-question ?valid-answers)))))
 
+(defrule PROFILING::activate-flag
+     =>(assert (flag (profile si)))
+)
+
   
 ;;******************
 ;;* QUESTION RULES *
@@ -131,6 +136,12 @@
    (assert (attribute (name ?the-attribute)
                       (value (ask-question ?the-question ?valid-answers)))))
 
+
+(defrule QUESTIONS::deactivate-flag
+      ?f <- (flag (profile si))
+       =>
+   (modify ?f (profile no))
+)
 
 ;;***********************
 ;;* HOUSE-QUESTIONS *
@@ -539,6 +550,7 @@
 ;; di attribute, inoltre per gli attributi laschi come miglioreprezzo e metri quadri in (value ?p)..
 ;; bisogna mettere che sia minore di MAX e magggiore di MIN altrimenti matcha solo i valori esatti
 (defrule HOUSES::generate-house-profiling
+  (flag (profile si))
   (house (indirizzo ?i)
         (citta ?c)
         (zona  ?z )
@@ -560,29 +572,30 @@
 ;;ho corretto un attributo nelle QUESTIONS perchè l'avevo scritto male e non prendeva le domande con precursor
 ;;ho aggiunto nel focus del main dopo QUESTIONS di nuovo CHOOSE-HOUSES HOUSES PRINT-RESULTS per vedere se continuava l'interazione e sembra funzionare
 
-;;(defrule HOUSES::generate-house
-;;  (house (indirizzo ?i)
- ;;       (citta ?c)
-;;      (zona  ?z )
- ;;       (quartiere ?q )
-;;        (scuole ?sc )
-;;        (boxAuto ?bx)
-;;        (terrazzino ?tr)
-;;        (metropolitana ?mp)
-;;        (supermercati ?sm)
-;;        
-;;        )
- ;; (attribute (name migliore-citta) (value ?c) (certainty ?certainty-0))
- ;; (attribute (name migliore-zona) (value ?z) (certainty ?certainty-1))
-;;  (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
-;;  (attribute (name scuole) (value ?sc) (certainty ?certainty-3))
-;;  (attribute (name boxAuto) (value ?bx) (certainty ?certainty-4))
-;;  (attribute (name terrazzino) (value ?tr) (certainty ?certainty-5))
-;;  (attribute (name metropolitana) (value ?mp) (certainty ?certainty-6))
-;;  (attribute (name supermercati) (value ?sm) (certainty ?certainty-7))
-;;  =>
-;;  (assert (attribute (name house) (value ?i) (city ?c) 
- ;;                    (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3 ?certainty-4 ?certainty-5 ?certainty-6 ?certainty-7)))))
+(defrule HOUSES::generate-house
+    (flag (profile no))
+  (house (indirizzo ?i)
+       (citta ?c)
+      (zona  ?z )
+       (quartiere ?q )
+        (scuole ?sc )
+        (boxAuto ?bx)
+        (terrazzino ?tr)
+        (metropolitana ?mp)
+        (supermercati ?sm)
+        
+       )
+ (attribute (name migliore-citta) (value ?c) (certainty ?certainty-0))
+ (attribute (name migliore-zona) (value ?z) (certainty ?certainty-1))
+  (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
+  (attribute (name scuole) (value ?sc) (certainty ?certainty-3))
+  (attribute (name boxAuto) (value ?bx) (certainty ?certainty-4))
+  (attribute (name terrazzino) (value ?tr) (certainty ?certainty-5))
+  (attribute (name metropolitana) (value ?mp) (certainty ?certainty-6))
+  (attribute (name supermercati) (value ?sm) (certainty ?certainty-7))
+  =>
+  (assert (attribute (name house) (value ?i) (city ?c) 
+                    (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3 ?certainty-4 ?certainty-5 ?certainty-6 ?certainty-7)))))
 
 
 
