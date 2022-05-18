@@ -593,7 +593,7 @@
  (attribute (name migliore-citta) (value ?c) (certainty ?certainty-0))
  (attribute (name migliore-zona) (value ?z) (certainty ?certainty-1))
   (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
-  (attribute (name numBagni) (value ?q) (certainty ?certainty-2))
+  (attribute (name numBagni) (value (eq ?a 50) & ?ba&:(> ?ba 5)) (certainty ?certainty-2))
   (attribute (name numVani) (value ?q) (certainty ?certainty-3))
   (attribute (name numPiano) (value ?q) (certainty ?certainty-4))
   (attribute (name migliore-prezzo) (value ?q) (certainty ?certainty-5))
