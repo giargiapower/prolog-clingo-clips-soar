@@ -197,6 +197,9 @@
   (question (attribute citta_scelta)
             (the-question "In quale citta cerca casa? ")
             (valid-answers torino milano roma))
+(question (attribute migliore-prezzo)
+            (the-question "a quanto ammonta circa il suo budget (5 10 20 50 75 100 110 120 150 175 200 210 220 250 275 300)?")
+            (valid-answers 5 10 20 50 75 100 110 120 150 175 200 210 220 250 275 300))
 )
 
 
@@ -582,7 +585,7 @@
   (house (indirizzo via_germansca_21)(citta torino) (zona periferia) (quartiere cenisia) (numBagni 1) (numVani 3) (numPiano 2) (prezzo 60) (terrazzino si) (boxAuto no) (metropolitana no) (scuole no) (supermercati si))
   (house (indirizzo corso_giulio_39)(citta torino) (zona centro) (quartiere bariera) (numBagni 2) (numVani 5) (numPiano 5) (prezzo 200) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
   (house (indirizzo corso_inglilterra_41)(citta torino) (zona centro) (quartiere san_donato) (numBagni 1) (numVani 3) (numPiano 2) (prezzo 48) (terrazzino no) (boxAuto si) (metropolitana si) (scuole no) (supermercati si))
-  (house (indirizzo via_vigone_31)(citta torino) (zona periferia) (quartiere san_paolo) (numBagni 2) (numVani 3) (numPiano 3) (prezzo 56) (terrazzino si) (boxAuto no) (metropolitana no) (scuole no) (supermercati si))
+  (house (indirizzo via_vigone_31)(citta torino) (zona periferia) (quartiere san_paolo) (numBagni 2) (numVani 3) (numPiano 3) (prezzo 56) (terrazzino no) (boxAuto no) (metropolitana no) (scuole no) (supermercati si))
 
   (house (indirizzo piazza_della_scala_2)(citta milano) (zona centro) (quartiere centro_storico) (numBagni 1) (numVani 3) (numPiano 1) (prezzo 150) (terrazzino si) (boxAuto si) (metropolitana si) (scuole si) (supermercati no))
   (house (indirizzo viale_piave_8)(citta milano) (zona centro) (quartiere porta_venezia) (numBagni 2) (numVani 4) (numPiano 3) (prezzo 60) (terrazzino no) (boxAuto no) (metropolitana si) (scuole no) (supermercati si))
