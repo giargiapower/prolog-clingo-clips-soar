@@ -138,6 +138,7 @@
 
 
 (defrule QUESTIONS::deactivate-flag
+      (declare (salience -100))
       ?f <- (flag (profile si))
        =>
    (modify ?f (profile no))
@@ -479,10 +480,10 @@
   (attribute (name migliore-citta) (value any))
   (attribute (name migliore-zona) (value any))
   (attribute (name migliore-quartiere) (value any))
-  (attribute (name numBagni) (value any))
-  (attribute (name numVani) (value any))
-  (attribute (name numPiano) (value any))
-  (attribute (name migliore-prezzo) (value any))
+  (attribute (name numBagni) (value INTEGER))
+  (attribute (name numVani) (value INTEGER))
+  (attribute (name numPiano) (value INTEGER))
+  (attribute (name migliore-prezzo) (value INTEGER))
   (attribute (name terrazzino) (value any))
   (attribute (name boxAuto) (value any)) 
   (attribute (name metropolitana) (value any))
@@ -590,21 +591,22 @@
       (scuole ?sc )
       (supermercati ?sm)
        )
+
  (attribute (name migliore-citta) (value ?c) (certainty ?certainty-0))
  (attribute (name migliore-zona) (value ?z) (certainty ?certainty-1))
   (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
-  (attribute (name numBagni) (value (eq ?a 50) & ?ba&:(> ?ba 5)) (certainty ?certainty-2))
-  (attribute (name numVani) (value ?q) (certainty ?certainty-3))
-  (attribute (name numPiano) (value ?q) (certainty ?certainty-4))
-  (attribute (name migliore-prezzo) (value ?q) (certainty ?certainty-5))
-  (attribute (name terrazzino) (value ?tr) (certainty ?certainty-6))
-  (attribute (name boxAuto) (value ?bx) (certainty ?certainty-7))
-  (attribute (name metropolitana) (value ?mp) (certainty ?certainty-8))
-  (attribute (name scuole) (value ?sc) (certainty ?certainty-9))
-  (attribute (name supermercati) (value ?sm) (certainty ?certainty-10))
+  (attribute (name numBagni) (value ?ba&:(>= ?ba ?nb) ) (certainty ?certainty-3))
+  (attribute (name numVani) (value ?v&:(>= ?v ?nv)) (certainty ?certainty-4))
+  (attribute (name numPiano) (value ?numP&:(>= ?numP ?np)) (certainty ?certainty-5))
+  (attribute (name migliore-prezzo) (value ?mpr&:(>= ?mpr (+ ?pr 50)) & ?mpr&:(<= ?mpr (- ?pr 50))) (certainty ?certainty-6))
+  (attribute (name terrazzino) (value ?tr) (certainty ?certainty-7))
+  (attribute (name boxAuto) (value ?bx) (certainty ?certainty-8))
+  (attribute (name metropolitana) (value ?mp) (certainty ?certainty-9))
+  (attribute (name scuole) (value ?sc) (certainty ?certainty-10))
+  (attribute (name supermercati) (value ?sm) (certainty ?certainty-11))
   =>
   (assert (attribute (name house) (value ?i) (city ?c) 
-                    (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3 ?certainty-4 ?certainty-5 ?certainty-6 ?certainty-7)))))
+                    (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3 ?certainty-4 ?certainty-5 ?certainty-6 ?certainty-7 ?certainty-8 ?certainty-9 ?certainty-10 ?certainty-11)))))
 
 
 
