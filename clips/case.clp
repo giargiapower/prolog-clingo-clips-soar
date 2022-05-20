@@ -665,7 +665,7 @@
   (attribute (name numBagni) (value ?ba&:(neq ?ba any) & ?ba&:(>= (integer ?ba)  ?nb)) (certainty ?certainty-3))
   (attribute (name numVani) (value ?v&:(neq ?v any) & ?v&:(>= (integer ?v) (integer ?nv)) & ?v&:(neq ?v nill)) (certainty ?certainty-4))
   (attribute (name numPiano) (value ?numP&:(neq ?numP any) & ?numP&:(>= (integer ?numP) (integer ?np)) & ?numP&:(neq ?numP nill)) (certainty ?certainty-5))
-  ;;(attribute (name migliore-prezzo) (value ?mpr&:(neq ?mpr any) & ?mpr&:(>= (integer ?mpr) (+ (integer ?pr) 50)) & ?mpr&:(<= (integer ?mpr) (- (integer ?pr) 50)) & ?mpr&:(neq ?mpr nill)) (certainty ?certainty-6))
+  (attribute (name migliore-prezzo) (value ?mpr&:(neq ?mpr any) & ?mpr&:(>= (integer ?mpr) (+ (integer ?pr) 50)) & ?mpr&:(<= (integer ?mpr) (- (integer ?pr) 50)) & ?mpr&:(neq ?mpr nill)) (certainty ?certainty-6))
   (attribute (name terrazzino) (value ?tr) (certainty ?certainty-7))
   (attribute (name boxAuto) (value ?bx) (certainty ?certainty-8))
   (attribute (name metropolitana) (value ?mp) (certainty ?certainty-9))
@@ -673,8 +673,7 @@
   (attribute (name supermercati) (value ?sm) (certainty ?certainty-11))
   =>
   (assert (attribute (name house) (value ?i) (city ?c) 
-                    (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3 ?certainty-4 ?certainty-5 ?certainty-7 ?certainty-8 ?certainty-9 ?certainty-10 ?certainty-11)))))
- ;;?certainty-6 
+                    (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3 ?certainty-4 ?certainty-5 ?certainty-6  ?certainty-7 ?certainty-8 ?certainty-9 ?certainty-10 ?certainty-11)))))
 
 
 
