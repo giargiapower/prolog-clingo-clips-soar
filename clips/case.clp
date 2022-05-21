@@ -18,6 +18,7 @@
 ;;* INITIAL STATE *
 ;;*****************
 
+
 (deftemplate MAIN::attribute
    (slot name)
    (slot value)
@@ -32,7 +33,7 @@
   (declare (salience 10000))
   =>
   (set-fact-duplication TRUE)
-  (focus PROFILING CHOOSE-PROFILING-HOUSES HOUSES PRINT-RESULTS QUESTIONS CHOOSE-HOUSES HOUSES PRINT-RESULTS))
+  (focus PROFILING CHOOSE-PROFILING-HOUSES HOUSES PRINT-RESULTS QUESTIONS CHOOSE-HOUSES HOUSES PRINT-RESULTS UNKNOWN-REQUEST))
   
 
 ;; se ci sono 2 fatti uguali ma con CF diversi combinali
@@ -156,39 +157,18 @@
             (the-question "A che piano cerca casa?")
             (valid-answers type 1 2 3 4 5 6 unknown))
   (question (attribute numVani)
-            (the-question "Quante stanze cerca?")
+            (the-question "Quante stanze deve avere la casa come minimo?")
             (valid-answers 2 3 4 5))
   (question (attribute numBagni)
             (the-question "Quanti bagni vuole? ")
             (valid-answers 1 2 3))
   (question (attribute metropolitana)
-            (precursors-name zona_scelta)
-            (precursors-answer centro)
             (the-question "Vuole la metropolitana vicina? ")
             (valid-answers si no unknown))
   (question (attribute scuole)
-            (precursors-name zona_scelta)
-            (precursors-answer centro)
-            (the-question "Vuole la scuola vicino a casa? ")
-            (valid-answers si no unknown))
-  (question (attribute metropolitana)
-            (precursors-name zona_scelta)
-            (precursors-answer periferia)
-            (the-question "Vuole la metropolitana vicina? ")
-            (valid-answers si no unknown))
-  (question (attribute scuole)
-            (precursors-name zona_scelta)
-            (precursors-answer periferia)
-            (the-question "Vuole la scuola vicino a casa? ")
-            (valid-answers si no unknown))
-  (question (attribute scuola)
-            (precursors-name zona_scelta)
-            (precursors-answer prima_cintura)
             (the-question "Vuole la scuola vicino a casa? ")
             (valid-answers si no unknown))
   (question (attribute supermercati)
-            (precursors-name zona_scelta)
-            (precursors-answer prima_cintura)
             (the-question "Vuole il supermercato vicino a casa? ")
             (valid-answers si no unknown))
   (question (attribute zona_scelta)
@@ -494,14 +474,14 @@
         (answer 1)
         (attribute numBagni)
         (value_attribute 1 2 3)
-        (cf_value 80 50 10)
+        (cf_value 80 60 50)
         )
 
 (rule (question numBagni)
         (answer 2)
         (attribute numBagni)
         (value_attribute 1 2 3)
-        (cf_value 50 80 50)
+        (cf_value 30 80 60)
         )
 
 (rule (question numBagni)
@@ -513,28 +493,28 @@
 
 (rule (question numVani)
         (answer 2)
-        (attribute numBagni)
+        (attribute numVani)
         (value_attribute 2 3 4 5)
         (cf_value 80 60 30 10)
         )
 
 (rule (question numVani)
         (answer 3)
-        (attribute numBagni)
+        (attribute numVani)
         (value_attribute 2 3 4 5)
         (cf_value 50 80 50 30)
         )
 
 (rule (question numVani)
         (answer 4)
-        (attribute numBagni)
+        (attribute numVani)
         (value_attribute 2 3 4 5)
         (cf_value 30 50 80 50)
         )
 
 (rule (question numVani)
         (answer 5)
-        (attribute numBagni)
+        (attribute numVani)
         (value_attribute 2 3 4 5)
         (cf_value 10 30 60 80)
         )
@@ -672,19 +652,17 @@
  (attribute (name migliore-zona) (value ?z) (certainty ?certainty-1))
   (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
   (attribute (name numBagni) (value ?ba&:(neq ?ba any) & ?ba&:(>= (integer ?ba)  ?nb)) (certainty ?certainty-3))
-  (attribute (name numVani) (value ?v&:(neq ?v any) & ?v&:(>= (integer ?v) (integer ?nv)) & ?v&:(neq ?v nill)) (certainty ?certainty-4))
-  (attribute (name numPiano) (value ?numP&:(neq ?numP any) & ?numP&:(>= (integer ?numP) (integer ?np)) & ?numP&:(neq ?numP nill)) (certainty ?certainty-5))
-  (attribute (name migliore-prezzo) (value ?mpr&:(neq ?mpr any) & ?mpr&:(>= (integer ?mpr) (+ (integer ?pr) 50)) & ?mpr&:(<= (integer ?mpr) (- (integer ?pr) 50)) & ?mpr&:(neq ?mpr nill)) (certainty ?certainty-6))
-  (attribute (name terrazzino) (value ?tr) (certainty ?certainty-7))
-  (attribute (name boxAuto) (value ?bx) (certainty ?certainty-8))
+  (attribute (name numVani) (value ?v&:(neq ?v any) & ?v&:(>= (integer ?v) (integer ?nv))) (certainty ?certainty-4))
+  (attribute (name numPiano) (value ?numP&:(neq ?numP any) & ?numP&:(>= (integer ?numP) (integer ?np))) (certainty ?certainty-5))
+  (attribute (name migliore-prezzo) (value ?mpr&:(neq ?mpr any) & ?mpr&:(>= (integer ?mpr) (+ (integer ?pr) 50)) & ?mpr&:(<= (integer ?mpr) (- (integer ?pr) 50))) (certainty ?certainty-6))
+ (attribute (name terrazzino) (value ?tr) (certainty ?certainty-7))
+ (attribute (name boxAuto) (value ?bx) (certainty ?certainty-8))
   (attribute (name metropolitana) (value ?mp) (certainty ?certainty-9))
   (attribute (name scuole) (value ?sc) (certainty ?certainty-10))
   (attribute (name supermercati) (value ?sm) (certainty ?certainty-11))
   =>
   (assert (attribute (name house) (value ?i) (city ?c) 
-                    (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3 ?certainty-4 ?certainty-5 ?certainty-6  ?certainty-7 ?certainty-8 ?certainty-9 ?certainty-10 ?certainty-11)))))
-
-
+                    (certainty (min  ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3 ?certainty-4 ?certainty-5 ?certainty-6 ?certainty-7 ?certainty-8 ?certainty-9 ?certainty-10 ?certainty-11)))))
 
 ;;*****************************
 ;;* PRINT SELECTED HOUSE RULES *
@@ -723,5 +701,52 @@
    (not (attribute (name house)))
    =>
    (printout t ))
+
+
+
+
+;;**********************
+;;*ASK UNKNOWN-REQUEST *
+;;**********************
+
+(defmodule UNKNOWN-REQUEST(import MAIN ?ALL) (export ?ALL))
+
+(deftemplate UNKNOWN-REQUEST::u-quest
+   (slot attribute (default ?NONE))
+   (slot the-question (default ?NONE))
+   (multislot valid-answers (default ?NONE))
+        )
+
+  (defrule UNKNOWN-REQUEST::ask-unknown 
+        ?f <- (u-quest (the-question ?the-question)
+                   (attribute ?the-attribute)
+                   (valid-answers $?valid-answers))
+   =>
+   (assert (attribute (name ?the-attribute)
+                      (value (ask-question ?the-question ?valid-answers))))
+  )
+
+
+  (deffacts UNKNOWN-REQUEST::question-unknown
+  (u-quest (attribute aggiungi-risposta)
+            (the-question "Vuole aggiungere delle informazioni che prima non sapeva?")
+            (valid-answers si no))
+  )
+
+
+   (defrule UNKNOWN-REQUEST::ask-questions 
+        ?f <- (attribute (name  aggiungi-risposta)
+                   (value si))
+   =>
+   (focus ASK-MORE)
+  )
+
+
+;;**********************
+;;*ASK MORE REQUEST *
+;;**********************
+
+(defmodule ASK-MORE(import MAIN ?ALL) (export ?ALL))
+
 
 
