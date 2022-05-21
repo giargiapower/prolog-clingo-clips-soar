@@ -144,7 +144,7 @@
 ;;* HOUSE-QUESTIONS *
 ;;***********************
 
-(defmodule HOUSE-QUESTIONS (import QUESTIONS ?ALL))
+(defmodule HOUSE-QUESTIONS (import QUESTIONS ?ALL) (export ?ALL))
 
 (deffacts HOUSE-QUESTIONS::question-attributes
   (question (attribute terrazzino)
@@ -738,7 +738,7 @@
         ?f <- (attribute (name  aggiungi-risposta)
                    (value si))
    =>
-   (focus ASK-MORE)
+   (focus ASK-MORE HOUSES PRINT-RESULTS)
   )
 
 
@@ -746,7 +746,18 @@
 ;;*ASK MORE REQUEST *
 ;;**********************
 
-(defmodule ASK-MORE(import MAIN ?ALL) (export ?ALL))
+(defmodule ASK-MORE(import MAIN ?ALL)(import HOUSE-QUESTIONS ?ALL))
+
+  (defrule ASK-MORE::ask-again 
+        ?f <-   (attribute (name ?the-attribute) 
+                         (value unknown))  
+                (question (the-question ?the-question)
+                   (attribute ?the-attribute)
+                   (valid-answers $?valid-answers))
+   =>
+   (modify  ?f  (value (ask-question ?the-question ?valid-answers)))
+  )
+
 
 
 
