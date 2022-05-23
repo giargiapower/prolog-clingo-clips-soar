@@ -587,15 +587,7 @@
 
 
 (rule (question migliore-prezzo)
-        (answer 6)
-        (attribute numPiano)
-        (value_attribute 6)
-        (cf_value 90)
-        )
-
-
-(rule (question migliore-prezzo)
-        (answer 20)
+        (answer 50)
         (attribute migliore-prezzo)
         (value_attribute 5 10 20 50 75)
         (cf_value 50 50 70 80 80)
