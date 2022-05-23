@@ -579,7 +579,7 @@
   (house (indirizzo via_pasticcio_12)(citta torino) (zona centro) (quartiere vanchiglia) (numBagni 2) (numVani 3) (numPiano 3) (prezzo 150) (terrazzino si) (boxAuto si) (metropolitana si) (scuole si) (supermercati no))
   (house (indirizzo via_sapri_2)(citta torino) (zona centro) (quartiere vanchiglia) (numBagni 1) (numVani 2) (numPiano 1) (prezzo 40) (terrazzino no) (boxAuto si) (metropolitana no) (scuole si) (supermercati no))
   (house (indirizzo via_michele_lessona_14)(citta torino) (zona prima_cintura) (quartiere campidoglio) (numBagni 1) (numVani 2) (numPiano 4) (prezzo 100) (terrazzino no) (boxAuto no) (metropolitana no) (scuole si) (supermercati no))
-  (house (indirizzo via_svizzera_70)(citta torino) (zona prima_cintura) (quartiere campidoglio) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino np) (boxAuto no) (metropolitana no) (scuole no) (supermercati no))
+  (house (indirizzo via_svizzera_70)(citta torino) (zona prima_cintura) (quartiere campidoglio) (numBagni 3) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino no) (boxAuto no) (metropolitana no) (scuole no) (supermercati no))
   (house (indirizzo via_po_1)(citta torino) (zona prima_cintura) (quartiere san_donato) (numBagni 2) (numVani 3) (numPiano 3) (prezzo 80) (terrazzino no) (boxAuto no) (metropolitana no) (scuole si) (supermercati si))
   (house (indirizzo via_germano_6)(citta torino) (zona periferia) (quartiere cenisia) (numBagni 1) (numVani 3) (numPiano 2) (prezzo 60) (terrazzino si) (boxAuto no) (metropolitana no) (scuole no) (supermercati si))
   (house (indirizzo via_cartelli_12)(citta torino) (zona periferia) (quartiere barriera) (numBagni 2) (numVani 5) (numPiano 5) (prezzo 200) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
