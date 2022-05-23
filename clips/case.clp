@@ -585,17 +585,8 @@
         (cf_value 90)
         )
 
-
 (rule (question migliore-prezzo)
-        (answer 6)
-        (attribute numPiano)
-        (value_attribute 6)
-        (cf_value 90)
-        )
-
-
-(rule (question migliore-prezzo)
-        (answer 20)
+        (answer 50)
         (attribute migliore-prezzo)
         (value_attribute 5 10 20 50 75)
         (cf_value 50 50 70 80 80)
@@ -859,7 +850,7 @@
         ?f <- (attribute (name  aggiungi-risposta)
                    (value si))
    =>
-   (focus ASK-MORE CHOOSE-HOUSES HOUSES PRINT-RESULTS)
+   (focus ASK-MORE HOUSES PRINT-RESULTS)
   )
 
 
