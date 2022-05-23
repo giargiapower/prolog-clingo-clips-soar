@@ -23,6 +23,14 @@
    (slot name)
    (slot value)
    (slot city (default nill))
+   (slot zona  (default nill))
+   (slot quartiere  (default nill))
+   (slot numBagni (default nill))
+   (slot numVani (default nill))
+   (slot numPiano (default nill))
+   (slot prezzo (default nill))
+   (slot terrazzino (default nill))
+   (slot boxAuto (default nill))
    (slot certainty (default 100.0)))
 
 (deftemplate MAIN::flag
@@ -664,13 +672,19 @@
         (zona  ?z )
         (quartiere ?q )
         (scuole ?sc )
+        (numBagni ?nb)
+      (numVani ?nv)
+      (numPiano ?np)
+      (prezzo ?pr)
+      (terrazzino ?tr)
+      (boxAuto ?bx)
         )
   (attribute (name migliore-citta) (value ?c) (certainty ?certainty-0))
   (attribute (name migliore-zona) (value ?z) (certainty ?certainty-1))
   (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
   (attribute (name scuole) (value ?sc) (certainty ?certainty-3))
   =>
-  (assert (attribute (name house) (value ?i) (city ?c) 
+  (assert (attribute (name house) (value ?i) (city ?c)  (zona ?z)( quartiere ?q)( numBagni ?nb) ( numVani ?nv) ( numPiano ?np)( prezzo ?pr)(terrazzino ?tr)( boxAuto ?bx)
                      (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3)))))
 
 
@@ -712,7 +726,7 @@
   (attribute (name scuole) (value ?scuole&:(eq ?scuole unknown) | ?sc) (certainty ?certainty-10))
  (attribute (name supermercati) (value ?supermercati&:(eq ?supermercati unknown) | ?sm) (certainty ?certainty-11))
   =>
-  (assert (attribute (name house) (value ?i) (city ?c) 
+  (assert (attribute (name house) (value ?i) (city ?c) (zona ?z)( quartiere ?q)( numBagni ?nb) ( numVani ?nv) ( numPiano ?np)( prezzo ?pr)(terrazzino ?tr)( boxAuto ?bx)
                     (certainty (min  ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3 ?certainty-4 ?certainty-5 ?certainty-6  ?certainty-7 ?certainty-8 ?certainty-9 ?certainty-10 ?certainty-11)))))
 ;; 
 ;;*****************************
@@ -732,16 +746,16 @@
    (declare (salience 10))
    =>
    (printout t "MAYBE THESE HOUSES MAY INTEREST YOU" crlf)
-   (printout t "  HOUSE      CITY        CERTAINTY" crlf)
+   (printout t "  CASA             CITTA'               ZONA                    QUARTIERE             NUMERO_BAGNI   NUMERO_STANZE    PIANO     PREZZO              TERRAZZINO              BOX_AUTO               CERTAINTY" crlf)
    (printout t " -------------------------------" crlf)
    (assert (phase print-house)))
 
 (defrule PRINT-RESULTS::print-house ""
-  ?rem <- (attribute (name house) (value ?name) (city ?c) (certainty ?per))	  
+  ?rem <- (attribute (name house) (value ?name) (city ?c) (zona ?z)( quartiere ?q)( numBagni ?nb) ( numVani ?nv) ( numPiano ?np)( prezzo ?pr)(terrazzino ?tr)( boxAuto ?bx) (certainty ?per))	  
   (not (attribute (name house) (certainty ?per1&:(> ?per1 ?per))))
   =>
   (retract ?rem)
-  (format t " %-24s %-24s %2d%%%n" ?name ?c ?per))
+  (format t " %-24s %-24s %-24s %-24s %2d %2d %2d %2d %-24s %-24s %2d%%%n" ?name ?c  ?z ?q ?nb ?nv ?np ?pr ?tr ?bx ?per))
 
 (defrule PRINT-RESULTS::remove-poor-house-choices ""
   ?rem <- (attribute (name house) (certainty ?per&:(< ?per 20)))
