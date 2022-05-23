@@ -23,6 +23,14 @@
    (slot name)
    (slot value)
    (slot city (default nill))
+   (slot zona  (default nill))
+   (slot quartiere  (default nill))
+   (slot numBagni (default nill))
+   (slot numVani (default nill))
+   (slot numPiano (default nill))
+   (slot prezzo (default nill))
+   (slot terrazzino (default nill))
+   (slot boxAuto (default nill))
    (slot certainty (default 100.0)))
 
 (deftemplate MAIN::flag
@@ -180,8 +188,8 @@
 (question (attribute migliore-prezzo)
             (the-question "a quanto ammonta circa il suo budget indicativamente (50 100 200 300)?")
             (valid-answers 50 100 200 300))
-)
 
+)
 
 
 
@@ -422,48 +430,19 @@
         (cf_value 10 10 90)
         )
 
-;;(rule (question terrazzino)
-        ;;(answer si)
-        ;;(attribute migliore-quartiere)
-        ;;(value_attribute crocetta vanchiglia san_donato san_paolo centro_storico porta_venezia pilone magliana boccea testaccio)
-        ;;(cf_value 80 60 40 70 70 40 80 50 70 80)
-        ;;)
-
 (rule (question terrazzino)
         (answer si)
-        (attribute terrazino)
-        (value_attribute si no)
-        (cf_value 90 10)
-        )
-
-(rule (question terrazzino)
-        (answer no)
-        (attribute terrazino)
-        (value_attribute si no)
-        (cf_value 10 90)
+        (attribute migliore-quartiere)
+        (value_attribute crocetta vanchiglia san_donato san_paolo centro_storico porta_venezia pilone magliana boccea testaccio)
+        (cf_value 80 60 40 70 70 40 80 50 70 80)
         )
 
 (rule (question boxAuto)
         (answer si)
-        (attribute boxAuto)
-        (value_attribute si no)
-        (cf_value 90 10)
+        (attribute migliore-quartiere)
+        (value_attribute crocetta vanchiglia san_donato san_paolo centro_storico porta_venezia pilone magliana boccea testaccio flaminio)
+        (cf_value 80 70 40 30 70 40 80 80 40 50 40)
         )
-
-(rule (question boxAuto)
-        (answer no)
-        (attribute boxAuto)
-        (value_attribute si no)
-        (cf_value 10 90)
-        )
-
-
-;;(rule (question boxAuto)
-        ;;(answer si)
-        ;;(attribute migliore-quartiere)
-        ;;(value_attribute crocetta vanchiglia san_donato san_paolo centro_storico porta_venezia pilone magliana boccea testaccio flaminio)
-        ;;(cf_value 80 70 40 30 70 40 80 80 40 50 40)
-        ;;)
 
 (rule (question metropolitana)
         (answer si)
@@ -471,6 +450,9 @@
         (value_attribute crocetta vanchiglia campidoglio san_donato centro_storico porta_venezia sassi centrale lazzareto boccea testaccio magliana flaminio)
         (cf_value 70 70 40 30 80 70 40 90 80 40 80 50 80)
         )
+
+
+
 
 (rule (question scuole)
         (answer si)
@@ -485,6 +467,7 @@
         (value_attribute centrale crocetta barriera campidoglio foramgno lazzaretto sassi boccea magliana flaminio)
         (cf_value 60 40 70 30 50 80 50 70 40 60 )
         )
+
 
 (rule (question supermercati)
         (answer si)
@@ -548,6 +531,7 @@
         (value_attribute 2 3 4 5)
         (cf_value 10 30 60 80)
         )
+
 (rule (question numPiano)
         (answer 1)
         (attribute numPiano)
@@ -585,7 +569,7 @@
         (cf_value 90)
         )
 
-(rule (question migliore-prezzo)
+        (rule (question migliore-prezzo)
         (answer 50)
         (attribute migliore-prezzo)
         (value_attribute 5 10 20 50 75)
@@ -684,8 +668,8 @@
   (house (indirizzo via_po_1)(citta torino) (zona prima_cintura) (quartiere san_donato) (numBagni 2) (numVani 3) (numPiano 3) (prezzo 80) (terrazzino no) (boxAuto no) (metropolitana no) (scuole si) (supermercati si))
   (house (indirizzo via_germano_6)(citta torino) (zona periferia) (quartiere cenisia) (numBagni 1) (numVani 3) (numPiano 2) (prezzo 60) (terrazzino si) (boxAuto no) (metropolitana no) (scuole no) (supermercati si))
   (house (indirizzo via_cartelli_12)(citta torino) (zona periferia) (quartiere barriera) (numBagni 2) (numVani 5) (numPiano 5) (prezzo 200) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
-  (house (indirizzo corso_inglilterra_10)(citta torino) (zona centro) (quartiere san_donato) (numBagni 1) (numVani 3) (numPiano 2) (prezzo 50) (terrazzino no) (boxAuto si) (metropolitana si) (scuole no) (supermercati si))
-  (house (indirizzo via_vigone_40)(citta torino) (zona periferia) (quartiere san_paolo) (numBagni 2) (numVani 3) (numPiano 3) (prezzo 60) (terrazzino no) (boxAuto no) (metropolitana no) (scuole no) (supermercati si))
+  (house (indirizzo corso_inglilterra_10)(citta torino) (zona centro) (quartiere san_donato) (numBagni 1) (numVani 3) (numPiano 2) (prezzo 48) (terrazzino no) (boxAuto si) (metropolitana si) (scuole no) (supermercati si))
+  (house (indirizzo via_vigone_40)(citta torino) (zona periferia) (quartiere san_paolo) (numBagni 2) (numVani 3) (numPiano 3) (prezzo 56) (terrazzino no) (boxAuto no) (metropolitana no) (scuole no) (supermercati si))
 
 
   (house (indirizzo piazza_della_scala_2)(citta milano) (zona centro) (quartiere centro_storico) (numBagni 1) (numVani 3) (numPiano 1) (prezzo 150) (terrazzino si) (boxAuto si) (metropolitana si) (scuole si) (supermercati no))
@@ -725,13 +709,19 @@
         (zona  ?z )
         (quartiere ?q )
         (scuole ?sc )
+        (numBagni ?nb)
+      (numVani ?nv)
+      (numPiano ?np)
+      (prezzo ?pr)
+      (terrazzino ?tr)
+      (boxAuto ?bx)
         )
   (attribute (name migliore-citta) (value ?c) (certainty ?certainty-0))
   (attribute (name migliore-zona) (value ?z) (certainty ?certainty-1))
   (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
   (attribute (name scuole) (value ?sc) (certainty ?certainty-3))
   =>
-  (assert (attribute (name house) (value ?i) (city ?c) 
+  (assert (attribute (name house) (value ?i) (city ?c)  (zona ?z)( quartiere ?q)( numBagni ?nb) ( numVani ?nv) ( numPiano ?np)( prezzo ?pr)(terrazzino ?tr)( boxAuto ?bx)
                      (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3)))))
 
 
@@ -765,16 +755,16 @@
   (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
   (attribute (name numBagni) (value ?ba&:(neq ?ba any) & ?ba&:(>= (integer ?ba)  ?nb)) (certainty ?certainty-3))
   (attribute (name numVani) (value ?v&:(neq ?v any) & ?v&:(>= (integer ?v) (integer ?nv))) (certainty ?certainty-4))
-  (attribute (name numPiano) (value ?numP&:(neq ?numP any) & ?numP&:(>= (integer ?numP) (integer ?np))) (certainty ?certainty-5))
+  (attribute (name numPiano) (value ?numP&:(eq ?numP unknown) | ?numP&:(neq ?numP any) & ?numP&:(>= (integer ?numP) (integer ?np))) (certainty ?certainty-5))
   (attribute (name migliore-prezzo) (value ?mpr&:(neq ?mpr any) & ?mpr&:(<= (integer ?mpr) (+ (integer ?pr) 50)) & ?mpr&:(>= (integer ?mpr) (- (integer ?pr) 50))) (certainty ?certainty-6))
  (attribute (name terrazzino) (value ?tr) (certainty ?certainty-7))
  (attribute (name boxAuto) (value ?bx) (certainty ?certainty-8))
-  ;;(attribute (name metropolitana) (value ?mp) (certainty ?certainty-9))
-  ;;(attribute (name scuole) (value ?sc) (certainty ?certainty-10))
- ;;(attribute (name supermercati) (value ?sm) (certainty ?certainty-11))
+  (attribute (name metropolitana) (value ?met&:(eq ?met unknown) | ?mp ) (certainty ?certainty-9))
+  (attribute (name scuole) (value ?scuole&:(eq ?scuole unknown) | ?sc) (certainty ?certainty-10))
+ (attribute (name supermercati) (value ?supermercati&:(eq ?supermercati unknown) | ?sm) (certainty ?certainty-11))
   =>
-  (assert (attribute (name house) (value ?i) (city ?c) 
-                    (certainty (min  ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3 ?certainty-4 ?certainty-5 ?certainty-6  ?certainty-7 ?certainty-8)))))
+  (assert (attribute (name house) (value ?i) (city ?c) (zona ?z)( quartiere ?q)( numBagni ?nb) ( numVani ?nv) ( numPiano ?np)( prezzo ?pr)(terrazzino ?tr)( boxAuto ?bx)
+                    (certainty (min  ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3 ?certainty-4 ?certainty-5 ?certainty-6  ?certainty-7 ?certainty-8 ?certainty-9 ?certainty-10 ?certainty-11)))))
 ;; 
 ;;*****************************
 ;;* PRINT SELECTED HOUSE RULES *
@@ -793,16 +783,16 @@
    (declare (salience 10))
    =>
    (printout t "MAYBE THESE HOUSES MAY INTEREST YOU" crlf)
-   (printout t "  HOUSE      CITY        CERTAINTY" crlf)
+   (printout t "  CASA             CITTA'               ZONA                    QUARTIERE             NUMERO_BAGNI   NUMERO_STANZE    PIANO     PREZZO              TERRAZZINO              BOX_AUTO               CERTAINTY" crlf)
    (printout t " -------------------------------" crlf)
    (assert (phase print-house)))
 
 (defrule PRINT-RESULTS::print-house ""
-  ?rem <- (attribute (name house) (value ?name) (city ?c) (certainty ?per))	  
+  ?rem <- (attribute (name house) (value ?name) (city ?c) (zona ?z)( quartiere ?q)( numBagni ?nb) ( numVani ?nv) ( numPiano ?np)( prezzo ?pr)(terrazzino ?tr)( boxAuto ?bx) (certainty ?per))	  
   (not (attribute (name house) (certainty ?per1&:(> ?per1 ?per))))
   =>
   (retract ?rem)
-  (format t " %-24s %-24s %2d%%%n" ?name ?c ?per))
+  (format t " %-24s %-24s %-24s %-24s %2d %2d %2d %2d %-24s %-24s %2d%%%n" ?name ?c  ?z ?q ?nb ?nv ?np ?pr ?tr ?bx ?per))
 
 (defrule PRINT-RESULTS::remove-poor-house-choices ""
   ?rem <- (attribute (name house) (certainty ?per&:(< ?per 20)))
@@ -850,7 +840,7 @@
         ?f <- (attribute (name  aggiungi-risposta)
                    (value si))
    =>
-   (focus ASK-MORE HOUSES PRINT-RESULTS)
+   (focus ASK-MORE CHOOSE-HOUSES HOUSES PRINT-RESULTS)
   )
 
 
