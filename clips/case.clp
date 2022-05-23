@@ -442,6 +442,9 @@
         (cf_value 70 70 40 30 80 70 40 90 80 40 80 50 80)
         )
 
+
+
+
 (rule (question scuole)
         (answer si)
         (attribute migliore-quartiere)
@@ -455,6 +458,7 @@
         (value_attribute centrale crocetta barriera campidoglio foramgno lazzaretto sassi boccea magliana flaminio)
         (cf_value 60 40 70 30 50 80 50 70 40 60 )
         )
+
 
 (rule (question supermercati)
         (answer si)
@@ -518,6 +522,7 @@
         (value_attribute 2 3 4 5)
         (cf_value 10 30 60 80)
         )
+
 (rule (question numPiano)
         (answer 1)
         (attribute numPiano)
@@ -699,13 +704,13 @@
   (attribute (name migliore-quartiere) (value ?q) (certainty ?certainty-2))
   (attribute (name numBagni) (value ?ba&:(neq ?ba any) & ?ba&:(>= (integer ?ba)  ?nb)) (certainty ?certainty-3))
   (attribute (name numVani) (value ?v&:(neq ?v any) & ?v&:(>= (integer ?v) (integer ?nv))) (certainty ?certainty-4))
-  (attribute (name numPiano) (value ?numP&:(neq ?numP any) & ?numP&:(>= (integer ?numP) (integer ?np))) (certainty ?certainty-5))
+  (attribute (name numPiano) (value ?numP&:(eq ?numP unknown) | ?numP&:(neq ?numP any) & ?numP&:(>= (integer ?numP) (integer ?np))) (certainty ?certainty-5))
   (attribute (name migliore-prezzo) (value ?mpr&:(neq ?mpr any) & ?mpr&:(<= (integer ?mpr) (+ (integer ?pr) 50)) & ?mpr&:(>= (integer ?mpr) (- (integer ?pr) 50))) (certainty ?certainty-6))
  (attribute (name terrazzino) (value ?tr) (certainty ?certainty-7))
  (attribute (name boxAuto) (value ?bx) (certainty ?certainty-8))
-  (attribute (name metropolitana) (value ?mp) (certainty ?certainty-9))
-  (attribute (name scuole) (value ?sc) (certainty ?certainty-10))
- (attribute (name supermercati) (value ?sm) (certainty ?certainty-11))
+  (attribute (name metropolitana) (value ?met&:(eq ?met unknown) | ?mp ) (certainty ?certainty-9))
+  (attribute (name scuole) (value ?scuole&:(eq ?scuole unknown) | ?sc) (certainty ?certainty-10))
+ (attribute (name supermercati) (value ?supermercati&:(eq ?supermercati unknown) | ?sm) (certainty ?certainty-11))
   =>
   (assert (attribute (name house) (value ?i) (city ?c) 
                     (certainty (min  ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3 ?certainty-4 ?certainty-5 ?certainty-6  ?certainty-7 ?certainty-8 ?certainty-9 ?certainty-10 ?certainty-11)))))
