@@ -1,10 +1,16 @@
 # Progetto Intelligenza artificiale 
-PROBLEMA DI RICERCA NELLO SPAZIO DEGLI STATI.
-FAMO IL 15 O SIMILI E RISOLUZIONE DEL PROBLEMA CON UNA STRATEGIA CON EURISTICA. 
-IDE* , A* ...
-OCCHIO CHE ALCUNE CONFIGURAZIONI POTREBBERO NON AVERE SOLUZIONE!!!!!! GENERIAMOLI ONLINE
-CERCHIAMO SU INTERNET CONFIGURAZIONI CON POSSIBILE SOLUZIONE RAGIONEVOLE.
-OPZIONE 2 : METRO DI MILANO(CONTEMPLANDO FORSE METRO 4 CHE NON VERRA' MAI COSTRUITA).
+PROLOG 
+è presente un programma prolog che risolve il problema del 15 con un algoritmo A*
+
+CLINGO
+è presente un programma clingo che schedula le partite di un campionato
+
+CLIPS 
+è presente un programma clips che consiglia delle case a partire dalle preferenze dell'utente
+
+SOAR 
+è presente un programma soar che ha il compito di evadere da una stanza 
+
 
 
 
