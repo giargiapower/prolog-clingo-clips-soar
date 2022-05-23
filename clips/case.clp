@@ -186,8 +186,9 @@
             (the-question "In quale citta cerca casa? ")
             (valid-answers torino milano roma))
 (question (attribute migliore-prezzo)
-            (the-question "a quanto ammonta circa il suo budget (5 10 20 50 75 100 110 120 150 175 200 210 220 250 275 300)?")
-            (valid-answers 5 10 20 50 75 100 110 120 150 175 200 210 220 250 275 300))
+            (the-question "a quanto ammonta circa il suo budget indicativamente (50 100 200 300)?")
+            (valid-answers 50 100 200 300))
+
 )
 
 
@@ -567,6 +568,42 @@
         (value_attribute 6)
         (cf_value 90)
         )
+
+        (rule (question migliore-prezzo)
+        (answer 50)
+        (attribute migliore-prezzo)
+        (value_attribute 5 10 20 50 75)
+        (cf_value 50 50 70 80 80)
+        )
+
+(rule (question migliore-prezzo)
+        (answer 100)
+        (attribute migliore-prezzo)
+        (value_attribute 100 110 120 130 140 150)
+        (cf_value 70 70 70 80 80 70)
+        )
+
+(rule (question migliore-prezzo)
+        (answer 100)
+        (attribute migliore-prezzo)
+        (value_attribute 100 110 120 130 140 150)
+        (cf_value 70 70 70 80 80 70)
+        )
+
+(rule (question migliore-prezzo)
+        (answer 200)
+        (attribute migliore-prezzo)
+        (value_attribute 160 170 180 190 200 220 230 240 250)
+        (cf_value 70 70 70 80 80 70 60 70 60)
+        )
+
+(rule (question migliore-prezzo)
+        (answer 300)
+        (attribute migliore-prezzo)
+        (value_attribute 260 270 280 290 300 360 380)
+        (cf_value 70 70 70 80 80 70 70)
+        )
+
 
 )
 
