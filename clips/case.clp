@@ -789,7 +789,7 @@
         ?f <- (attribute (name  aggiungi-risposta)
                    (value si))
    =>
-   (focus ASK-MORE HOUSES PRINT-RESULTS)
+   (focus ASK-MORE CHOOSE-HOUSES HOUSES PRINT-RESULTS)
   )
 
 
