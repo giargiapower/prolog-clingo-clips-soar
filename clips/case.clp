@@ -390,7 +390,7 @@
 (defrule CHOOSE-HOUSES::startit => (focus RULES))
 
 (deffacts the-houses-rules
-;;regole specifiche sulla scelta della casa (serve un modulo diverso??)
+;;regole specifiche sulla scelta della casa 
 
 (rule (question citta_scelta)
         (answer milano)
@@ -683,6 +683,17 @@
   (house (indirizzo via_pompeo_30)(citta milano) (zona centro) (quartiere centale) (numBagni 3) (numVani 6) (numPiano 1) (prezzo 280) (terrazzino si) (boxAuto si) (metropolitana si) (scuole si) (supermercati si))
   (house (indirizzo via_senigalia_9)(citta milano) (zona centro) (quartiere lazzareto) (numBagni 1) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
 
+  (house (indirizzo corso_nizza_2)(citta milano) (zona centro) (quartiere centro_storico) (numBagni 2) (numVani 5) (numPiano 6) (prezzo 300) (terrazzino si) (boxAuto no) (metropolitana si) (scuole si) (supermercati si))
+  (house (indirizzo via_roma_32)(citta milano) (zona periferia) (quartiere pilone) (numBagni 1) (numVani 2) (numPiano 1) (prezzo 90) (terrazzino si) (boxAuto no) (metropolitana no) (scuole si) (supermercati si))
+  (house (indirizzo corso_unione_sovietica_4)(citta milano) (zona prima_cintura) (quartiere milano2) (numBagni 2) (numVani 4) (numPiano 4) (prezzo 100) (terrazzino si) (boxAuto no) (metropolitana no) (scuole no) (supermercati si))
+  (house (indirizzo via_mercanti_21)(citta milano) (zona centro) (quartiere centrale) (numBagni 2) (numVani 5) (numPiano 2) (prezzo 70) (terrazzino si) (boxAuto si) (metropolitana si) (scuole no) (supermercati no))
+  (house (indirizzo corso_giulio_9)(citta milano) (zona periferia) (quartiere pilone) (numBagni 3) (numVani 5) (numPiano 6) (prezzo 180) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati no))
+  (house (indirizzo corso_ferri_36)(citta milano) (zona centro) (quartiere citta_studi) (numBagni 2) (numVani 4) (numPiano 2) (prezzo 120) (terrazzino si) (boxAuto no) (metropolitana no) (scuole si) (supermercati si))
+  (house (indirizzo viale_angeli_121)(citta milano) (zona prima_cintura) (quartiere milano2) (numBagni 1) (numVani 4) (numPiano 4) (prezzo 150) (terrazzino no) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+  (house (indirizzo via_asiago_39)(citta milano) (zona periferia) (quartiere ponte_nuovo) (numBagni 4) (numVani 4) (numPiano 1) (prezzo 100) (terrazzino si) (boxAuto no) (metropolitana si) (scuole si) (supermercati no))
+  (house (indirizzo via_martiri_28)(citta milano) (zona centro) (quartiere centale) (numBagni 3) (numVani 6) (numPiano 1) (prezzo 320) (terrazzino si) (boxAuto si) (metropolitana si) (scuole si) (supermercati si))
+  (house (indirizzo via_senigalia_1)(citta milano) (zona centro) (quartiere lazzareto) (numBagni 2) (numVani 3) (numPiano 4) (prezzo 50) (terrazzino si) (boxAuto no) (metropolitana no) (scuole si) (supermercati si))
+
 
   (house (indirizzo via_vignola_51)(citta roma) (zona centro) (quartiere flaminio) (numBagni 1) (numVani 2) (numPiano 1) (prezzo 50) (terrazzino si) (boxAuto no) (metropolitana si) (scuole si) (supermercati si))
   (house (indirizzo via_marchetti_52)(citta roma) (zona periferia) (quartiere magliana) (numBagni 2) (numVani 3) (numPiano 2) (prezzo 100) (terrazzino no) (boxAuto si) (metropolitana no) (scuole no) (supermercati si))
@@ -695,13 +706,20 @@
   (house (indirizzo via_bregno_7)(citta roma) (zona centro) (quartiere flaminio) (numBagni 1) (numVani 1) (numPiano 2) (prezzo 50) (terrazzino no) (boxAuto si) (metropolitana no) (scuole no) (supermercati si))
   (house (indirizzo via_franklin_5)(citta roma) (zona periferia) (quartiere testaccio) (numBagni 3) (numVani 2) (numPiano 3) (prezzo 120) (terrazzino si) (boxAuto no) (metropolitana si) (scuole si) (supermercati no))
     
+  (house (indirizzo via_verdi_9)(citta roma) (zona centro) (quartiere flaminio) (numBagni 1) (numVani 4) (numPiano 1) (prezzo 50) (terrazzino no) (boxAuto si) (metropolitana si) (scuole si) (supermercati si))
+  (house (indirizzo via_marchetti_52)(citta roma) (zona periferia) (quartiere magliana) (numBagni 2) (numVani 3) (numPiano 2) (prezzo 100) (terrazzino no) (boxAuto si) (metropolitana no) (scuole no) (supermercati si))
+  (house (indirizzo via_rossa_32)(citta roma) (zona prima_cintura) (quartiere boccea) (numBagni 1) (numVani 3) (numPiano 3) (prezzo 100) (terrazzino si) (boxAuto si) (metropolitana si) (scuole si) (supermercati no))
+  (house (indirizzo corso_giolitti_11)(citta roma) (zona centro) (quartiere flaminio) (numBagni 2) (numVani 3) (numPiano 3) (prezzo 150) (terrazzino si) (boxAuto no) (metropolitana si) (scuole si) (supermercati si))
+  (house (indirizzo via_liberta_11)(citta roma) (zona prima_cintura) (quartiere boccea) (numBagni 1) (numVani 2) (numPiano 2) (prezzo 200) (terrazzino si) (boxAuto si) (metropolitana no) (scuole si) (supermercati si))
+  (house (indirizzo via_reni_34)(citta roma) (zona centro) (quartiere flaminio) (numBagni 1) (numVani 3) (numPiano 3) (prezzo 180) (terrazzino si) (boxAuto si) (metropolitana si) (scuole no) (supermercati no))
+  (house (indirizzo via_vigoni_7)(citta roma) (zona periferia) (quartiere testaccio) (numBagni 3) (numVani 2) (numPiano 4) (prezzo 200) (terrazzino si) (boxAuto si) (metropolitana si) (scuole si) (supermercati si))
+  (house (indirizzo via_savona_8)(citta roma) (zona prima_cintura) (quartiere boccea) (numBagni 2) (numVani 4) (numPiano 1) (prezzo 180) (terrazzino si) (boxAuto no) (metropolitana no) (scuole no) (supermercati no))
+  (house (indirizzo via_vignola_36)(citta roma) (zona centro) (quartiere flaminio) (numBagni 2) (numVani 3) (numPiano 1) (prezzo 90) (terrazzino no) (boxAuto si) (metropolitana no) (scuole no) (supermercati si))
+  (house (indirizzo corso_soleri_53)(citta roma) (zona periferia) (quartiere testaccio) (numBagni 1) (numVani 2) (numPiano 3) (prezzo 150) (terrazzino si) (boxAuto si) (metropolitana si) (scuole no) (supermercati no))
 
 )
 
 
-;; va sistemata la generazione delle case perche vanno inseriti tutti gli attributi di house  e 
-;; di attribute, inoltre per gli attributi laschi come miglioreprezzo e metri quadri in (value ?p)..
-;; bisogna mettere che sia minore di MAX e magggiore di MIN altrimenti matcha solo i valori esatti
 (defrule HOUSES::generate-house-profiling
   (flag (profile si))
   (house (indirizzo ?i)
@@ -725,14 +743,6 @@
                      (certainty (min ?certainty-0 ?certainty-1 ?certainty-2 ?certainty-3)))))
 
 
-
-;; visto che per la profilazione usiamo solo qualche attributo può avere senso avere un generate house per il secondo blocco di domande?
-;;ho provato a eseguirlo e in questo modo mi da risultati sia per la profilazione utente che per le domande specifiche delle case
-;;ho corretto un attributo nelle QUESTIONS perchè l'avevo scritto male e non prendeva le domande con precursor
-;;ho aggiunto nel focus del main dopo QUESTIONS di nuovo CHOOSE-HOUSES HOUSES PRINT-RESULTS per vedere se continuava l'interazione e sembra funzionare
-
-;; attributi che lasciamo laschi numBagni(da quello che ha messo l'utente in su) numVani (da quello che ha messo l'utente in su) 
-;; numPiano(da quello che ha messo l'utente in su) prezzo(in un intorno di -50 e +50) 
 (defrule HOUSES::generate-house
     (flag (profile no))
   (house (indirizzo ?i)
@@ -803,8 +813,6 @@
    (not (attribute (name house)))
    =>
    (printout t ))
-
-
 
 
 ;;**********************
