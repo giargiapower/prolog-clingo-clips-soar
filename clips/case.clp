@@ -478,8 +478,8 @@
 (rule (question scuole)
         (answer no)
         (attribute migliore-quartiere)
-        (value_attribute centrale crocetta barriera campidoglio foramgno lazzaretto sassi boccea magliana flaminio)
-        (cf_value 60 40 70 30 50 80 50 70 40 60 )
+        (value_attribute centrale crocetta barriera campidoglio foramgno milano2 lazzaretto sassi boccea magliana flaminio)
+        (cf_value 60 40 70 30 40 50 80 50 70 40 60 )
         )
 
 
@@ -493,8 +493,8 @@
 (rule (question supermercati)
         (answer no)
         (attribute migliore-quartiere)
-        (value_attribute centrale crocetta barriera campidoglio foramgno lazzaretto sassi boccea magliana)
-        (cf_value 40 80 80 40 30 40 80 70 40)
+        (value_attribute centrale crocetta barriera campidoglio foramgno milano2 lazzaretto sassi boccea magliana)
+        (cf_value 40 80 80 40 30 40 40 80 70 40)
         )
 
 (rule (question numBagni)
