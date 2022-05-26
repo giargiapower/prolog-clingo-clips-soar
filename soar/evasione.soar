@@ -1,14 +1,59 @@
-sp {propose*initialize-evasione
-
+sp {propose*initialize-raccogli
    (state <s> ^superstate nil
-
              -^name)
-
 -->
-
    (<s> ^operator <o> +)
-
-   (<o> ^name evasione)
-
+   (<o> ^name initialize-raccogli)
 }
+
+sp {apply*initialize-raccogli
+   (state <s> ^operator <op>)
+   (<op> ^name initialize-raccogli)
+-->
+   (<s> ^name raccogli
+        ^object <o1> <o2>)
+   (<o1> ^name bastoncino)
+   (<o2> ^name molla)
+}
+
+sp {raccogli*propose*rac-obj
+   (state <s> ^name raccogli
+              ^object <o>)
+   (<o> ^name <obj>)
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name rac-obj
+         ^obj <obj>)
+}
+
+sp {raccogli*bastoncino
+   (state <s> ^name raccogli
+              ^operator <op> +)
+   (<op> ^name rac-obj
+         ^obj bastoncino)
+-->
+   (write (crlf) |Raccolgo: | bastoncino)
+   (halt)
+}
+
+sp {raccogli*molla
+   (state <s> ^name raccogli
+              ^operator <op> +)
+   (<op> ^name rac-obj
+         ^obj molla)
+-->
+   (write (crlf) |Raccolgo: | molla)
+   (halt)
+}
+
+
+sp {raccogli*propose*costruisci
+   (state <s> ^name raccogli
+              ^obj bastoncino
+              ^obj molla)
+-->
+   (write (crlf) |costruisco: | fionda)
+   (halt)
+}
+
 
