@@ -11,9 +11,10 @@ sp {apply*initialize-raccogli
    (<op> ^name initialize-raccogli)
 -->
    (<s> ^name raccogli
-        ^object <o1> <o2>)
-   (<o1> ^name bastoncino)
+        ^object <o1> <o2> <o3>)
+   (<o1> ^name pietre)
    (<o2> ^name molla)
+   (<o3> ^name rametto)
 }
 
 sp {raccogli*propose*rac-obj
@@ -26,14 +27,16 @@ sp {raccogli*propose*rac-obj
          ^obj <obj>)
 }
 
-sp {raccogli*bastoncino
+sp {raccogli*rametto
    (state <s> ^name raccogli
               ^operator <op> +)
    (<op> ^name rac-obj
-         ^obj bastoncino)
+         ^obj rametto)
 -->
-   (write (crlf) |Raccolgo: | bastoncino)
-   (halt)
+   (write (crlf) |Raccolgo: | rametto)
+   (<s> ^name raccolto_primo_oggetto 
+     ^raccolto <rc>)
+   (<rc> ^obj rametto)
 }
 
 sp {raccogli*molla
@@ -43,17 +46,33 @@ sp {raccogli*molla
          ^obj molla)
 -->
    (write (crlf) |Raccolgo: | molla)
-   (halt)
+   (<s> ^name raccolto_primo_oggetto 
+     ^raccolto <rc>)
+   (<rc> ^obj molla)
 }
 
-
-sp {raccogli*propose*costruisci
+sp {raccogli*pietre
    (state <s> ^name raccogli
-              ^obj bastoncino
-              ^obj molla)
+              ^operator <op> +)
+   (<op> ^name rac-obj
+         ^obj pietre)
 -->
-   (write (crlf) |costruisco: | fionda)
-   (halt)
+   (write (crlf) |Raccolgo: | pietre)
+   (<s> ^name raccolto_primo_oggetto 
+     ^raccolto <rc>)
+   (<rc> ^obj pietre)
 }
+
+
+#sp {raccogli*propose*costruisci
+#   (state <s> ^name raccogli
+#              ^obj bastoncino
+#              ^obj molla)
+#-->
+#   (write (crlf) |costruisco: | fionda)
+#   (<s> ^name raccolto_primo_oggetto 
+#     ^raccolto <rc>)
+#   (<rc> ^obj fionda)
+#}
 
 
