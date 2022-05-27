@@ -124,11 +124,11 @@ sp {raccogli2*pietre
    (<rc> ^obj <r1> ^obj2 pietre)
 }
 
-
+#bisogna prevedere tutte le possibili combinazioni
 sp {raccolto*propose*costruisci
    (state <s> ^name raccolto_necessario
       ^raccolto <rc>)
-      (<rc>   ^obj {<ob1> = rametto ||   }
+      (<rc>   ^obj rametto
               ^obj2 molla) 
 -->
    (write (crlf) |costruisco: | fionda)
