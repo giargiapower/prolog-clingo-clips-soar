@@ -124,6 +124,7 @@ sp {raccogli2*pietre
    (<rc> ^obj <r1> ^obj2 pietre)
 }
 
+################################
 #bisogna prevedere tutte le possibili combinazioni
 sp {raccolto*propose*costruisci
    (state <s> ^name raccolto_necessario
@@ -131,11 +132,12 @@ sp {raccolto*propose*costruisci
       (<rc>   ^obj rametto
               ^obj2 molla) 
 -->
-   (write (crlf) |costruisco: | fionda)
-   (halt)
-  # (<s> ^name raccolto_primo_oggetto 
-  #   ^raccolto <rc>)
-  # (<rc> ^obj fionda)
+ (<s> ^operator <op> +)
+
+   (<op> ^name costruisci
+         ^obj rametto
+         ^obj2 molla)  
+ 
 }
 
 sp {raccolto*propose*costruisci
@@ -151,3 +153,26 @@ sp {raccolto*propose*costruisci
   # (<rc> ^obj fionda)
 }
 
+################################
+
+#qua si inizializza l'operatore a 0 perchè poi ci sarà la parte di rewarding 
+sp {raccolto*rl*fionda
+
+   (state <s> ^name raccolto_necessario
+
+              ^operator <op> +)
+
+   (<op> ^name costruisci
+
+         ^obj rametto
+         ^obj2 molla)
+
+-->
+
+   (<s> ^operator <op> = 0)
+
+}
+
+
+
+###################################
