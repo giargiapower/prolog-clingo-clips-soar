@@ -139,6 +139,95 @@ sp {elaborate*reward
 }
 ###########################
 
+sp {strumento*propose
+   (state <s> strumento_pronto
+     ^strumento_posseduto <n>
+     ^vetro_status 2)
+
+-->
+   (<s> ^operator <op> +)
+   (<op> ^name use-strum
+         ^strumento <n>
+         )
+}
+
+
+# non testato da valutare sia il vetro status se va bene cosi la sintassi sia per valutare il > sia se si puo decrementare 
+#in questo modo 
+sp {strumento*fionda*apply
+   (state <s>  ^name strumento_pronto
+    ^operator <op>
+    ^vetro_status <v> {> <v> 0}
+              )
+
+   (<op> ^name use-strum
+         ^strumento fionda
+         )
+
+-->
+   (write (crlf) |ho colpito il vetro ma non si è ancora distrutto...|)
+   (<s> ^name strumento_pronto
+     ^strumento_posseduto fionda
+     ^vetro_status <v>-1)
+}
+
+
+
+
+sp {strumento*clava*apply
+   (state <s>  ^name strumento_pronto
+    ^operator <op>
+    ^vetro_status <v> {> <v> 0}
+              )
+
+   (<op> ^name use-strum
+         ^strumento clava
+         )
+
+-->
+   (write (crlf) |oh no lo strumento clava non ha alcun effetto... devo ricominciare da capo|)
+   (<s> ^name costruisci_strumento
+        ^object <o1> <o2> <o3>
+        ^vetro_status 2
+        ^strumento <s1> <s2> <s3>
+        ^strumento_posseduto niente)
+   (<s1> ^name fionda ^materials <o2> <o3> ^reward +1)
+   (<s2> ^name clava ^materials <o1> <o3> ^reward -1) 
+   (<s3> ^name lancia_sassi ^materials <o1> <o2> ^reward -1)
+   (<o1> ^name pietre)
+   (<o2> ^name molla)
+   (<o3> ^name rametto)
+}
+
+sp {strumento*lancia_sassi*apply
+   (state <s>  ^name strumento_pronto
+    ^operator <op>
+    ^vetro_status <v> {> <v> 0}
+              )
+
+   (<op> ^name use-strum
+         ^strumento lancia_sassi
+         )
+
+-->
+   (write (crlf) |oh no lo strumento clava non ha alcun effetto... devo ricominciare da capo|)
+   (<s> ^name costruisci_strumento
+        ^object <o1> <o2> <o3>
+        ^vetro_status 2
+        ^strumento <s1> <s2> <s3>
+        ^strumento_posseduto niente)
+   (<s1> ^name fionda ^materials <o2> <o3> ^reward +1)
+   (<s2> ^name clava ^materials <o1> <o3> ^reward -1) 
+   (<s3> ^name lancia_sassi ^materials <o1> <o2> ^reward -1)
+   (<o1> ^name pietre)
+   (<o2> ^name molla)
+   (<o3> ^name rametto)
+}
+
+
+
+
+
 
 
 
