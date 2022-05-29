@@ -59,43 +59,72 @@ sp {propose*initialize-costruisci
  
 }
 
-sp {apply*initialize-costruisci
-   (state <s> ^operator <op>)
+sp {apply*initialize-costruisci1
+   (state <s>  ^raccolto <rc> ^operator <op>)  
+   (<rc> ^obj rametto ^obj molla) 
    (<op> ^name costruisci)
 -->
-   (<s> ^name costruisci
+(write (crlf) |costruisco: | fionda)
+   (<s> ^name costruito
         ^raccolto <rc>)
    (<rc> ^name fionda ^reward +1)
 }
 
-sp {costruisci*fionda
-   (state <s> ^name raccolto_necessario
-      ^raccolto <rc>
-       ^operator <op> +)
-      (<op> ^name costruisci)
-      (<rc>   ^obj rametto
-              ^obj2 molla)
+sp {apply*initialize-costruisci2
+   (state <s>  ^raccolto <rc> ^operator <op>)  
+   (<rc> ^obj molla ^obj rametto) 
+   (<op> ^name costruisci)
 -->
-   (write (crlf) |costruisco: | fionda)
-   (halt)
-  # (<s> ^name raccolto_primo_oggetto 
-  #   ^raccolto <rc>)
-  # (<rc> ^obj fionda)
+(write (crlf) |costruisco: | fionda)
+   (<s> ^name costruito
+        ^raccolto <rc>)
+   (<rc> ^name fionda ^reward +1)
 }
 
-sp {costruisci2*fionda
-   (state <s> ^name raccolto_necessario
-      ^raccolto <rc>
-       ^operator <op> +)
-      (<op> ^name costruisci)
-      (<rc>   ^obj molla
-              ^obj2 rametto)
+sp {apply*initialize-costruisci3
+   (state <s>  ^raccolto <rc> ^operator <op>)  
+   (<rc> ^obj pietre ^obj rametto) 
+   (<op> ^name costruisci)
 -->
-   (write (crlf) |costruisco: | fionda)
-   (<s> ^name costruisci
-     ^raccolto <rc>)
-   (<rc> ^obj fionda)
+(write (crlf) |costruisco: | clava)
+   (<s> ^name costruito
+        ^raccolto <rc>)
+   (<rc> ^name clava ^reward -1)
 }
+
+sp {apply*initialize-costruisci4
+   (state <s>  ^raccolto <rc> ^operator <op>)  
+   (<rc> ^obj rametto ^obj pietre) 
+   (<op> ^name costruisci)
+-->
+(write (crlf) |costruisco: | clava)
+   (<s> ^name costruito
+        ^raccolto <rc>)
+   (<rc> ^name clava ^reward -1)
+}
+
+sp {apply*initialize-costruisci5
+   (state <s>  ^raccolto <rc> ^operator <op>)  
+   (<rc> ^obj pietre ^obj molla) 
+   (<op> ^name costruisci)
+-->
+(write (crlf) |costruisco: | lancia_sassi)
+   (<s> ^name costruito
+        ^raccolto <rc>)
+   (<rc> ^name lancia_sassi ^reward -1)
+}
+
+sp {apply*initialize-costruisci6
+   (state <s>  ^raccolto <rc> ^operator <op>)  
+   (<rc> ^obj molla ^obj pietre) 
+   (<op> ^name costruisci)
+-->
+   (write (crlf) |costruisco: | lancia_sassi)
+   (<s> ^name costruito
+        ^raccolto <rc>)
+   (<rc> ^name lancia_sassi ^reward -1)
+}
+
 ################################
 
 #qua si inizializza l'operatore a 0 perchè poi ci sarà la parte di rewarding 
@@ -109,7 +138,7 @@ sp {costruisci2*fionda
 #in ogni caso tengo una versione anche del codice in versione precedente
 
 sp {costruisci*propose*usa-strumento
-   (state <s> ^name costruisci
+   (state <s> ^name costruito
               ^object <rc>)
    (<rc> ^name <strum>)
 -->
@@ -118,9 +147,9 @@ sp {costruisci*propose*usa-strumento
          ^strum <strum>)
 }
 
-sp {costruisci*cf*fionda
+sp {rl*cf*fionda
 
-   (state <s> ^name costruisci
+   (state <s> ^name costruito
 
               ^operator <op> +)
 
@@ -133,5 +162,33 @@ sp {costruisci*cf*fionda
 
 }
 
+sp {rl*cf*clava
 
+   (state <s> ^name costruito
+
+              ^operator <op> +)
+
+   (<op> ^name usa-strumento
+         ^strum clava)
+
+-->
+
+   (<s> ^operator <op> = 0)
+
+}
+
+sp {rl*cf*lancia_sassi
+
+   (state <s> ^name costruito
+
+              ^operator <op> +)
+
+   (<op> ^name usa-strumento
+         ^strum lancia_sassi)
+
+-->
+
+   (<s> ^operator <op> = 0)
+
+}
 ###################################
