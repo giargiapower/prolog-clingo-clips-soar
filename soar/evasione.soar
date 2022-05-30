@@ -11,126 +11,100 @@ sp {apply*initialize-strumenti
    (<op> ^name initialize-strumento)
 -->
    (<s> ^name costruisci_strumento
-        ^object <o1> <o2> <o3>
-        ^vetro_status 2
-        ^strumento <s1> <s2> <s3>
-        ^strumento_posseduto niente)
-   (<s1> ^name fionda ^materials <o2> <o3> ^reward +1)
-   (<s2> ^name clava ^materials <o1> <o3> ^reward -1) 
-   (<s3> ^name lancia_sassi ^materials <o1> <o2> ^reward -1)
-   (<o1> ^name pietre)
-   (<o2> ^name molla)
-   (<o3> ^name rametto)
+        ^oggetti <o1> <o2> <o3>
+        ^strumento <sta> <stb> <stc>
+        )
+   (<o1> ^name molla)
+   (<o2> ^name rametto)
+   (<o3> ^name pietre)
+   (<sta> ^name fionda ^materials <o1> <o2>  ^reward +1)
+   (<stb> ^name clava ^materials <o3> <o2>  ^reward -1) 
+   (<stc> ^name lancia_sassi ^materials <o3> <o1>  ^reward -1)
 
 }
-
 
 sp {costruisci*propose
    (state <s> ^name costruisci_strumento
-              ^object <o1> {<> <o1> <o2>}
-              ^strumento <s1>
-              ^strumento_posseduto niente
-              ^vetro_status 2)
-   (<o1> ^name <obj1>)
-   (<o2> ^name <obj2>)
-   (<s1> ^name <n> ^materials <o1> <o2>)
-
--->
-   (<s> ^operator <op> +)
-   (<op> ^name costr-str
-         ^strumento <n>
-         ^obj <obj1>
-         ^obj <obj2>
-         )
-}
-
-sp {costruisci*rl*fionda
-
-   (state <s> ^name costruisci_strumento
-
-              ^operator <op> +)
-
-   (<op> ^name costr-str
-
-         ^strumento fionda
-         ^obj molla
-         ^obj rametto)
-
--->
-
-   (<s> ^operator <op> = 0)
-
-}
-
-sp {costruisci*rl*clava
-
-   (state <s> ^name costruisci_strumento
-
-              ^operator <op> +)
-
-   (<op> ^name costr-str
-
-         ^strumento clava
-         ^obj pietre
-         ^obj rametto)
-
--->
-
-   (<s> ^operator <op> = 0)
-
-}
-
-sp {costruisci*rl*lancia_sassi
-
-   (state <s> ^name costruisci_strumento
-
-              ^operator <op> +)
-
-   (<op> ^name costr-str
-
-         ^strumento lancia_sassi
-         ^obj pietre
-         ^obj molla)
-
--->
-
-   (<s> ^operator <op> = 0)
-
-}
-
-
-sp {costruisci*apply
-    (state <s>  ^name costruisci_strumento
-    ^operator <op>
-    ^strumento_posseduto niente
-    ^vetro_status 2
+              ^strumento <str>
               )
-
-   (<op> ^name costr-str
-         ^strumento <n>
-         ^obj <obj1>
-         ^obj <obj2>
-         )
+  (<str> ^name <na> ^materials <oa> {<> <oa> <ob>}) 
+   (<oa> ^name <n_oa>)
+   (<ob> ^name <n_ob>)
 -->
-   (write (crlf) |Raccolgo primo oggetto: | <obj1>)
-   (write (crlf) |Raccolgo secondo oggetto: | <obj2>)
-   (write (crlf) |ho costruito | <n>)
-   (<s> ^name strumento_pronto
-     ^strumento_posseduto <n>
-     ^vetro_status 2)
+(write (crlf) |prova|)
+   (<s> ^operator <op> +)
+   (<op> ^name costr
+        ^strumento <na> 
+        ^oggetti <n_oa> <n_ob>)
+        # ^obj <na> 
+         
 }
 
+
+sp {costruisci_strumento*fionda
+
+   (state <s> ^name costruisci_strumento
+
+              ^operator <op> +)
+
+   (<op> ^name costr
+        ^strumento fionda 
+        ^oggetti <n_oa> <n_ob> 
+         )
+
+-->
+
+   (<s> ^operator <op> = 0)
+
+}
+
+
+
+sp {costruisci_strumento*clava
+
+   (state <s> ^name costruisci_strumento
+
+              ^operator <op> +)
+
+   (<op> ^name costr
+        ^strumento clava
+        ^oggetti <n_oa> <n_ob>
+         )
+
+-->
+
+   (<s> ^operator <op> = 0)
+
+}
+
+sp {costruisci_strumento*lancia_sassi
+
+   (state <s> ^name costruisci_strumento
+
+              ^operator <op> +)
+
+   (<op> ^name costr
+        ^strumento lancia_sassi 
+        ^oggetti <n_oa> <n_ob>
+         )
+
+-->
+
+   (<s> ^operator <op> = 0)
+
+}
 
 
 sp {elaborate*reward
 
-   (state <s> ^name strumento_pronto
+   (state <s> ^name costruisci_strumento
+
               ^reward-link <r>
-              ^object <o1> {<> <o1> <o2>}
-              ^strumento <s1>
-              ^strumento_posseduto <n>
-              ^vetro_status 2)
-             (<s1> ^name <n> ^materials <o1> <o2> ^reward <d-reward>)
+              ^strumento <str>
+              )
+  (<str> ^name <na> ^materials <oa> {<> <oa> <ob>} ^reward <d-reward>) 
+   (<oa> ^name <n_oa>)
+   (<ob> ^name <n_ob>)
 -->
 
    (<r> ^reward <rr>)
@@ -140,85 +114,31 @@ sp {elaborate*reward
 }
 
 
-###########################
 
-sp {strumento*propose
-   (state <s> ^name strumento_pronto
-     ^strumento_posseduto <n>
-     ^vetro_status 2)
+sp {costruisci*apply
+    (state <s>  ^operator <op> )
 
--->
-   (<s> ^operator <op> +)
-   (<op> ^name use-strum
-         ^strumento <n>
+   (<op> ^name costr
+        ^strumento <name_s> 
+         ^oggetti <n_oa>{<> <n_oa> <n_ob>}
          )
-}
-
-# non testato da valutare sia il vetro status se va bene cosi la sintassi sia per valutare il > sia se si puo decrementare 
-#in questo modo 
-sp {strumento*fionda*apply
-   (state <s>  ^name strumento_pronto
-    ^operator <op>
-    ^vetro_status <v> {> <v> 0}
-              )
-
-   (<op> ^name use-strum
-         ^strumento fionda
-         )
-
 -->
-   (write (crlf) |ho colpito il vetro ma non si è ancora distrutto...|)
-   (<s> ^name strumento_pronto
-     ^strumento_posseduto fionda
-     ^vetro_status <v>-1)
+  (write (crlf) |Raccolgo primo oggetto: | <n_oa>)
+  (write (crlf) |Raccolgo secondo oggetto: | <n_ob>)
+   (write (crlf) |ho costruito | <name_s>)
+   (halt)
 }
 
 
 
 
-sp {strumento*clava*apply
-   (state <s>  ^name strumento_pronto
-    ^operator <op>
-    ^vetro_status <v> {> <v> 0}
-              )
 
-   (<op> ^name use-strum
-         ^strumento clava
-         )
-
--->
-   (write (crlf) |oh no lo strumento clava non ha alcun effetto... devo ricominciare da capo|)
-   (<s> ^name costruisci_strumento
-        ^object <o1> <o2> <o3>
-        ^vetro_status 2
-        ^strumento <s1> <s2> <s3>
-        ^strumento_posseduto niente)
-   (<s1> ^name fionda ^materials <o2> <o3> ^reward +1)
-   (<s2> ^name clava ^materials <o1> <o3> ^reward -1) 
-   (<s3> ^name lancia_sassi ^materials <o1> <o2> ^reward -1)
-   (<o1> ^name pietre)
-   (<o2> ^name molla)
-   (<o3> ^name rametto)
-}
-
-sp {strumento*lancia_sassi*apply
-   (state <s>  ^name strumento_pronto
-    ^operator <op>
-    ^vetro_status <v> {> <v> 0}
-              )
-
-   (<op> ^name use-strum
-         ^strumento lancia_sassi
-         )
-
--->
-   (write (crlf) |oh no lo strumento clava non ha alcun effetto... devo ricominciare da capo|)
-   (<s> ^operator <o> +)
-   (<o> ^name initialize-strumento)
-}
-
-
+####DA QUI NON FUNZIONA PIU############
+################################à
+#PARTE SCALE 
 ### Costruisco e uso scale ###
+
+####DA QUI NON FUNZIONA PIU############
 
 sp {propose*initialize-costruisci_scala
    (<s> ^name strumento_pronto
@@ -332,7 +252,6 @@ sp {strumento*fionda*apply
      ^vetro_status 0)
    (halt)
 }
-
 
 
 
