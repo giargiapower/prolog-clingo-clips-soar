@@ -211,18 +211,10 @@ sp {strumento*lancia_sassi*apply
 
 -->
    (write (crlf) |oh no lo strumento clava non ha alcun effetto... devo ricominciare da capo|)
-   (<s> ^name costruisci_strumento
-        ^object <o1> <o2> <o3>
-        ^vetro_status 2
-        ^strumento <s1> <s2> <s3>
-        ^strumento_posseduto niente)
-   (<s1> ^name fionda ^materials <o2> <o3> ^reward +1)
-   (<s2> ^name clava ^materials <o1> <o3> ^reward -1) 
-   (<s3> ^name lancia_sassi ^materials <o1> <o2> ^reward -1)
-   (<o1> ^name pietre)
-   (<o2> ^name molla)
-   (<o3> ^name rametto)
+   (<s> ^operator <o> +)
+   (<o> ^name initialize-strumento)
 }
+
 
 
 
