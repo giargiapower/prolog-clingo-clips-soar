@@ -153,7 +153,22 @@ sp {propose*usa-strumenti2
    (state <s> 
           ^strumento_posseduto fionda)
 -->
-   (write (crlf) |sono dentro 2|)
+   (<s> ^operator <op> +)
+   (<op> ^name usa_fionda
+        ^strumento_posseduto fionda
+        ^finestra 2)
+   (write (crlf) |sono dentro usa_fionda|)      
+}
+
+
+sp {apply*usa-fionda
+   (state <s> ^operator <op> +)
+   (<op> ^name usa_fionda
+        ^strumento_posseduto fionda
+        ^finestra 2)
+         
+-->
+   (write (crlf) |ho colpito la finestra ma non si è ancora rotta|)      
    (halt )
 }
 
