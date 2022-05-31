@@ -33,7 +33,7 @@ sp {apply*initialize-strumenti
 }
 
 sp {costruisci*propose
-   (state <s> ^name costruisci_strumento
+   (state <s> ^name costruisci_strumento ^finestra 2
               ^strumento <str>
               )
   (<str> ^name <na> ^materials1 <oa> ^materials2 <ob> ) 
@@ -104,14 +104,14 @@ sp {costruisci_strumento*rl*lancia_sassi
 
 
 sp {costruisci*apply
-    (state <s>  ^strumento_posseduto niente ^operator <op> )
+    (state <s>  ^finestra 2 ^strumento_posseduto niente ^operator <op> )
 
    (<op> ^name costr
         ^strumento <name_s> 
          ^oggetti <n_oa>{<> <n_oa> <n_ob>}
          )
 -->
-(<s> ^strumento_posseduto niente - <name_s>)
+(<s> ^finestra 2 ^strumento_posseduto niente - <name_s>)
   (write (crlf) |Raccolgo primo oggetto: | <n_oa>)
   (write (crlf) |Raccolgo secondo oggetto: | <n_ob>)
   (write (crlf) |ho costruito | <name_s>)
@@ -145,18 +145,20 @@ sp {propose*usa-strumenti1
    (state <s> 
           ^strumento_posseduto clava)
 -->
-   (write (crlf) |oh no non posso usarlo|)
+   (write (crlf) |oh no non posso uare il lancia_sassi per rompere il vetro...|)
    (halt )
 }
 
+
+
 sp {propose*usa-strumenti2
-   (state <s> 
+   (state <s> ^finestra 2
           ^strumento_posseduto fionda)
 -->
    (<s> ^operator <op> +)
    (<op> ^name usa_fionda
         ^strumento_posseduto fionda
-        ^finestra 2)
+        ^finestra <f>)
    (write (crlf) |sono dentro usa_fionda|)      
 }
 
@@ -165,11 +167,12 @@ sp {apply*usa-fionda
    (state <s> ^operator <op> +)
    (<op> ^name usa_fionda
         ^strumento_posseduto fionda
-        ^finestra 2)
+        ^finestra <f>)
          
 -->
-   (write (crlf) |ho colpito la finestra ma non si è ancora rotta|)      
-   (halt )
+(<s>  ^name finestra_colpita ^finestra (- <f> 1))
+   
+   (write (crlf) |ho colpito la finestra ma non si è ancora rotta| )      
 }
 
 
@@ -184,5 +187,28 @@ sp {propose*usa-strumenti3
 
 
 
+sp {propose*distruggi
+          (state <s> ^name finestra_colpita
+          ^finestra <f>)
+-->
+(<s> ^operator <op> +)
+   (<op> ^name distruggi_finestra
+        ^strumento_posseduto fionda
+        ^finestra <f>)
+   (write (crlf) |mancante : | <f>)
+   
+}
 
 
+sp {apply*distruggi_finestra
+   (state <s> ^operator <op> +)
+   (<op> ^name distruggi_finestra
+        ^strumento_posseduto fionda
+        ^finestra <f>)
+         
+-->
+(<s>  ^name finestra_colpita ^finestra (- <f> 1))
+   
+   (write (crlf) |ho colpito la finestra è rotta, fuggiamo!!| ) 
+   (halt)     
+}
