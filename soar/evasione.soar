@@ -19,7 +19,10 @@ sp {apply*initialize-strumenti
    (<s> ^name costruisci_strumento
          ^strumento_posseduto niente 
          ^finestra 2
-        ^oggetti <o1> <o2> <o3>
+         ^location dentro_cella
+         ^tronchi 2
+         ^scala non_creata
+        ^oggetti <o1> <o2> <o3> 
         ^strumento <sta> <stb> <stc>
         )
    (<o1> ^name molla)
@@ -34,18 +37,18 @@ sp {apply*initialize-strumenti
 
 sp {costruisci*propose
    (state <s> ^name costruisci_strumento ^finestra 2
+               ^location dentro_cella ^tronchi 2 ^scala non_creata
               ^strumento <str>
               )
   (<str> ^name <na> ^materials1 <oa> ^materials2 <ob> ) 
    (<oa> ^name <n_oa>)
    (<ob> ^name <n_ob>)
 -->
-(write (crlf) |prova|)
    (<s> ^operator <op> +)
    (<op> ^name costr
         ^strumento <na> 
         ^oggetti <n_oa> <n_ob>)
-        # ^obj <na> 
+      
          
 }
 
@@ -104,14 +107,14 @@ sp {costruisci_strumento*rl*lancia_sassi
 
 
 sp {costruisci*apply
-    (state <s>  ^finestra 2 ^strumento_posseduto niente ^operator <op> )
+    (state <s>  ^finestra 2  ^location dentro_cella ^tronchi 2 ^strumento_posseduto niente  ^scala non_creata ^operator <op> )
 
    (<op> ^name costr
         ^strumento <name_s> 
          ^oggetti <n_oa>{<> <n_oa> <n_ob>}
          )
 -->
-(<s> ^finestra 2 ^strumento_posseduto niente - <name_s>)
+(<s> ^finestra 2 ^location dentro_cella ^tronchi 2 ^scala non_creata ^strumento_posseduto niente - <name_s>)
   (write (crlf) |Raccolgo primo oggetto: | <n_oa>)
   (write (crlf) |Raccolgo secondo oggetto: | <n_ob>)
   (write (crlf) |ho costruito | <name_s>)
@@ -131,8 +134,6 @@ sp {elaborate*reward
   (<str> ^name <na> ^reward <d-reward>) 
    
 -->
-(write (crlf) |reward:  | <na>)
-(write (crlf) |reward:  | <d-reward>)
 
    (<r> ^reward <rr>)
 
@@ -145,21 +146,28 @@ sp {propose*usa-strumenti1
    (state <s> 
           ^strumento_posseduto clava)
 -->
-   (write (crlf) |oh no non posso uare il lancia_sassi per rompere il vetro...|)
+   (write (crlf) |oh no non posso uare la clava per rompere il vetro...|)
    (halt )
 }
 
+sp {propose*usa-strumenti3
+   (state <s>  
+          ^strumento_posseduto lancia_sassi)
+-->
+(write (crlf) |oh no non posso uare il lancia sassi per rompere il vetro...|)
+(halt )
+   
+}
 
 
 sp {propose*usa-strumenti2
-   (state <s> ^finestra 2
+   (state <s> ^finestra 2 ^location dentro_cella ^tronchi 2 ^scala non_creata
           ^strumento_posseduto fionda)
 -->
    (<s> ^operator <op> +)
    (<op> ^name usa_fionda
         ^strumento_posseduto fionda
-        ^finestra <f>)
-   (write (crlf) |sono dentro usa_fionda|)      
+        ^finestra <f>)     
 }
 
 
@@ -176,19 +184,10 @@ sp {apply*usa-fionda
 }
 
 
-sp {propose*usa-strumenti3
-   (state <s> 
-          ^strumento_posseduto lancia_sassi)
--->
-(write (crlf) |oh no non posso usarlo|)
-(halt )
-   
-}
-
 
 
 sp {propose*distruggi
-          (state <s> ^name finestra_colpita
+          (state <s> ^name finestra_colpita ^location dentro_cella ^tronchi 2 ^scala non_creata
           ^finestra <f>)
 -->
 (<s> ^operator <op> +)
@@ -207,8 +206,65 @@ sp {apply*distruggi_finestra
         ^finestra <f>)
          
 -->
-(<s>  ^name finestra_colpita ^finestra (- <f> 1))
+(<s>  ^name finestra_rotta ^finestra (- <f> 1))
+   (write (crlf) |mancante : 0| )
+   (write (crlf) |ho colpito la finestra, ora è rotta, fuggiamo!!| ) 
+     
+}
+
+sp {propose*crea_scala
+   (state <s> ^name finestra_rotta ^location dentro_cella ^scala non_creata ^tronchi <t>)
+         
+-->
+(<s> ^operator <op> +)
+   (<op> ^name crea_scala
+       ^location dentro_cella ^tronchi <t> ^scala creata)
+
+}
+
+sp {apply*crea_scala
+   (state <s> ^operator <op> +)
+   (<op> ^name crea_scala
+       ^location dentro_cella ^tronchi <t> ^scala <cr>)
+         
+-->
+(<s>  ^name scala_creata ^tronchi (- <t> 2)  ^location dentro_cella ^scala non_creata - <cr>)
    
-   (write (crlf) |ho colpito la finestra è rotta, fuggiamo!!| ) 
-   (halt)     
+   (write (crlf) |scala creata ora posso saltare fuori dalla finestra|) 
+     
+}
+
+sp {propose*fuggiamo
+ (state <s> ^name scala_creata ^location dentro_cella ^scala creata)
+         
+-->
+(<s> ^operator <op> +)
+   (<op> ^name fuggi
+       ^location dentro_cella ^direzione esterno_cella)
+}
+
+
+sp {apply*fuggiamo
+   (state <s> ^operator <op> +)
+   (<op> ^name fuggi
+       ^location dentro_cella
+       ^direzione <d>)
+         
+-->
+(<s>  ^name libero   ^location dentro_cella - <d>)
+    
+  
+}
+
+
+sp {end*escape
+   (state <s> ^name libero  ^location {<> dentro_cella})
+         
+-->
+(write (crlf) |salgo la scala....|) 
+(write (crlf) |!!!!!!!sono libero!!!!!!!|) 
+(halt)
+    
+    
+  
 }
