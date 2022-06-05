@@ -93,11 +93,11 @@ offreStruttura(napoli,maradona).
 
 
 %esclude le partite uguali in giornate diverse e nelle stesse giornate tra andata e ritorno
-:-partita(Team1, Team2, A1, a), partita(Team1, Team2, R2, r), A1 <> R2.
-:-partita(Team1, Team2, A1, a), partita(Team1, Team2, R2, r), A1 == R2.
+:-partita(Team1, Team2, A, a), partita(Team1, Team2, R, r), A <> R.
+:-partita(Team1, Team2, A, a), partita(Team1, Team2, R, r), A == R.
 
 %esclude le partite simmetriche tra andata e ritorno
-:-partita(Team1, Team2, A1, a), partita(Team2, Team1, R2, r), A1 == R2.
+:-partita(Team1, Team2, A, a), partita(Team2, Team1, R, r), A == R.
 
 
 %#show assegna/3.
