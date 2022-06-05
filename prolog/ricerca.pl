@@ -1,18 +1,3 @@
-% cerca_soluzione(-ListaAzioni)
-cerca_soluzione(ListaAzioni):-
-    iniziale(SIniziale),
-    pos(X, Y),
-    profondita(SIniziale,ListaAzioni, X ,Y, []).
-
-% profondita(S,ListaAzioni,Visitati)
-profondita(S,[],_ , _ , _):-finale(S),!.
-
-profondita(S,[Az|ListaAzioni], X, Y , Visitati):-
-    applicabile(Az, X, Y),
-    trasforma(Az,X, Y, S, X2, Y2, SNuovo),
-    \+member(SNuovo,Visitati),
-    profondita(SNuovo,ListaAzioni,X2 , Y2, [S|Visitati]).
-
 %struttura : s(Stato, Direzione, Profondità, Costo, X0, Y0) ci serve per capire se siamo già passati per quello stato
 % aggiungiamo lo stato iniziale alla nostra conoscenza
 % iniziamo astar 
